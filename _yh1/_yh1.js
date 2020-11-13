@@ -16,33 +16,77 @@
 			"visible": true,
 			"children": {
 
-				"prod_group": {
+				"house_group": {
 					"position": [0, -20, 0],
 					"rotation": [-1.57, 0, 0],
 					"scale": [1, 1, 1],
 					"visible": true,
 					"children": {
 
-						"house": {
-							"geometry": "yh1",
-							"material": "mm_procedural",
+						"h1_group": {
 							"position": [0, 0, 0],
 							"rotation": [0, 0, 0],
 							"scale": [1, 1, 1],
 							"visible": true,
-							"children": {}
+							"children": {
+
+								"h2_group": {
+									"position": [0, 0, 0],
+									"rotation": [0, 0, 0],
+									"scale": [1, 1, 1],
+									"visible": true,
+									"children": {
+
+										"house": {
+											"geometry": "yh1",
+											"material": "m_01",
+											"position": [0, 0, 0],
+											"rotation": [0, 0, 0],
+											"scale": [1, 1, 1],
+											"visible": true,
+											"children": {},
+											"userData" : {
+												"animations" : {
+													"click": [
+														{
+															"object": "house",
+															"event": "cycle_event",
+															"arguments":{
+															},
+															"cycle": {
+																"steps": [
+																{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.01, "z": 0.02}},
+																{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": 0.0, "z": -0.03}},
+																{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.02, "z": 0.01}},
+																{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": -0.01, "z": -0.02}}
+																],
+																"interval": 0,
+																"duration": 4000,
+																"easing": "easeInOutSine",
+																"enabled": false
+															},
+															"delay": 0,
+															"duration": 1000,
+															"easing": "easeOutSine"
+														}
+													]
+												}
+											}
+										}
+									}
+								}
+							}
 						},
-						
+
 						"ground": {
 							"geometry": "plane",
 							"material": "m_water",
-							"position": [0, 0,-14],
+							"position": [0, 0, -14],
 							"rotation": [0, 0, 0],
-							"scale": [1,1,1],
+							"scale": [1, 1, 1],
 							"visible": true,
 							"children": {}
 						}
-						
 					}
 				},
 
@@ -81,11 +125,11 @@
 							"enablePan ": false,
 							"enableRotate": false,
 							"enableZoom": false
-							
+
 						}
 					},
 					"children": {
-					
+
 						"cam_mask": {
 							"geometry": "cam_helper",
 							"material": "m_cam",
@@ -100,7 +144,7 @@
 							"type": "PointLight",
 							"position": [0, 5, 20],
 							"color": 15204261,
-							"intensity": 1.0
+							"intensity": 0.2
 						}
 					}
 				},
@@ -312,7 +356,7 @@
 				"side": "double"
 			}
 		},
-		
+
 		"m_02": {
 			"type": "MeshPhysicalMaterial",
 			"parameters": {
@@ -330,7 +374,7 @@
 				"side": "double"
 			}
 		},
-		
+
 		"m_03": {
 			"type": "MeshPhysicalMaterial",
 			"parameters": {
@@ -348,7 +392,7 @@
 				"side": "double"
 			}
 		},
-		
+
 		"m_water": {
 			"type": "MeshPhysicalMaterial",
 			"parameters": {
@@ -363,7 +407,7 @@
 				"side": "double"
 			}
 		},
-		
+
 		"m_water": {
 			"type": "MeshPhysicalMaterial",
 			"parameters": {
@@ -378,7 +422,6 @@
 				"side": "double"
 			}
 		},
-
 
 		"mat_none": {
 			"type": "MeshPhongMaterial",
@@ -410,7 +453,7 @@
 			"minFilter": "LinearMipMapLinearFilter",
 			"mapping": "EquirectangularReflectionMapping"
 		},
-		
+
 		"env_cube1": {
 			"url": [
 				"_tex/env/q01_sides.jpg",
