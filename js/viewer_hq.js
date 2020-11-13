@@ -8,6 +8,7 @@ function IonVR ( options ) {
         debug : false,
         container : null,
         skybox : false,
+		sky : false,
         lightprobe : true,
         lightprobe_tx : '',
         lightprobe_comp : '',
@@ -58,8 +59,20 @@ function IonVR ( options ) {
 				direction: 270,
 				speed: 25
 			},
-			sky: 'clear',
-			
+			sun: {
+				distance: 400,
+				inclination: 0.7,
+				azimuth: 0.85,
+				intensity: 1.5
+			},
+			sky: {
+				turbidity: 1,
+				rayleigh: 2,
+				luminance: 0.9,
+				mieCoefficient: 0.005,
+				mieDirectionalG: 0.8,
+				res: 2048
+			},
 			materials : {
 			},
 			mMat: 0,
@@ -152,8 +165,7 @@ function IonVR ( options ) {
     this.cameraAnimations = {};
 	
     this.preloader = this.options.preloader;
-
-
+	
     // Initialization start
     if ( Detector.webgl ) {
 
@@ -175,6 +187,7 @@ IonVR.prototype = {
             this.initCamera();
             this.initRenderer();
             this.initWater();
+			this.updateSun();
 
             if ( this.onReady ) {
                 this.onReady()
@@ -188,7 +201,8 @@ IonVR.prototype = {
 			
 			function loadDef() {
 				ion.requestRender();
-				ion.animateParamTo('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
+				ion.updateSun();
+				ion.animateParamTo3('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
 			}			
 			function loadEnd() {
 				//ion.spinRound();
@@ -414,9 +428,37 @@ IonVR.prototype = {
 			this.scene.background = this.sc.textures[this.options.skybox_tx];
         }
 		
+        // sky
+        if ( this.options.sky ) {
+		
+			var sunLight = new THREE.DirectionalLight( 0xffffff, this.data.param.sun.intensity );
+			sunLight.name = 'sunLight';
+			
+            var sky = new THREE.Sky();
+			sky.name = 'sky';
+			var uniforms = sky.material.uniforms;
+
+			uniforms[ 'turbidity' ].value = this.data.param.sky.turbidity;
+			uniforms[ 'rayleigh' ].value = this.data.param.sky.rayleigh;
+			uniforms[ 'luminance' ].value = this.data.param.sky.luminance;
+			uniforms[ 'mieCoefficient' ].value = this.data.param.sky.mieCoefficient;
+			uniforms[ 'mieDirectionalG' ].value = this.data.param.sky.mieDirectionalG;
+
+			var cubeCamera = new THREE.CubeCamera( 0.1, 1, this.data.param.sky.res );
+			cubeCamera.renderTarget.texture.generateMipmaps = true;
+			cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
+			cubeCamera.name = 'cubeCamera';
+
+			this.scene.background = cubeCamera.renderTarget;
+			this.scene.add( sunLight );
+			this.scene.add( cubeCamera );
+			this.scene.add( sky );
+        }
+		
 		if ( this.options.lightprobe ) {
 			
 			var lightProbe = new THREE.LightProbe();
+			lightProbe.name = 'lightProbe';
 			this.scene.add( lightProbe );
 			if (this.options.lightprobe_comp == true ) {
 				lightProbe.copy( THREE.LightProbeGenerator.fromCubeTexture( this.sc.textures[ this.options.lightprobe_tx ] ) );
@@ -524,6 +566,136 @@ IonVR.prototype = {
 		this.c = this.sc.cameras;
 		this.pc = this.data.param;
     },
+	
+	updateSun : function() {
+	
+		var sunLightparam = this.data.param.sun;
+		var sunLight = this.scene.getObjectByName('sunLight')
+		var cubeCamera = this.scene.getObjectByName('cubeCamera')
+		var sky = this.scene.getObjectByName('sky')
+
+		var theta = Math.PI * ( sunLightparam.inclination - 0.5 );
+		var phi = 2 * Math.PI * ( sunLightparam.azimuth - 0.5 );
+
+		sunLight.position.x = sunLightparam.distance * Math.cos( phi );
+		sunLight.position.y = sunLightparam.distance * Math.sin( phi ) * Math.sin( theta );
+		sunLight.position.z = sunLightparam.distance * Math.sin( phi ) * Math.cos( theta );
+
+		sky.material.uniforms[ 'sunPosition' ].value = sunLight.position.copy( sunLight.position );
+		cubeCamera.update( this.renderer, sky );
+		this.requestRender();
+
+	},
+	
+	updateSkyProbe : function() {
+	
+		if ( this.options.lightprobe == true && ion.scene.getObjectByName('cubeCamera').renderTarget != undefined) {
+			
+			if (ion.scene.getObjectByName('lightProbe') == undefined) {
+				var lightProbe = new THREE.LightProbe();
+				ion.scene.add( lightProbe );
+			} else {}
+			
+			if (ion.scene.getObjectByName('cubeCamera').renderTarget != undefined && this.options.lightprobe_set == null) {
+				ion.scene.getObjectByName('lightProbe').copy( THREE.LightProbeGenerator.fromCubeTexture( ion.scene.getObjectByName('cubeCamera').renderTarget.texture ) );
+			} else {};
+			ion.scene.getObjectByName('lightProbe').intensity =  this.options.lightprobeInt;
+			
+			if (this.options.lightprobe_set == "sky_11am") {
+			// city bg sh
+			ion.scene.getObjectByName('lightProbe').sh.fromArray([
+				0.21988952323971958, 
+				0.353873883080967, 
+				0.5979957196333927, 
+				0.06558677467388137, 
+				0.168535799494315, 
+				0.3727295821407715, 
+				-2.838907723444506e-14, 
+				-3.954370089901607e-14, 
+				-4.022441719324286e-14, 
+				2.838929245680154e-14, 
+				3.954331642208093e-14, 
+				4.0224862808547535e-14, 
+				-1.0201367426154214e-15, 
+				5.862222392184944e-15, 
+				-6.706257573915519e-15, 
+				1.0201908564157353e-15, 
+				-5.861917556646891e-15, 
+				6.7057196117202916e-15, 
+				0.09217011442613726, 
+				0.10671077188574228, 
+				0.11792560917973822, 
+				-4.880465721524953e-19, 
+				9.756262751934876e-19, 
+				-4.760480508502691e-18, 
+				0.15964303814943762, 
+				0.18482815100295383, 
+				0.20425278456377272]);
+			} else if (this.options.lightprobe_set == "sky_2pm") {
+			//studio sh
+			ion.scene.getObjectByName('lightProbe').sh.fromArray([
+				0.029401531146369564, 
+				0.030393056150284967, 
+				0.03882441978503216, 
+				-0.006532247813053846, 
+				-0.006830553369357048, 
+				-0.00876550792363131, 
+				0.0054872013622510795, 
+				0.005761665763592089, 
+				0.007102911675978676, 
+				0.001051650901536813, 
+				0.0008596636445337802, 
+				0.0006091165567122502, 
+				-0.0036529445742401667, 
+				-0.003961831226970255, 
+				-0.005260862974352544, 
+				-0.004670203370822745, 
+				-0.005086150563277629, 
+				-0.0060334392731383295, 
+				-0.0005266474551182757, 
+				-0.0005770949473494129, 
+				-0.0006364091203026864, 
+				0.0027920785910252243, 
+				0.00304628013386876, 
+				0.004018038061411669, 
+				0.0005419559484224849, 
+				0.0005783680671260237, 
+				0.0008420237221743866
+				]);
+			} else if (this.options.lightprobe_set == "sky_18pm") {
+			//ext1
+			ion.scene.getObjectByName('lightProbe').sh.fromArray([
+				1.0406571709113295, 
+				1.161886628443305, 
+				1.3063027226917772, 
+				-0.6490791656527983, 
+				-0.49548467256667383, 
+				-0.31325949844248935, 
+				0.04381565686615428, 
+				0.06532099855040499, 
+				0.07807386785800434, 
+				0.08630908113628857, 
+				-0.10730147835215309, 
+				-0.10939680130133521, 
+				-0.22306053341686657, 
+				-0.2557966190958097, 
+				-0.2506786037181489, 
+				0.020464629184951535, 
+				0.028274316528776787, 
+				0.0298683696140515, 
+				-0.09474396955458116, 
+				-0.10071400468444641, 
+				-0.11257025430936203, 
+				-0.040398956433938614, 
+				-0.044402750362525285, 
+				-0.04342718627203005, 
+				0.14164765158865514, 
+				0.15794017769014346, 
+				0.12746705307744025
+				]);
+			} else {}
+		}
+	},
 
     initWater : function ( sc ) {
 
@@ -838,9 +1010,9 @@ IonVR.prototype = {
         this.animationHelper = new THREE.AnimationsHelper(
             this,
             function (name, arguments, duration, delay, easing, callback, endCallback) {
-
-                scope.animateParamTo(name, obj, end, duration, easing, callback);
-                scope.animateParamTo2(name, arguments, duration, delay, easing, callback, endCallback);
+			
+                scope.animateParamTo(name, arguments, duration, delay, easing, callback, endCallback);
+				//scope.animateParamTo3(name, obj, end, duration, easing, callback); // very strange
 
             });
         this.requestRender();
@@ -853,7 +1025,7 @@ IonVR.prototype = {
 
     spinRound: function () {
     	if (this.options.spin) {
-    		this.animateParamTo('rotate', this.main_group.rotation, { x: 0, y: this.options.rotate_left +(Math.PI * 2), z: 0 }, 900, easeInOutCubic);
+    		this.animateParamTo3('rotate', this.main_group.rotation, { x: 0, y: this.options.rotate_left +(Math.PI * 2), z: 0 }, 900, easeInOutCubic);
     		this.log('spin');
             setTimeout(resetY, 1000);
 			
@@ -922,7 +1094,7 @@ IonVR.prototype = {
         }
     },
 
-    animateParamTo: function (name, obj, end, duration, easing, callback) {
+    animateParamTo3: function (name, obj, end, duration, easing, callback) {
         // clone hash
         var start = extend({}, end),
             delta = extend({}, end);
@@ -946,7 +1118,7 @@ IonVR.prototype = {
         //console.log('anim', name, obj, end, duration);
     },
 
-    animateParamTo2: function (name, arguments, duration, delay, easing, callback, callbackEnd) {
+    animateParamTo: function (name, arguments, duration, delay, easing, callback, callbackEnd) {
 
         this.animations[name] = {
             args: {},
@@ -997,11 +1169,11 @@ IonVR.prototype = {
 
     // {x: 0, y: 0}
     setRotation: function (rotate) {
-        this.animateParamTo('rotate', this.cam_group.rotation, rotate, 1000, easeOutCubic);
+        this.animateParamTo3('rotate', this.cam_group.rotation, rotate, 1000, easeOutCubic);
     },
 
     setFov: function (fov) {
-        this.animateParamTo('fov', this.camera, {
+        this.animateParamTo3('fov', this.camera, {
             fov: fov
         }, 1000, easeOutCubic);
     },
@@ -1096,11 +1268,11 @@ IonVR.prototype = {
                     if (easing == null) {
                         scope.container.style.animationName = "changeCamera";
                         setTimeout(function () {
-                            scope.animateParamTo2(animationName, arguments, duration, delay, getCurve(easing), callback, callbackEnd);
+                            scope.animateParamTo(animationName, arguments, duration, delay, getCurve(easing), callback, callbackEnd);
                             scope.container.style.animationName = "";
                         }, 500);
                     } else {
-                        scope.animateParamTo2(animationName, arguments, duration, delay, getCurve(easing), callback, callbackEnd);
+                        scope.animateParamTo(animationName, arguments, duration, delay, getCurve(easing), callback, callbackEnd);
                     }
 
                 },
@@ -1117,7 +1289,7 @@ IonVR.prototype = {
             args,
             function (name, arguments, callback, callbackEnd) {
 
-                scope.animateParamTo2(animationName, arguments, duration, delay, null, callback, callbackEnd);
+                scope.animateParamTo(animationName, arguments, duration, delay, null, callback, callbackEnd);
             },
             onAnimate);
 
@@ -1450,7 +1622,7 @@ IonVR.prototype = {
 			ion.setFov(55);
 		}
 		//ion.sc.objects.house.rotation.z = wind;
-		ion.animateParamTo('rotate', ion.sc.objects.house.rotation, { x: 0, y: 0, z: wind }, 2400, easeInOutSine);
+		ion.animateParamTo3('rotate', ion.sc.objects.house.rotation, { x: 0, y: 0, z: wind }, 2400, easeInOutSine);
 		
 	},
 	

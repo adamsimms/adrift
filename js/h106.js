@@ -4721,8 +4721,6 @@ function orientation ( container ) {
 
 
 
-
-
 /**
  * Created by Andrei Nadchuk on 16.06.16.
  * email: navikom11@mail.ru
@@ -5145,6 +5143,57 @@ THREE.AnimationsHelper = function ( viewer, callback ) {
     }
 
 
+    // object picking
+
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
+    // events
+
+    function getIntersects ( point, objects, camera ) {
+
+        mouse.set( ( point.x * 2 ) - 1, -( point.y * 2 ) + 1 );
+
+        raycaster.setFromCamera( mouse, camera );
+
+        return raycaster.intersectObjects( objects );
+
+    }
+
+    var onUpPosition = new THREE.Vector2();
+    var onHoverPosition = new THREE.Vector2();
+
+    function getMousePosition ( dom, x, y ) {
+
+        var rect = dom.getBoundingClientRect();
+        return [ ( x - rect.left ) / rect.width, ( y - rect.top ) / rect.height ];
+
+    }
+
+    function handleClick ( objects, camera ) {
+
+        var intersects = getIntersects( onUpPosition, objects, camera );
+
+        if ( intersects.length > 0 ) {
+
+            var object = intersects[ 0 ].object;
+
+            if ( object.userData.animations.click && !isDisabled( object ) ) {
+                applyAnimations( object, 'click', 0 );
+
+                checkReverse( object );
+
+            }
+            if ( object.userData.animations.singleClick && !isDisabled( object ) ) {
+                applySingleClickAnimation( object, 'single_click', 0 );
+
+            }
+
+        }
+
+
+    }
+
     function handleHover ( objects, camera ) {
 
 
@@ -5182,13 +5231,45 @@ THREE.AnimationsHelper = function ( viewer, callback ) {
     }
 
 
+    // events
+
+    function onClick ( frame, event ) {
+
+        var array = getMousePosition( frame.container, event.clientX, event.clientY );
+        onUpPosition.fromArray( array );
+
+        handleClick( frame.objects, frame.camera );
+
+
+    }
+
+
+    function onTouchEnd ( frame, event ) {
+
+        var touch = event.changedTouches[ 0 ];
+
+        var array = getMousePosition( frame.container, touch.clientX, touch.clientY );
+        onUpPosition.fromArray( array );
+
+        handleClick( frame.objects, frame.camera );
+
+        //document.removeEventListener( 'touchend', onFrameTouchEnd.bind(this, frame), false );
+
+    }
+
+    function onMouseMove ( frame, event ) {
+
+        var array = getMousePosition( frame.container, event.clientX, event.clientY );
+        onHoverPosition.fromArray( array );
+        handleHover( frame.objects, frame.camera );
+    }
 
     var frame = { container : container, objects : mainObjects, camera : mainCamera };
 
-    // addListener( container, 'click', onClick.bind( this, frame ), false );
-    // addListener( container, 'touchstart', onTouchEnd.bind( this, frame ), false );
-    // addListener( container, 'mousemove', onMouseMove.bind( this, frame ), false );
-    // addListener( controls, 'change', onControlsChanged, false );
+    addListener( container, 'click', onClick.bind( this, frame ), false );
+    addListener( container, 'touchstart', onTouchEnd.bind( this, frame ), false );
+    addListener( container, 'mousemove', onMouseMove.bind( this, frame ), false );
+    addListener( controls, 'change', onControlsChanged, false );
 
     //container.addEventListener( 'click', onClick.bind( this, frame ), false );
     //container.addEventListener( 'touchstart', onTouchEnd.bind( this, frame ), false );
@@ -6253,7 +6334,6 @@ THREE.CameraAnimationDataLoad = function ( viewer ) {
     }
 
 }
-
 
 
 
