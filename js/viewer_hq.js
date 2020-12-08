@@ -52,8 +52,8 @@ function IonVR ( options ) {
     this.data = {
         param: {
 			wind: {
-				direction: 270,
-				speed: 25
+				direction: 350,
+				speed: 30
 			},
 			gust: {
 				direction: 270,
@@ -61,18 +61,57 @@ function IonVR ( options ) {
 			},
 			sun: {
 				distance: 400,
-				inclination: 0.7,
-				azimuth: 0.85,
+				inclination: 0.5,
+				azimuth: 0.55,
 				intensity: 1.5
 			},
 			sky: {
-				turbidity: 1,
+				turbidity: 10,
 				rayleigh: 2,
-				luminance: 0.9,
+				luminance: 1,
 				mieCoefficient: 0.005,
 				mieDirectionalG: 0.8,
 				res: 2048
 			},
+			live_data: {
+				current: {
+					cloud: 0,
+					feelslike_c: -2.9,
+					feelslike_f: 26.7,
+					gust_kph: 15.8,
+					gust_mph: 9.8,
+					humidity: 55,
+					is_day: 1,
+					last_updated: "1999-01-01 00:00",
+					last_updated_epoch: null,
+					precip_in: 0,
+					precip_mm: 0,
+					pressure_in: 30.4,
+					pressure_mb: 1013,
+					temp_c: 1,
+					temp_f: 33.8,
+					uv: 2,
+					vis_km: 14,
+					vis_miles: 8,
+					wind_degree: 310,
+					wind_dir: "NW",
+					wind_kph: 11.2,
+					wind_mph: 6.9
+				}
+			},
+			live_astro: {
+				astronomy: {
+					astro: {
+						sunrise: "07:50 AM",
+						sunset: "04:45 PM",
+						moonrise: "01:40 PM",
+						moonset: "02:21 AM",
+						moon_phase: "First Quarter",
+						moon_illumination: 63
+					}
+				}
+			},
+			animation: true,
 			materials : {
 			},
 			mMat: 0,
@@ -187,11 +226,16 @@ IonVR.prototype = {
             this.initCamera();
             this.initRenderer();
             this.initWater();
-			this.updateSun();
+			//this.updateSun();
+			//this.animateHouse();
 
             if ( this.onReady ) {
                 this.onReady()
             }
+			
+			if (ion.data.param.animation !== false) {
+				ion.animateHouse();
+			} else {}
 
             this.start();
 			// this.cMat();
@@ -200,13 +244,18 @@ IonVR.prototype = {
 			setTimeout(loadEnd, 3000);
 			
 			function loadDef() {
-				ion.requestRender();
 				ion.updateSun();
-				ion.animateParamTo3('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
+				//ion.updateWeather();
+				ion.animateParamToSMP2('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
+				ion.fetchWeather();
 			}			
 			function loadEnd() {
 				//ion.spinRound();
 				ion.sc.objects.cam_mask.visible=false;
+				document.getElementById('music').play();
+				ion.updateWeather();
+				ion.updateSun();
+				
 			}
         } );
     },
@@ -431,7 +480,7 @@ IonVR.prototype = {
         // sky
         if ( this.options.sky ) {
 		
-			var sunLight = new THREE.DirectionalLight( 0xffffff, this.data.param.sun.intensity );
+			var sunLight = new THREE.DirectionalLight( 0xfeeacc, this.data.param.sun.intensity );
 			sunLight.name = 'sunLight';
 			
             var sky = new THREE.Sky();
@@ -453,6 +502,9 @@ IonVR.prototype = {
 			this.scene.add( sunLight );
 			this.scene.add( cubeCamera );
 			this.scene.add( sky );
+			ion.sc.objects.house.material[0].envMap = 
+			ion.sc.objects.house.material[1].envMap = 
+			ion.sc.objects.house.material[2].envMap = cubeCamera.renderTarget.texture;
         }
 		
 		if ( this.options.lightprobe ) {
@@ -577,14 +629,77 @@ IonVR.prototype = {
 		var theta = Math.PI * ( sunLightparam.inclination - 0.5 );
 		var phi = 2 * Math.PI * ( sunLightparam.azimuth - 0.5 );
 
-		sunLight.position.x = sunLightparam.distance * Math.cos( phi );
-		sunLight.position.y = sunLightparam.distance * Math.sin( phi ) * Math.sin( theta );
-		sunLight.position.z = sunLightparam.distance * Math.sin( phi ) * Math.cos( theta );
+		var sX = sunLightparam.distance * Math.cos( phi );
+		var sY = sunLightparam.distance * Math.sin( phi ) * Math.sin( theta );
+		var sZ = sunLightparam.distance * Math.sin( phi ) * Math.cos( theta );
+		var sP = { r: sX, g: sY, b: sZ };
+		console.log('sP:', sP);
+		
+		ion.animateParamToSMP('position', sunLight.position, { x: sX, y: sY, z: sZ }, 800, easeInOutSine);
+		setTimeout(stepOne, 900);
 
-		sky.material.uniforms[ 'sunPosition' ].value = sunLight.position.copy( sunLight.position );
-		cubeCamera.update( this.renderer, sky );
-		this.requestRender();
+		function stepOne() {
+			ion.scene.getObjectByName('sky').material.uniforms[ 'sunPosition' ].value = sP;
+			ion.scene.getObjectByName('cubeCamera').update( ion.renderer, ion.scene.getObjectByName('sky') );
+			ion.requestRender();
+			console.log('sunLight.position:', ion.scene.getObjectByName('sunLight').position);
+		}
+		
+		
+		// console.log('theta:', theta);
+		// console.log('phi:', phi);
+		//console.log('sun XYZ:', 'x:', sunLight.position.x, 'y:', sunLight.position.y, 'z:', sunLight.position.z);
+		
+		// ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: 0.39, g: 0.24, b: 0.0 }, 800, easeInOutSine);
+		// ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: 0.99, g: 0.88, b: 0.70 }, 800, easeInOutSine);
+		
+		if (sunLightparam.inclination > 0.4 && sunLightparam.inclination < 0.8  ) {
+			var rgbF = (-0.75+(sunLightparam.inclination)) * -2.8;
+			var lMult = 0.95;
+			var sRv = (0.95 * lMult) - rgbF;
+			var sGv = (0.88 * lMult) - rgbF;
+			var sBv = (0.72 * lMult) - rgbF;
+			var envMult = 1.5+(rgbF *5.5);
+			
+			
+			if (sRv >= 0 && sRv < 1) {
+				var sR = sRv;
+			} else {
+				var sR = 0;
+			}			
+			if (sGv >= 0 && sGv < 1) {
+				var sG = sGv;
+			} else {
+				var sG = 0;
+			}			
+			if (sBv >= 0 && sBv < 1) {
+				var sB = sBv;
+			} else {
+				var sB = 0;
+			}
+			
+			ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: sR, g: sG, b: sB }, 800, easeInOutSine);
+			console.log('case1:', rgbF)
+			console.log('envMult:', envMult);
+			ion.sc.materials.m_04.envMapIntensity = ion.sc.materials.m_01.envMapIntensity = envMult;
+			
+			setTimeout(stepOne, 1600);
 
+			function stepOne() {
+				ion.animateParamToSMP('color', ion.scene.getObjectByName('light_cam').color, { r: sR, g: sG, b: sB }, 800, easeInOutSine);
+			}
+		} else {
+			ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: 0.01, g: 0.01, b: 0.02 }, 1600, easeInOutSine);
+			ion.sc.materials.m_04.envMapIntensity = ion.sc.materials.m_01.envMapIntensity = 7;
+			console.log('case3')
+		
+			setTimeout(stepOne, 1600);
+
+			function stepOne() {
+				ion.animateParamToSMP('color', ion.scene.getObjectByName('light_cam').color, { r: 0.004, g: 0.004, b: 0.02 }, 800, easeInOutSine);
+			}
+		}
+		
 	},
 	
 	updateSkyProbe : function() {
@@ -713,7 +828,7 @@ IonVR.prototype = {
 					texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
 				} ),
-				alpha: 0.8,
+				alpha: 0.5,
 				//sunDirection: (0.3, 0.4),
 				sunColor: 0x888888,
 				waterColor: 0x000000,
@@ -870,6 +985,12 @@ IonVR.prototype = {
 			} else {
 				this.orbit_controls.enablePan = false;
 			}
+			
+			if (this.camera.userData.parameters.screenSpacePanning !== undefined) {
+				this.orbit_controls.screenSpacePanning = this.camera.userData.parameters.screenSpacePanning;
+			} else {
+				this.orbit_controls.screenSpacePanning = true;
+			}
 
             this.orbit_controls.addEventListener( 'change', function () {
                 _this.log( 'cont change' );
@@ -1012,7 +1133,7 @@ IonVR.prototype = {
             function (name, arguments, duration, delay, easing, callback, endCallback) {
 			
                 scope.animateParamTo(name, arguments, duration, delay, easing, callback, endCallback);
-				//scope.animateParamTo3(name, obj, end, duration, easing, callback); // very strange
+				//scope.animateParamToSMP(name, obj, end, duration, easing, callback); // very strange
 
             });
         this.requestRender();
@@ -1025,7 +1146,7 @@ IonVR.prototype = {
 
     spinRound: function () {
     	if (this.options.spin) {
-    		this.animateParamTo3('rotate', this.main_group.rotation, { x: 0, y: this.options.rotate_left +(Math.PI * 2), z: 0 }, 900, easeInOutCubic);
+    		this.animateParamToSMP('rotate', this.main_group.rotation, { x: 0, y: this.options.rotate_left +(Math.PI * 2), z: 0 }, 900, easeInOutCubic);
     		this.log('spin');
             setTimeout(resetY, 1000);
 			
@@ -1094,7 +1215,55 @@ IonVR.prototype = {
         }
     },
 
-    animateParamTo3: function (name, obj, end, duration, easing, callback) {
+    animateParamToSky: function (name, obj, end, duration, easing, callback) {
+        // clone hash
+        var start = extend({}, end),
+            delta = extend({}, end);
+
+        // fill values
+        for (var param in end) {
+            start[param] = obj[param];
+            delta[param] = end[param] - obj[param];
+        }
+
+        this.animations[name] = {
+            obj: obj,
+            start: start,
+            delta: delta,
+            callback: callback,
+            duration: duration,
+            easing: easing || easeInOutCubic,
+            started: (+new Date)
+        };
+		//this.scene.getObjectByName('cubeCamera').update( this.renderer, this.scene.getObjectByName('sky') );
+        //console.log('anim', name, obj, end, duration);
+    },
+
+    animateParamToSMP: function (name, obj, end, duration, easing, callback) {
+        // clone hash
+        var start = extend({}, end),
+            delta = extend({}, end);
+
+        // fill values
+        for (var param in end) {
+            start[param] = obj[param];
+            delta[param] = end[param] - obj[param];
+        }
+
+        this.animations[name] = {
+            obj: obj,
+            start: start,
+            delta: delta,
+            callback: callback,
+            duration: duration,
+            easing: easing || easeInOutCubic,
+            started: (+new Date)
+        };
+
+        //console.log('anim', name, obj, end, duration);
+    },
+
+    animateParamToSMP2: function (name, obj, end, duration, easing, callback) {
         // clone hash
         var start = extend({}, end),
             delta = extend({}, end);
@@ -1169,11 +1338,11 @@ IonVR.prototype = {
 
     // {x: 0, y: 0}
     setRotation: function (rotate) {
-        this.animateParamTo3('rotate', this.cam_group.rotation, rotate, 1000, easeOutCubic);
+        this.animateParamToSMP('rotate', this.cam_group.rotation, rotate, 1000, easeOutCubic);
     },
 
     setFov: function (fov) {
-        this.animateParamTo3('fov', this.camera, {
+        this.animateParamToSMP('fov', this.camera, {
             fov: fov
         }, 1000, easeOutCubic);
     },
@@ -1597,12 +1766,20 @@ IonVR.prototype = {
     },
 
     render : function ( t ) {
+		
+		ion.scene.getObjectByName('sky').material.uniforms[ 'sunPosition' ].value = ion.scene.getObjectByName('sunLight').position;
+		ion.scene.getObjectByName('cubeCamera').update( ion.renderer, ion.scene.getObjectByName('sky') );
 
         this.renderer.clear();
         this.renderer.render( this.scene, this.camera );
 		
 		var time = performance.now() * 0.001;
-		this.sc.objects.main_group.getObjectByName('water').material.uniforms[ 'time' ].value += 1.0 / 60.0;
+		if (ion.data.param.live_data.current.wind_kph >= 10) {
+			var speed = ion.data.param.live_data.current.wind_kph/10;
+		} else  {
+			var speed = 1;
+		}
+		this.sc.objects.main_group.getObjectByName('water').material.uniforms[ 'time' ].value += (speed) / 100;
 
         for ( var i = 0, j = this.interfaces.length; i < j; i++ ) {
             this.interfaces[ i ].renderer.clear();
@@ -1613,16 +1790,104 @@ IonVR.prototype = {
         if ( this.options.camera_info ) this.showCamInfo();
     },
 	
+	fetchWeather : function () {
+	
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+
+		var todayAstro = 'http://api.weatherapi.com/v1/astronomy.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144&dt=' + yyyy + '-' + mm + '-' + dd;
+		console.log(todayAstro);
+	
+	
+		fetch('http://api.weatherapi.com/v1/current.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144').then(res => res.json()).then(data => ion.data.param.live_data = data);	
+		fetch(todayAstro).then(res => res.json()).then(data => ion.data.param.live_astro = data);
+		
+		setTimeout(stepOne, 2000);
+
+		function stepOne() {
+			ion.updateWeather();
+		}
+		
+	},
+	
 	updateWeather : function() {
-		var wind = ( ion.data.param.wind.direction / 57.325 );
-		if (ion.data.param.wind.direction < 45 || ion.data.param.wind.direction > 315) {
-			var speedFov = ( 35 + ion.data.param.wind.speed / 2 );
+		var wind = ( ion.data.param.live_data.current.wind_degree / 57.325 );
+		if (ion.data.param.live_data.current.wind_degree < 45 || ion.data.param.live_data.current.wind_degree > 315 && ion.data.param.live_data.current.wind_kph <= 80 ) {
+			var speedFov = ( 35 + ion.data.param.live_data.current.wind_kph / 1.66 );
+			ion.setFov(speedFov);
+		} else if (ion.data.param.live_data.current.wind_degree < 45 || ion.data.param.live_data.current.wind_degree > 315 && ion.data.param.live_data.current.wind_kph > 80 ) {
 			ion.setFov(speedFov);
 		} else {
-			ion.setFov(55);
+			ion.setFov(45);
 		}
 		//ion.sc.objects.house.rotation.z = wind;
-		ion.animateParamTo3('rotate', ion.sc.objects.house.rotation, { x: 0, y: 0, z: wind }, 2400, easeInOutSine);
+		ion.animateParamToSMP('rotate', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: wind }, 4800, easeInOutCubic);
+		
+		
+		
+		
+		
+	},
+	
+	animateHouse : function() {
+	
+		var wind = ion.data.param.live_data.current.wind_kph;
+		
+		if (wind <= 9) {
+			var stepDuration = 10000;
+			console.log('wind 0');
+		} else if (wind <= 29) {
+			var stepDuration = 8000;
+			console.log('wind 10 29');
+		} else if (wind <= 39 ) {
+			var stepDuration = 6000;
+			console.log('wind 30 39');
+		} else if (wind <= 49 ) {
+			var stepDuration = 5000;
+			console.log('wind 40 49');
+		} else if (wind <= 59 ) {
+			var stepDuration = 4000;
+			console.log('wind 50 59');
+		} else if (wind <= 79 ) {
+			var stepDuration = 3000;
+			console.log('wind 60 79');
+		} else if (wind <= 80 ) {
+			var stepDuration = 2500;
+			console.log('wind 80');
+		} else {
+			console.log('wind 90');
+		
+		}
+		
+		var posMult = 0.1+(wind/10);
+		
+		setTimeout(stepOne, 0);
+		setTimeout(stepTwo, stepDuration);
+
+		function stepOne() {
+			ion.animateParamToSMP('position', ion.sc.objects.h2_group.position, { x: 0.0*posMult, y: 0.1*posMult, z: 0.01*posMult }, stepDuration, easeInOutSine);
+			ion.animateParamToSMP2('rotation', ion.sc.objects.h3_group.rotation, { x: 0.0, y: 0.002*posMult, z: 0.001*posMult }, stepDuration, easeInOutSine);
+		}
+		
+		function stepTwo() {
+			ion.animateParamToSMP('position', ion.sc.objects.h2_group.position, { x: -0.0*posMult, y: 0, z: -0.15*posMult }, stepDuration, easeInOutSine);
+			ion.animateParamToSMP2('rotation', ion.sc.objects.h3_group.rotation, { x: -0.0, y: -0.001*posMult, z: -0.001*posMult }, stepDuration, easeInOutSine);
+			
+			if (ion.data.param.animation !== false) {
+				setTimeout(ion.animateHouse, stepDuration);
+			} else {}
+		}
+		
+		/*
+		
+		{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.01, "z": 0.02}},
+		{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": 0.0, "z": -0.03}},
+		{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.02, "z": 0.01}},
+		{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": -0.01, "z": -0.02}}
+		
+		*/
 		
 	},
 	

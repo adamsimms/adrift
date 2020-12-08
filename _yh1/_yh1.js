@@ -37,39 +37,25 @@
 									"visible": true,
 									"children": {
 
-										"house": {
-											"geometry": "yh1",
-											"material": "m_01",
+										"h3_group": {
 											"position": [0, 0, 0],
 											"rotation": [0, 0, 0],
 											"scale": [1, 1, 1],
 											"visible": true,
-											"children": {},
-											"userData" : {
-												"animations" : {
-													"click": [
-														{
-															"object": "house",
-															"event": "cycle_event",
-															"arguments":{
-															},
-															"cycle": {
-																"steps": [
-																{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.01, "z": 0.02}},
-																{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": 0.0, "z": -0.03}},
-																{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.02, "z": 0.01}},
-																{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": -0.01, "z": -0.02}}
-																],
-																"interval": 0,
-																"duration": 4000,
-																"easing": "easeInOutSine",
-																"enabled": false
-															},
-															"delay": 0,
-															"duration": 1000,
-															"easing": "easeOutSine"
+											"children": {
+
+												"house": {
+													"geometry": "yh1",
+													"material": "mm_procedural",
+													"position": [0, 0, 0],
+													"rotation": [0, 0, 0],
+													"scale": [1, 1, 1],
+													"visible": true,
+													"children": {},
+													"userData" : {
+														"animations" : {
 														}
-													]
+													}
 												}
 											}
 										}
@@ -124,7 +110,8 @@
 							"panSpeed": 0.20,
 							"enablePan ": false,
 							"enableRotate": false,
-							"enableZoom": false
+							"enableZoom": false,
+							"screenSpacePanning": true
 
 						}
 					},
@@ -142,7 +129,7 @@
 
 						"light_cam": {
 							"type": "PointLight",
-							"position": [0, 5, 20],
+							"position": [0, 15, 20],
 							"color": 15204261,
 							"intensity": 0.2
 						}
@@ -221,7 +208,23 @@
 					"near": 1,
 					"far": 1000,
 					"position": [0, 200, -1],
-					"target": [0, 0, 0]
+					"target": [0, 0, 0],
+					"userData": {
+						"easing": "easeInOutCubic"
+					}
+				},
+
+				"Morning_CAM": {
+					"type": "PerspectiveCamera",
+					"fov": 55,
+					"aspect": 1.33333,
+					"near": 1,
+					"far": 1000,
+					"position": [-85.59,0,54.55],
+					"target": [8.49, 0, 40.69],
+					"userData": {
+						"easing": "easeInOutCubic"
+					}
 				}
 			}
 		}
@@ -257,7 +260,7 @@
 
 		"yh1": {
 			"type": "ion",
-			"url": "_3d/yh1.ion"
+			"url": "_3d/yh1_2.ion"
 		}
 	},
 
@@ -345,11 +348,47 @@
 				"map": "tex_yh1",
 				"roughnessMap": "tex_yh1",
 				"bumpMap": "tex_yh1",
-				"roughness": 1.8,
+				"roughness": 1.7,
 				"metalness": 0.0,
-				"envMapIntensity": 2.0,
+				"envMapIntensity": 4.0,
 				"emissiveIntensity": 0.0,
-				"bumpScale": 0.2,
+				"bumpScale": 0.1,
+				"color": 16777215,
+				"emissive": 16777215,
+				"envMap": "env_cube1",
+				"side": "double"
+			}
+		},
+
+		"m_04": {
+			"type": "MeshPhysicalMaterial",
+			"parameters": {
+				"map": "tex_yh2",
+				"roughnessMap": "tex_yh2",
+				"bumpMap": "tex_yh2",
+				"roughness": 1.7,
+				"metalness": 0.0,
+				"envMapIntensity": 4.0,
+				"emissiveIntensity": 0.0,
+				"bumpScale": 0.1,
+				"color": 16777215,
+				"emissive": 16777215,
+				"envMap": "env_cube1",
+				"side": "double"
+			}
+		},
+
+		"m_05": {
+			"type": "MeshPhysicalMaterial",
+			"parameters": {
+				"map": "tex_yh3",
+				"roughnessMap": "tex_yh3",
+				"bumpMap": "tex_yh3",
+				"roughness": 0.85,
+				"metalness": 0.0,
+				"envMapIntensity": 3.0,
+				"emissiveIntensity": 0.0,
+				"bumpScale": 0.3,
 				"color": 16777215,
 				"emissive": 16777215,
 				"envMap": "env_cube1",
@@ -363,13 +402,13 @@
 				"map": "tex_wood",
 				"bumpMap": "tex_wood_r",
 				"roughnessMap": "tex_wood_r",
-				"roughness": 0.55,
+				"roughness": 3.1,
 				"metalness": 0.1,
 				"envMapIntensity": 1.0,
 				"emissiveIntensity": 0.0,
-				"bumpScale": -0.02,
-				"color": 15658734,
-				"emissive": 15658734,
+				"bumpScale": -0.15,
+				"color": 13421772,
+				"emissive": 13421772,
 				"envMap": "env_cube1",
 				"side": "double"
 			}
@@ -381,28 +420,13 @@
 				"map": "tex_metal",
 				"bumpMap": "tex_metal",
 				"roughnessMap": "tex_metal",
-				"roughness": 2.5,
+				"roughness": 0.45,
 				"metalness": 0.3,
-				"envMapIntensity": 3.0,
+				"envMapIntensity": 4.0,
 				"emissiveIntensity": 0.0,
-				"bumpScale": 0.04,
+				"bumpScale": 0.06,
 				"color": 6710886,
 				"emissive": 6710886,
-				"envMap": "env_cube1",
-				"side": "double"
-			}
-		},
-
-		"m_water": {
-			"type": "MeshPhysicalMaterial",
-			"parameters": {
-				"roughness": 0.15,
-				"metalness": 0.1,
-				"envMapIntensity": 1.1,
-				"emissiveIntensity": 0.0,
-				"bumpScale": 0.7,
-				"color": 5592405,
-				"emissive": 5592405,
 				"envMap": "env_cube1",
 				"side": "double"
 			}
@@ -416,8 +440,8 @@
 				"envMapIntensity": 0.0,
 				"emissiveIntensity": 0.0,
 				"bumpScale": 0.0,
-				"color": 5592405,
-				"emissive": 5592405,
+				"color": 5000268,
+				"emissive": 5000268,
 				"envMap": "env_cube1",
 				"side": "double"
 			}
@@ -438,7 +462,9 @@
 				"materials": [
 					"m_01",
 					"m_02",
-					"m_03"
+					"m_03",
+					"m_04",
+					"m_05"
 
 				]
 			}
@@ -475,8 +501,26 @@
 		},
 
 		"tex_yh1": {
-			"url": "_tex/yh1.jpg",
-			"anisotropy": 8,
+			"url": "_tex/yh_02.jpg",
+			"anisotropy": 16,
+			"repeat": [1, 1],
+			"magFilter": "LinearFilter",
+			"minFilter": "LinearMipMapLinearFilter",
+			"encoding": "LinearEncoding"
+		},
+
+		"tex_yh2": {
+			"url": "_tex/yh_01.jpg",
+			"anisotropy": 16,
+			"repeat": [1, 1],
+			"magFilter": "LinearFilter",
+			"minFilter": "LinearMipMapLinearFilter",
+			"encoding": "LinearEncoding"
+		},
+
+		"tex_yh3": {
+			"url": "_tex/yh_03.jpg",
+			"anisotropy": 16,
 			"repeat": [1, 1],
 			"magFilter": "LinearFilter",
 			"minFilter": "LinearMipMapLinearFilter",

@@ -153,7 +153,7 @@ button:hover {
     position: relative;
     padding: 0;
     margin: 0;
-    cursor: url(cursor_4.cur), move;
+/*    cursor: url(cursor_4.cur), move; */
 }
 
 #webglUI {
@@ -209,7 +209,7 @@ button:hover {
   z-index: 1005;
   bottom:0;
   left:0;
-  height: 50%;
+  height: 80%;
   overflow-y: hidden;
   overflow-x: hidden;
   
@@ -280,7 +280,7 @@ button:hover {
 }
 
 #status-info {
-    bottom: 3%;
+    bottom: -33%;
     right: 33%;
     position: absolute;
     font-size: 10px;
@@ -374,7 +374,7 @@ position: absolute;
 top: -100%;
 left: 0px;
 width: 180px;
-height: 80%;
+height: 100%;
 padding: 0px;
 transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
 overflow: auto;

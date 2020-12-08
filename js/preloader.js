@@ -19,7 +19,7 @@ THREE.Preloader = function ( webglContainer, options ) {
 
 	this.updateProgress = function( progress ){
 
-		var bar = 250,
+		var bar = (window.innerWidth * 0.33),
 			total = progress.totalModels + progress.totalTextures,
 			loaded = progress.loadedModels + progress.loadedTextures;
 

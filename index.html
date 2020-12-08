@@ -9,16 +9,16 @@
 
 <body>
 
-<script src="js/r106/three.min.js"></script>
-<script src="js/h106.js"></script>
+<script src="jsm/three.min.js"></script>
+<script src="jsm/h106.js"></script>
 
-<script src="js/r106/Water.js"></script>
-<script src="js/r106/Sky.js"></script>
-<script src="js/r106/WebGL.js"></script>
-<script src="js/r106/LightProbeGenerator.js"></script>
+<!-- <script src="js/r106/Water.js"></script> -->
+<!-- <script src="js/r106/Sky.js"></script> -->
+<!-- <script src="js/r106/WebGL.js"></script> -->
+<!-- <script src="js/r106/LightProbeGenerator.js"></script> -->
 
-<script src="js/viewer_hq.js"></script>
-<script src="js/preloader.js"></script>
+<!-- <script src="js/viewer_hq.js"></script> -->
+<!-- <script src="js/preloader.js"></script> -->
 
 <input type="checkbox" name="toggle" id="toggle" accesskey="h"/>
 <label for="toggle" ></label>
@@ -27,51 +27,51 @@
 
 <div id="camera-switcher">
 <p>Brightness</p>
-<input id="clickMe3" type="button" value="Lum0" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0, g: 0, b: 0 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum1" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.1, g: 0.1, b: 0.1 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum2" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.2, g: 0.2, b: 0.2 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum3" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.3, g: 0.3, b: 0.3 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum4" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.4, g: 0.4, b: 0.4 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum5" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.5, g: 0.5, b: 0.5 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum6" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.6, g: 0.6, b: 0.6 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum66" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.66, g: 0.66, b: 0.66 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum7" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.7, g: 0.7, b: 0.7 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum8" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.8, g: 0.8, b: 0.8 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum9" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 0.9, g: 0.9, b: 0.9 }, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="Lum10" onclick="ion.animateParamTo3('color', ion.sc.materials.m_water.color, { r: 1, g: 1, b: 1 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum0" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0, g: 0, b: 0 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum1" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.1, g: 0.1, b: 0.11 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum2" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.2, g: 0.2, b: 0.22 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum3" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.3, g: 0.3, b: 0.33 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum4" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.4, g: 0.4, b: 0.44 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum5" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.5, g: 0.5, b: 0.55 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum6" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.6, g: 0.6, b: 0.66 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum66" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.66, g: 0.66, b: 0.72 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum7" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.7, g: 0.7, b: 0.77 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum8" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.8, g: 0.8, b: 0.88 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum9" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 0.9, g: 0.9, b: 0.99 }, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="Lum10" onclick="ion.animateParamToSMP('color', ion.sc.materials.m_water.color, { r: 1, g: 1, b: 1 }, 800, easeInOutSine);"/>
 
 <p>Transparency</p>
-<input id="clickMe3" type="button" value="0.1" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.1}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.2" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.2}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.3" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.3}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.4" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.4}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.5" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.5}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.6" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.6}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.7" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.7}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.8" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.8}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.9" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.9}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="1.0" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 1.0}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.1" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.1}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.2" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.2}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.3" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.3}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.4" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.4}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.5" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.5}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.6" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.6}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.7" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.7}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.8" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.8}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.9" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 0.9}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="1.0" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.alpha, {value: 1.0}, 800, easeInOutSine);"/>
 
 <p>Size</p>
-<input id="clickMe3" type="button" value="0.1" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 1}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.2" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 2}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.3" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 3}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.4" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 4}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.5" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 5}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.6" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 6}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.7" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 7}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.8" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 8}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="0.9" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 9}, 800, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="1.0" onclick="ion.animateParamTo3('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 10}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.1" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 1}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.2" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 2}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.3" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 3}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.4" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 4}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.5" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 5}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.6" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 6}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.7" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 7}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.8" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 8}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0.9" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 9}, 800, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="1.0" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 10}, 800, easeInOutSine);"/>
 <br/>
 	
 <p>Rotate Scene</p>
-<input id="clickMe3" type="button" value="0" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: 0, z: 0 }, 900, easeInOutCubic);"/>
-<input id="clickMe3" type="button" value="90" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: Math.PI/2, z: 0 }, 900, easeInOutCubic);"/>
-<input id="clickMe3" type="button" value="180" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: Math.PI, z: 0 }, 900, easeInOutCubic);"/>
-<input id="clickMe3" type="button" value="270" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: Math.PI*1.5, z: 0 }, 900, easeInOutCubic);"/>
-<input id="clickMe3" type="button" value="-90" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: (ion.main_group.rotation.y - Math.PI/2), z: 0 }, 1200, easeInOutSine);"/>
-<input id="clickMe3" type="button" value="+90" onclick="ion.animateParamTo3('rotate', ion.main_group.rotation, { x: 0, y: (ion.main_group.rotation.y + Math.PI/2), z: 0 }, 1200, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="0" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: 0, z: 0 }, 900, easeInOutCubic);"/>
+<input id="clickMe3" type="button" value="90" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: Math.PI/2, z: 0 }, 900, easeInOutCubic);"/>
+<input id="clickMe3" type="button" value="180" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: Math.PI, z: 0 }, 900, easeInOutCubic);"/>
+<input id="clickMe3" type="button" value="270" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: Math.PI*1.5, z: 0 }, 900, easeInOutCubic);"/>
+<input id="clickMe3" type="button" value="-90" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: (ion.main_group.rotation.y - Math.PI/2), z: 0 }, 1200, easeInOutSine);"/>
+<input id="clickMe3" type="button" value="+90" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: (ion.main_group.rotation.y + Math.PI/2), z: 0 }, 1200, easeInOutSine);"/>
 <p>Camera Controls</p>
 <input id="clickMe3" type="button" value="enable Rotate" onclick="ion.orbit_controls.enableRotate = true;"/>
 <input id="clickMe3" type="button" value="enable Zoom" onclick="ion.orbit_controls.enableZoom = true;"/>
@@ -86,11 +86,46 @@
 <input id="clickMe3" type="button" value="45" onclick="ion.setFov(45);"/>
 <input id="clickMe3" type="button" value="55" onclick="ion.setFov(55);"/>
 <input id="clickMe3" type="button" value="65" onclick="ion.setFov(65);"/>
-<p>Display Camera Info</p>
-<input id="clickMe3" type="button" value="Show Info" onclick="ion.options.camera_info=true;ion.requestRender();"/>
+<!-- <p>Display Camera Info</p> -->
+<!-- <input id="clickMe3" type="button" value="Show Info" onclick="ion.options.camera_info=true;ion.requestRender();"/> -->
 <p>Always Render</p>
 <input id="clickMe3" type="button" value="Enable" onclick="ion.options.always_render=true"/>
 <input id="clickMe3" type="button" value="Disable" onclick="ion.options.always_render=false"/>
+<p>House Animation</p>
+<input id="clickMe3" type="button" value="Enable" onclick="ion.data.param.animation=true;ion.animateHouse();"/>
+<input id="clickMe3" type="button" value="Disable" onclick="ion.data.param.animation=false"/>
+<p>Music</p>
+<input id="clickMe3" type="button" value="Play" onclick="document.getElementById('music').play();"/>
+<input id="clickMe3" type="button" value="Pause" onclick="document.getElementById('music').pause();"/>
+<p>Time of the Day</p>
+<input id="clickMe3" type="button" value="Sunrise" onclick="ion.data.param.sun.inclination=0.5;ion.data.param.sun.azimuth=0.55;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Early Morning" onclick="ion.data.param.sun.inclination=0.6;ion.data.param.sun.azimuth=0.6;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Morning" onclick="ion.data.param.sun.inclination=0.66;ion.data.param.sun.azimuth=0.65;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Noon" onclick="ion.data.param.sun.inclination=0.75;ion.data.param.sun.azimuth=0.75;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Afternoon" onclick="ion.data.param.sun.inclination=0.66;ion.data.param.sun.azimuth=0.8;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Late  Afternoon" onclick="ion.data.param.sun.inclination=0.6;ion.data.param.sun.azimuth=0.9;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Sunset" onclick="ion.data.param.sun.inclination=0.52;ion.data.param.sun.azimuth=0.95;ion.updateSun();"/>
+<input id="clickMe3" type="button" value="Night" onclick="ion.data.param.sun.inclination=0.25;ion.data.param.sun.azimuth=0.95;ion.updateSun();"/>
+<p>Wind Speed km/h</p>
+<input id="clickMe3" type="button" value="10" onclick="ion.data.param.live_data.current.wind_kph=10;"/>
+<input id="clickMe3" type="button" value="20" onclick="ion.data.param.live_data.current.wind_kph=20;"/>
+<input id="clickMe3" type="button" value="30" onclick="ion.data.param.live_data.current.wind_kph=30;"/>
+<input id="clickMe3" type="button" value="40" onclick="ion.data.param.live_data.current.wind_kph=40;"/>
+<input id="clickMe3" type="button" value="50" onclick="ion.data.param.live_data.current.wind_kph=50;"/>
+<input id="clickMe3" type="button" value="60" onclick="ion.data.param.live_data.current.wind_kph=60;"/>
+<input id="clickMe3" type="button" value="70" onclick="ion.data.param.live_data.current.wind_kph=70;"/>
+<input id="clickMe3" type="button" value="80" onclick="ion.data.param.live_data.current.wind_kph=80;"/>
+<p>Wind Direction</p>
+<input id="clickMe3" type="button" value="N" onclick="ion.data.param.live_data.current.wind_degree=5;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="NE" onclick="ion.data.param.live_data.current.wind_degree=55;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="E" onclick="ion.data.param.live_data.current.wind_degree=90;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="SE" onclick="ion.data.param.live_data.current.wind_degree=130;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="S" onclick="ion.data.param.live_data.current.wind_degree=190;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="SW" onclick="ion.data.param.live_data.current.wind_degree=225;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="W" onclick="ion.data.param.live_data.current.wind_degree=280;ion.updateWeather();"/>
+<input id="clickMe3" type="button" value="NW" onclick="ion.data.param.live_data.current.wind_degree=330;ion.updateWeather();"/>
+<p>Update life data</p>
+<input id="clickMe3" type="button" value="Update" onclick="ion.fetchWeather();"/>
 <p> Cameras </p>
 </div>
 
@@ -103,6 +138,9 @@
 		<div id="progressbar" class="shadow"><div id="bar" class="shadow"></div></div>
 	</center>
 </div>
+
+<audio id="music" src="mp3/hb1.mp3"  loop></audio>
+<!-- <audio id="music" src="mp3/hb1.mp3" autoplay loop></audio> -->
 
 <script>
     var progressOptions = {
@@ -138,7 +176,7 @@
                 debug: false,
                 camera_info: false,
                 stats: false,
-				always_render: false,
+				always_render: true,
                 lock_mobile_landscape: true,
                 enableZoom: false,
                 sky: true,
