@@ -169,6 +169,7 @@ button:hover {
 #render-info,
 #scene-explorer,
 #camera-info,
+#weather-info,
 #status-info {
     position: absolute;
     font-size: 12px;
@@ -277,6 +278,30 @@ button:hover {
     width: 120px;
     background-color: rgba(4, 4, 4, 0.6);
     color: rgb(255, 255, 255);
+}
+
+#weather-info {
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+	height: 32px;
+	/* padding: 16px; */
+	/* font-size: 14px; */
+	/* font-weight: 800; */
+    background-color: rgba(255, 255, 255, 1.0);
+    /* color: rgb(193, 193, 193); */
+	
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 19px;
+	padding-left: 24px;
+	padding-top: 20px;
+	padding-bottom: 12px;
+	vertical-align: top;
+	/* identical to box height */
+	color: rgba(0, 0, 0, 0.73);
 }
 
 #status-info {

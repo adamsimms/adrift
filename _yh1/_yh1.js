@@ -24,7 +24,7 @@
 					"children": {
 
 						"h1_group": {
-							"position": [0, 0, 0],
+							"position": [0, 0, -0.8],
 							"rotation": [0, 0, 0],
 							"scale": [1, 1, 1],
 							"visible": true,
@@ -132,6 +132,12 @@
 							"position": [0, 15, 20],
 							"color": 15204261,
 							"intensity": 0.2
+						},
+
+						"light_ambient": {
+							"type": "AmbientLight",
+							"color": 4738132,
+							"intensity": 0.1
 						}
 					}
 				},
@@ -435,13 +441,13 @@
 		"m_water": {
 			"type": "MeshPhysicalMaterial",
 			"parameters": {
-				"roughness": 1.0,
-				"metalness": 0.0,
+				"roughness": 0.8,
+				"metalness": 0.2,
 				"envMapIntensity": 0.0,
 				"emissiveIntensity": 0.0,
 				"bumpScale": 0.0,
-				"color": 5000268,
-				"emissive": 5000268,
+				"color": 2371657,
+				"emissive": 2371657,
 				"envMap": "env_cube1",
 				"side": "double"
 			}
@@ -473,7 +479,7 @@
 
 	"textures": {
 
-		"env_cube1": {
+		"env_cube2": {
 			"url": "_tex/env/sea1.jpg",
 			"magFilter": "LinearFilter",
 			"minFilter": "LinearMipMapLinearFilter",
