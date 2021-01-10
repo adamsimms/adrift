@@ -6485,6 +6485,7 @@ function IonVR ( options ) {
 				}
 			},
 			animation: true,
+			wind_factor: 0.4,
 			months : { 
 				01: "January",
 				02: "February", 
@@ -8440,32 +8441,32 @@ IonVR.prototype = {
 		var wind = ion.data.param.live_data.current.wind_kph;
 		
 		if (wind <= 9) {
-			var stepDuration = 6000;
+			var stepDuration = 5000;
 			//this.log('wind 0');
 		} else if (wind <= 29) {
-			var stepDuration = 5500;
+			var stepDuration = 4500;
 			//this.log('wind 10 29');
 		} else if (wind <= 39 ) {
-			var stepDuration = 5000;
+			var stepDuration = 4000;
 			//this.log('wind 30 39');
 		} else if (wind <= 49 ) {
-			var stepDuration = 4500;
+			var stepDuration = 3500;
 			//this.log('wind 40 49');
 		} else if (wind <= 59 ) {
-			var stepDuration = 4000;
+			var stepDuration = 3000;
 			//this.log('wind 50 59');
 		} else if (wind <= 79 ) {
-			var stepDuration = 3500;
+			var stepDuration = 3000;
 			//this.log('wind 60 79');
 		} else if (wind <= 80 ) {
-			var stepDuration = 3000;
+			var stepDuration = 2800;
 			//this.log('wind 80');
 		} else {
 			//this.log('wind 90');
 		
 		}
 		
-		var posMult = 0.15+(wind/20);
+		var posMult = ion.data.param.wind_factor +(wind/20);
 		
 		setTimeout(stepOne, 0);
 		setTimeout(stepTwo, stepDuration);

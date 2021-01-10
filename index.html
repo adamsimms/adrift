@@ -106,6 +106,10 @@
 <input id="clickMe3" type="button" value="Late  Afternoon" onclick="ion.data.param.sun.inclination=0.6;ion.data.param.sun.azimuth=0.9;ion.updateSun();"/>
 <input id="clickMe3" type="button" value="Sunset" onclick="ion.data.param.sun.inclination=0.52;ion.data.param.sun.azimuth=0.95;ion.updateSun();"/>
 <input id="clickMe3" type="button" value="Night" onclick="ion.data.param.sun.inclination=0.25;ion.data.param.sun.azimuth=0.95;ion.updateSun();"/>
+<p>House Rocking</p>
+<input id="clickMe3" type="button" value="0.2" onclick="ion.data.param.live_data.current.wind_factor=0.2;"/>
+<input id="clickMe3" type="button" value="0.3" onclick="ion.data.param.live_data.current.wind_factor=0.3;"/>
+<input id="clickMe3" type="button" value="0.4" onclick="ion.data.param.live_data.current.wind_factor=0.4;"/>
 <p>Wind Speed km/h</p>
 <input id="clickMe3" type="button" value="10" onclick="ion.data.param.live_data.current.wind_kph=10;"/>
 <input id="clickMe3" type="button" value="20" onclick="ion.data.param.live_data.current.wind_kph=20;"/>
@@ -140,6 +144,9 @@
 
 <audio id="music" src="mp3/wind.mp3"  loop></audio>
 <!-- <audio id="music" src="mp3/wind.mp3" autoplay loop></audio> -->
+
+<!-- <audio id="music" crossorigin="anonymous" loop="loop" playsinline="playsinline" webkit-playsinline style="display:none" src="mp3/wind.mp3" type="audio/mp3"> -->
+
 
 <script>
     var progressOptions = {
