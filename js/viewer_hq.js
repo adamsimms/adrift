@@ -84,7 +84,7 @@ function IonVR ( options ) {
 					gust_mph: 9.8,
 					humidity: 55,
 					is_day: 1,
-					last_updated: "1999-01-09 7:40",
+					last_updated: "1999-01-09 10:40",
 					last_updated_epoch: null,
 					precip_in: 0,
 					precip_mm: 0,
@@ -186,7 +186,7 @@ function IonVR ( options ) {
 					gust_mph: 9.8,
 					humidity: 55,
 					is_day: 1,
-					last_updated: "1999-01-09 7:40",
+					last_updated: "1999-01-09 10:40",
 					last_updated_epoch: null,
 					precip_in: 0,
 					precip_mm: 0,
@@ -288,40 +288,34 @@ IonVR.prototype = {
             this.initCamera();
             this.initRenderer();
             this.initWater();
-			//this.updateSun();
-			//this.animateHouse();
-
-            if ( this.onReady ) {
-                this.onReady()
-            }
+			this.fetchWeather();
 			
-			if (ion.data.param.animation !== false) {
-				ion.animateHouse();
-			} else {}
+            if ( this.onReady ) {
+                this.onReady();
+				this.updateSun();
+            }
 			
 			if (ion.options.audio == true) {
 					ion.initAudio();
 				}
-
-            this.start();
-			// this.cMat();
 			
-			setTimeout(loadDef, 500);
-			setTimeout(loadEnd, 3000);
+            this.start();
+			// this.updateSun();
+			
+			setTimeout(loadDef, 2800);
+			setTimeout(loadEnd, 6000);
 			
 			function loadDef() {
-				ion.updateSun();
+				ion.preloader.stop();
+				ion.animateParamToSMP2('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2800, easeInOutSine);
 				ion.camera.getObjectByName("audioMain").gain.context.resume();
-				ion.animateParamToSMP5('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
-				ion.fetchWeather();
-				
 			}			
 			function loadEnd() {
 				//ion.spinRound();
 				ion.sc.objects.cam_mask.visible=false;
-				//ion.updateWeather();
-				ion.updateSun();
-				//ion.camera.getObjectByName("audioMain").gain.context.resume();
+				if (ion.data.param.animation !== false) {
+				ion.animateHouse();
+				} else {}
 				
 			}
         } );
@@ -357,7 +351,7 @@ IonVR.prototype = {
         scene_loader.load( path, function ( sc, b, c ) {
             _this.log( 'load complete', sc, b, c );
 
-            _this.preloader.stop();
+            // _this.preloader.stop();
 
             _this.initScene( sc );
 			ion.options.ready = true;
@@ -633,6 +627,7 @@ IonVR.prototype = {
         if ( this.options.sky ) {
 		
 			var sunLight = new THREE.DirectionalLight( 0xfeeacc, this.data.param.sun.intensity );
+			sunLight.position.set(380, 4.3, 123);
 			sunLight.name = 'sunLight';
 			
             var sky = new THREE.Sky();
@@ -801,7 +796,7 @@ IonVR.prototype = {
 		// var inc = this.data.param.sun.inclination;
 		// var azi = this.data.param.sun.azimuth;
 		
-		console.log('inc:', inc, 'azi:', azi)
+		//console.log('inc:', inc, 'azi:', azi)
 	
 		var sunLightparam = this.data.param.sun;
 		var sunLight = this.scene.getObjectByName('sunLight');
@@ -823,7 +818,7 @@ IonVR.prototype = {
 		function stepOne() {
 			ion.scene.getObjectByName('sky').material.uniforms[ 'sunPosition' ].value = sP;
 			ion.scene.getObjectByName('cubeCamera').update( ion.renderer, ion.scene.getObjectByName('sky') );
-			ion.requestRender();
+			//ion.requestRender();
 			//console.log('sunLight.position:', ion.scene.getObjectByName('sunLight').position);
 		}
 		
@@ -1994,11 +1989,12 @@ IonVR.prototype = {
 		fetch('http://api.weatherapi.com/v1/current.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144').then(res => res.json()).then(data => ion.data.param.live_data = data);	
 		// fetch(todayAstro).then(res => res.json()).then(data => ion.data.param.live_astro = data);
 		
-		setTimeout(stepOne, 2000);
+		setTimeout(stepOne, 3000);
 		setTimeout(stepTwo, 300000);
 
 		function stepOne() {
 			ion.updateWeather();
+			ion.updateSun();
 			
 			// if ( ion.options.weather_info !== false && undefined ) {
 				// ion.showLiveWeather();
@@ -2099,7 +2095,8 @@ IonVR.prototype = {
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			// console.log('random:', valRandom)
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: 0.001*swivMult*valRandom1*/  }, stepDuration, easeInOutSine);
+			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom1, 10000)  }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom1, 10000));
 		}
 		
 		function stepTwo() {
@@ -2107,7 +2104,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: 0.003*swivMult*valRandom3*/ }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 		}
 		
 		function stepThree() {
@@ -2115,7 +2113,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: 0.001*swivMult*valRandom1*/  }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom2, 10000) }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom2, 10000));
 			
 		}
 		
@@ -2124,10 +2123,11 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: -0.003*swivMult*valRandom3*/ }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
 			
 			if (ion.data.param.animation !== false) {
 				setTimeout(ion.animateHouse, stepDuration);
+				console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 			} else {}
 		}
 		
@@ -2716,950 +2716,5 @@ IonVR.prototype = {
 			// console.log( "printout:" + JSON.stringify( this.viewer.mat_lib ) );
         }
 		
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @author jbouny / https://github.com/jbouny
- *
- * Work based on :
- * @author Slayvin / http://slayvin.net : Flat mirror for three.js
- * @author Stemkoski / http://www.adelphi.edu/~stemkoski : An implementation of water shader based on the flat mirror
- * @author Jonas Wagner / http://29a.ch/ && http://29a.ch/slides/2012/webglwater/ : Water shader explanations in WebGL
- */
-
-THREE.Water = function ( geometry, options ) {
-
-	THREE.Mesh.call( this, geometry );
-
-	var scope = this;
-
-	options = options || {};
-
-	var textureWidth = options.textureWidth !== undefined ? options.textureWidth : 512;
-	var textureHeight = options.textureHeight !== undefined ? options.textureHeight : 512;
-
-	var clipBias = options.clipBias !== undefined ? options.clipBias : 0.0;
-	var alpha = options.alpha !== undefined ? options.alpha : 1.0;
-	var time = options.time !== undefined ? options.time : 0.0;
-	var normalSampler = options.waterNormals !== undefined ? options.waterNormals : null;
-	var sunDirection = options.sunDirection !== undefined ? options.sunDirection : new THREE.Vector3( 0.70707, 0.70707, 0.0 );
-	var sunColor = new THREE.Color( options.sunColor !== undefined ? options.sunColor : 0xffffff );
-	var waterColor = new THREE.Color( options.waterColor !== undefined ? options.waterColor : 0x7F7F7F );
-	var eye = options.eye !== undefined ? options.eye : new THREE.Vector3( 0, 0, 0 );
-	var distortionScale = options.distortionScale !== undefined ? options.distortionScale : 20.0;
-	var side = options.side !== undefined ? options.side : THREE.FrontSide;
-	var fog = options.fog !== undefined ? options.fog : false;
-
-	//
-
-	var mirrorPlane = new THREE.Plane();
-	var normal = new THREE.Vector3();
-	var mirrorWorldPosition = new THREE.Vector3();
-	var cameraWorldPosition = new THREE.Vector3();
-	var rotationMatrix = new THREE.Matrix4();
-	var lookAtPosition = new THREE.Vector3( 0, 0, - 1 );
-	var clipPlane = new THREE.Vector4();
-
-	var view = new THREE.Vector3();
-	var target = new THREE.Vector3();
-	var q = new THREE.Vector4();
-
-	var textureMatrix = new THREE.Matrix4();
-
-	var mirrorCamera = new THREE.PerspectiveCamera();
-
-	var parameters = {
-		minFilter: THREE.LinearFilter,
-		magFilter: THREE.LinearFilter,
-		format: THREE.RGBFormat,
-		stencilBuffer: false
-	};
-
-	var renderTarget = new THREE.WebGLRenderTarget( textureWidth, textureHeight, parameters );
-
-	if ( ! THREE.Math.isPowerOfTwo( textureWidth ) || ! THREE.Math.isPowerOfTwo( textureHeight ) ) {
-
-		renderTarget.texture.generateMipmaps = false;
-
-	}
-
-	var mirrorShader = {
-
-		uniforms: THREE.UniformsUtils.merge( [
-			THREE.UniformsLib[ 'fog' ],
-			THREE.UniformsLib[ 'lights' ],
-			{
-				"normalSampler": { value: null },
-				"mirrorSampler": { value: null },
-				"alpha": { value: 0.7 },
-				"time": { value: 0.0 },
-				"size": { value: 8.0 },
-				"distortionScale": { value: 20.0 },
-				"textureMatrix": { value: new THREE.Matrix4() },
-				"sunColor": { value: new THREE.Color( 0x7F7F7F ) },
-				"sunDirection": { value: new THREE.Vector3( 0.70707, 0.70707, 0 ) },
-				"eye": { value: new THREE.Vector3() },
-				"waterColor": { value: new THREE.Color( 0x555555 ) }
-			}
-		] ),
-
-		vertexShader: [
-			'uniform mat4 textureMatrix;',
-			'uniform float time;',
-
-			'varying vec4 mirrorCoord;',
-			'varying vec4 worldPosition;',
-
-			THREE.ShaderChunk[ 'fog_pars_vertex' ],
-			THREE.ShaderChunk[ 'shadowmap_pars_vertex' ],
-
-			'void main() {',
-			'	mirrorCoord = modelMatrix * vec4( position, 1.0 );',
-			'	worldPosition = mirrorCoord.xyzw;',
-			'	mirrorCoord = textureMatrix * mirrorCoord;',
-			'	vec4 mvPosition =  modelViewMatrix * vec4( position, 1.0 );',
-			'	gl_Position = projectionMatrix * mvPosition;',
-
-			THREE.ShaderChunk[ 'fog_vertex' ],
-			THREE.ShaderChunk[ 'shadowmap_vertex' ],
-
-			'}'
-		].join( '\n' ),
-
-		fragmentShader: [
-			'uniform sampler2D mirrorSampler;',
-			'uniform float alpha;',
-			'uniform float time;',
-			'uniform float size;',
-			'uniform float distortionScale;',
-			'uniform sampler2D normalSampler;',
-			'uniform vec3 sunColor;',
-			'uniform vec3 sunDirection;',
-			'uniform vec3 eye;',
-			'uniform vec3 waterColor;',
-
-			'varying vec4 mirrorCoord;',
-			'varying vec4 worldPosition;',
-
-			'vec4 getNoise( vec2 uv ) {',
-			'	vec2 uv0 = ( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);',
-			'	vec2 uv1 = uv / 107.0-vec2( time / -19.0, time / 31.0 );',
-			'	vec2 uv2 = uv / vec2( 8907.0, 9803.0 ) + vec2( time / 101.0, time / 97.0 );',
-			'	vec2 uv3 = uv / vec2( 1091.0, 1027.0 ) - vec2( time / 109.0, time / -113.0 );',
-			'	vec4 noise = texture2D( normalSampler, uv0 ) +',
-			'		texture2D( normalSampler, uv1 ) +',
-			'		texture2D( normalSampler, uv2 ) +',
-			'		texture2D( normalSampler, uv3 );',
-			'	return noise * 0.5 - 1.0;',
-			'}',
-
-			'void sunLight( const vec3 surfaceNormal, const vec3 eyeDirection, float shiny, float spec, float diffuse, inout vec3 diffuseColor, inout vec3 specularColor ) {',
-			'	vec3 reflection = normalize( reflect( -sunDirection, surfaceNormal ) );',
-			'	float direction = max( 0.0, dot( eyeDirection, reflection ) );',
-			'	specularColor += pow( direction, shiny ) * sunColor * spec;',
-			'	diffuseColor += max( dot( sunDirection, surfaceNormal ), 0.0 ) * sunColor * diffuse;',
-			'}',
-
-			THREE.ShaderChunk[ 'common' ],
-			THREE.ShaderChunk[ 'packing' ],
-			THREE.ShaderChunk[ 'bsdfs' ],
-			THREE.ShaderChunk[ 'fog_pars_fragment' ],
-			THREE.ShaderChunk[ 'lights_pars_begin' ],
-			THREE.ShaderChunk[ 'shadowmap_pars_fragment' ],
-			THREE.ShaderChunk[ 'shadowmask_pars_fragment' ],
-
-			'void main() {',
-			'	vec4 noise = getNoise( worldPosition.xz * size );',
-			'	vec3 surfaceNormal = normalize( noise.xzy * vec3( 1.5, 1.0, 1.5 ) );',
-
-			'	vec3 diffuseLight = vec3(0.0);',
-			'	vec3 specularLight = vec3(0.0);',
-
-			'	vec3 worldToEye = eye-worldPosition.xyz;',
-			'	vec3 eyeDirection = normalize( worldToEye );',
-			'	sunLight( surfaceNormal, eyeDirection, 100.0, 2.0, 0.5, diffuseLight, specularLight );',
-
-			'	float distance = length(worldToEye);',
-
-			'	vec2 distortion = surfaceNormal.xz * ( 0.001 + 1.0 / distance ) * distortionScale;',
-			'	vec3 reflectionSample = vec3( texture2D( mirrorSampler, mirrorCoord.xy / mirrorCoord.w + distortion ) );',
-
-			'	float theta = max( dot( eyeDirection, surfaceNormal ), 0.0 );',
-			'	float rf0 = 0.3;',
-			'	float reflectance = rf0 + ( 1.0 - rf0 ) * pow( ( 1.0 - theta ), 5.0 );',
-			'	vec3 scatter = max( 0.0, dot( surfaceNormal, eyeDirection ) ) * waterColor;',
-			'	vec3 albedo = mix( ( sunColor * diffuseLight * 0.3 + scatter ) * getShadowMask(), ( vec3( 0.1 ) + reflectionSample * 0.9 + reflectionSample * specularLight ), reflectance);',
-			'	vec3 outgoingLight = albedo;',
-			'	gl_FragColor = vec4( outgoingLight, alpha );',
-
-			THREE.ShaderChunk[ 'tonemapping_fragment' ],
-			THREE.ShaderChunk[ 'fog_fragment' ],
-
-			'}'
-		].join( '\n' )
-
-	};
-
-	var material = new THREE.ShaderMaterial( {
-		fragmentShader: mirrorShader.fragmentShader,
-		vertexShader: mirrorShader.vertexShader,
-		uniforms: THREE.UniformsUtils.clone( mirrorShader.uniforms ),
-		transparent: true,
-		lights: true,
-		side: side,
-		fog: fog
-	} );
-
-	material.uniforms[ "mirrorSampler" ].value = renderTarget.texture;
-	material.uniforms[ "textureMatrix" ].value = textureMatrix;
-	material.uniforms[ "alpha" ].value = alpha;
-	material.uniforms[ "time" ].value = time;
-	material.uniforms[ "normalSampler" ].value = normalSampler;
-	material.uniforms[ "sunColor" ].value = sunColor;
-	material.uniforms[ "waterColor" ].value = waterColor;
-	material.uniforms[ "sunDirection" ].value = sunDirection;
-	material.uniforms[ "distortionScale" ].value = distortionScale;
-
-	material.uniforms[ "eye" ].value = eye;
-
-	scope.material = material;
-
-	scope.onBeforeRender = function ( renderer, scene, camera ) {
-
-		mirrorWorldPosition.setFromMatrixPosition( scope.matrixWorld );
-		cameraWorldPosition.setFromMatrixPosition( camera.matrixWorld );
-
-		rotationMatrix.extractRotation( scope.matrixWorld );
-
-		normal.set( 0, 0, 1 );
-		normal.applyMatrix4( rotationMatrix );
-
-		view.subVectors( mirrorWorldPosition, cameraWorldPosition );
-
-		// Avoid rendering when mirror is facing away
-
-		if ( view.dot( normal ) > 0 ) return;
-
-		view.reflect( normal ).negate();
-		view.add( mirrorWorldPosition );
-
-		rotationMatrix.extractRotation( camera.matrixWorld );
-
-		lookAtPosition.set( 0, 0, - 1 );
-		lookAtPosition.applyMatrix4( rotationMatrix );
-		lookAtPosition.add( cameraWorldPosition );
-
-		target.subVectors( mirrorWorldPosition, lookAtPosition );
-		target.reflect( normal ).negate();
-		target.add( mirrorWorldPosition );
-
-		mirrorCamera.position.copy( view );
-		mirrorCamera.up.set( 0, 1, 0 );
-		mirrorCamera.up.applyMatrix4( rotationMatrix );
-		mirrorCamera.up.reflect( normal );
-		mirrorCamera.lookAt( target );
-
-		mirrorCamera.far = camera.far; // Used in WebGLBackground
-
-		mirrorCamera.updateMatrixWorld();
-		mirrorCamera.projectionMatrix.copy( camera.projectionMatrix );
-
-		// Update the texture matrix
-		textureMatrix.set(
-			0.5, 0.0, 0.0, 0.5,
-			0.0, 0.5, 0.0, 0.5,
-			0.0, 0.0, 0.5, 0.5,
-			0.0, 0.0, 0.0, 1.0
-		);
-		textureMatrix.multiply( mirrorCamera.projectionMatrix );
-		textureMatrix.multiply( mirrorCamera.matrixWorldInverse );
-
-		// Now update projection matrix with new clip plane, implementing code from: http://www.terathon.com/code/oblique.html
-		// Paper explaining this technique: http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
-		mirrorPlane.setFromNormalAndCoplanarPoint( normal, mirrorWorldPosition );
-		mirrorPlane.applyMatrix4( mirrorCamera.matrixWorldInverse );
-
-		clipPlane.set( mirrorPlane.normal.x, mirrorPlane.normal.y, mirrorPlane.normal.z, mirrorPlane.constant );
-
-		var projectionMatrix = mirrorCamera.projectionMatrix;
-
-		q.x = ( Math.sign( clipPlane.x ) + projectionMatrix.elements[ 8 ] ) / projectionMatrix.elements[ 0 ];
-		q.y = ( Math.sign( clipPlane.y ) + projectionMatrix.elements[ 9 ] ) / projectionMatrix.elements[ 5 ];
-		q.z = - 1.0;
-		q.w = ( 1.0 + projectionMatrix.elements[ 10 ] ) / projectionMatrix.elements[ 14 ];
-
-		// Calculate the scaled plane vector
-		clipPlane.multiplyScalar( 2.0 / clipPlane.dot( q ) );
-
-		// Replacing the third row of the projection matrix
-		projectionMatrix.elements[ 2 ] = clipPlane.x;
-		projectionMatrix.elements[ 6 ] = clipPlane.y;
-		projectionMatrix.elements[ 10 ] = clipPlane.z + 1.0 - clipBias;
-		projectionMatrix.elements[ 14 ] = clipPlane.w;
-
-		eye.setFromMatrixPosition( camera.matrixWorld );
-
-		//
-
-		var currentRenderTarget = renderer.getRenderTarget();
-
-		var currentVrEnabled = renderer.vr.enabled;
-		var currentShadowAutoUpdate = renderer.shadowMap.autoUpdate;
-
-		scope.visible = false;
-
-		renderer.vr.enabled = false; // Avoid camera modification and recursion
-		renderer.shadowMap.autoUpdate = false; // Avoid re-computing shadows
-
-		renderer.setRenderTarget( renderTarget );
-		renderer.clear();
-		renderer.render( scene, mirrorCamera );
-
-		scope.visible = true;
-
-		renderer.vr.enabled = currentVrEnabled;
-		renderer.shadowMap.autoUpdate = currentShadowAutoUpdate;
-
-		renderer.setRenderTarget( currentRenderTarget );
-
-	};
-
-};
-
-THREE.Water.prototype = Object.create( THREE.Mesh.prototype );
-THREE.Water.prototype.constructor = THREE.Water;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @author zz85 / https://github.com/zz85
- *
- * Based on "A Practical Analytic Model for Daylight"
- * aka The Preetham Model, the de facto standard analytic skydome model
- * http://www.cs.utah.edu/~shirley/papers/sunsky/sunsky.pdf
- *
- * First implemented by Simon Wallner
- * http://www.simonwallner.at/projects/atmospheric-scattering
- *
- * Improved by Martin Upitis
- * http://blenderartists.org/forum/showthread.php?245954-preethams-sky-impementation-HDR
- *
- * Three.js integration by zz85 http://twitter.com/blurspline
-*/
-
-THREE.Sky = function () {
-
-	var shader = THREE.Sky.SkyShader;
-
-	var material = new THREE.ShaderMaterial( {
-		fragmentShader: shader.fragmentShader,
-		vertexShader: shader.vertexShader,
-		uniforms: THREE.UniformsUtils.clone( shader.uniforms ),
-		side: THREE.BackSide
-	} );
-
-	THREE.Mesh.call( this, new THREE.BoxBufferGeometry( 1, 1, 1 ), material );
-
-};
-
-THREE.Sky.prototype = Object.create( THREE.Mesh.prototype );
-
-THREE.Sky.SkyShader = {
-
-	uniforms: {
-		"luminance": { value: 1 },
-		"turbidity": { value: 2 },
-		"rayleigh": { value: 1 },
-		"mieCoefficient": { value: 0.005 },
-		"mieDirectionalG": { value: 0.8 },
-		"sunPosition": { value: new THREE.Vector3() }
-	},
-
-	vertexShader: [
-		'uniform vec3 sunPosition;',
-		'uniform float rayleigh;',
-		'uniform float turbidity;',
-		'uniform float mieCoefficient;',
-
-		'varying vec3 vWorldPosition;',
-		'varying vec3 vSunDirection;',
-		'varying float vSunfade;',
-		'varying vec3 vBetaR;',
-		'varying vec3 vBetaM;',
-		'varying float vSunE;',
-
-		'const vec3 up = vec3( 0.0, 1.0, 0.0 );',
-
-		// constants for atmospheric scattering
-		'const float e = 2.71828182845904523536028747135266249775724709369995957;',
-		'const float pi = 3.141592653589793238462643383279502884197169;',
-
-		// wavelength of used primaries, according to preetham
-		'const vec3 lambda = vec3( 680E-9, 550E-9, 450E-9 );',
-		// this pre-calcuation replaces older TotalRayleigh(vec3 lambda) function:
-		// (8.0 * pow(pi, 3.0) * pow(pow(n, 2.0) - 1.0, 2.0) * (6.0 + 3.0 * pn)) / (3.0 * N * pow(lambda, vec3(4.0)) * (6.0 - 7.0 * pn))
-		'const vec3 totalRayleigh = vec3( 5.804542996261093E-6, 1.3562911419845635E-5, 3.0265902468824876E-5 );',
-
-		// mie stuff
-		// K coefficient for the primaries
-		'const float v = 4.0;',
-		'const vec3 K = vec3( 0.686, 0.678, 0.666 );',
-		// MieConst = pi * pow( ( 2.0 * pi ) / lambda, vec3( v - 2.0 ) ) * K
-		'const vec3 MieConst = vec3( 1.8399918514433978E14, 2.7798023919660528E14, 4.0790479543861094E14 );',
-
-		// earth shadow hack
-		// cutoffAngle = pi / 1.95;
-		'const float cutoffAngle = 1.6110731556870734;',
-		'const float steepness = 1.5;',
-		'const float EE = 1000.0;',
-
-		'float sunIntensity( float zenithAngleCos ) {',
-		'	zenithAngleCos = clamp( zenithAngleCos, -1.0, 1.0 );',
-		'	return EE * max( 0.0, 1.0 - pow( e, -( ( cutoffAngle - acos( zenithAngleCos ) ) / steepness ) ) );',
-		'}',
-
-		'vec3 totalMie( float T ) {',
-		'	float c = ( 0.2 * T ) * 10E-18;',
-		'	return 0.434 * c * MieConst;',
-		'}',
-
-		'void main() {',
-
-		'	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );',
-		'	vWorldPosition = worldPosition.xyz;',
-
-		'	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
-		'	gl_Position.z = gl_Position.w;', // set z to camera.far
-
-		'	vSunDirection = normalize( sunPosition );',
-
-		'	vSunE = sunIntensity( dot( vSunDirection, up ) );',
-
-		'	vSunfade = 1.0 - clamp( 1.0 - exp( ( sunPosition.y / 450000.0 ) ), 0.0, 1.0 );',
-
-		'	float rayleighCoefficient = rayleigh - ( 1.0 * ( 1.0 - vSunfade ) );',
-
-		// extinction (absorbtion + out scattering)
-		// rayleigh coefficients
-		'	vBetaR = totalRayleigh * rayleighCoefficient;',
-
-		// mie coefficients
-		'	vBetaM = totalMie( turbidity ) * mieCoefficient;',
-
-		'}'
-	].join( '\n' ),
-
-	fragmentShader: [
-		'varying vec3 vWorldPosition;',
-		'varying vec3 vSunDirection;',
-		'varying float vSunfade;',
-		'varying vec3 vBetaR;',
-		'varying vec3 vBetaM;',
-		'varying float vSunE;',
-
-		'uniform float luminance;',
-		'uniform float mieDirectionalG;',
-
-		'const vec3 cameraPos = vec3( 0.0, 0.0, 0.0 );',
-
-		// constants for atmospheric scattering
-		'const float pi = 3.141592653589793238462643383279502884197169;',
-
-		'const float n = 1.0003;', // refractive index of air
-		'const float N = 2.545E25;', // number of molecules per unit volume for air at 288.15K and 1013mb (sea level -45 celsius)
-
-		// optical length at zenith for molecules
-		'const float rayleighZenithLength = 8.4E3;',
-		'const float mieZenithLength = 1.25E3;',
-		'const vec3 up = vec3( 0.0, 1.0, 0.0 );',
-		// 66 arc seconds -> degrees, and the cosine of that
-		'const float sunAngularDiameterCos = 0.999956676946448443553574619906976478926848692873900859324;',
-
-		// 3.0 / ( 16.0 * pi )
-		'const float THREE_OVER_SIXTEENPI = 0.05968310365946075;',
-		// 1.0 / ( 4.0 * pi )
-		'const float ONE_OVER_FOURPI = 0.07957747154594767;',
-
-		'float rayleighPhase( float cosTheta ) {',
-		'	return THREE_OVER_SIXTEENPI * ( 1.0 + pow( cosTheta, 2.0 ) );',
-		'}',
-
-		'float hgPhase( float cosTheta, float g ) {',
-		'	float g2 = pow( g, 2.0 );',
-		'	float inverse = 1.0 / pow( 1.0 - 2.0 * g * cosTheta + g2, 1.5 );',
-		'	return ONE_OVER_FOURPI * ( ( 1.0 - g2 ) * inverse );',
-		'}',
-
-		// Filmic ToneMapping http://filmicgames.com/archives/75
-		'const float A = 0.15;',
-		'const float B = 0.50;',
-		'const float C = 0.10;',
-		'const float D = 0.20;',
-		'const float E = 0.02;',
-		'const float F = 0.30;',
-
-		'const float whiteScale = 1.0748724675633854;', // 1.0 / Uncharted2Tonemap(1000.0)
-
-		'vec3 Uncharted2Tonemap( vec3 x ) {',
-		'	return ( ( x * ( A * x + C * B ) + D * E ) / ( x * ( A * x + B ) + D * F ) ) - E / F;',
-		'}',
-
-
-		'void main() {',
-		// optical length
-		// cutoff angle at 90 to avoid singularity in next formula.
-		'	float zenithAngle = acos( max( 0.0, dot( up, normalize( vWorldPosition - cameraPos ) ) ) );',
-		'	float inverse = 1.0 / ( cos( zenithAngle ) + 0.15 * pow( 93.885 - ( ( zenithAngle * 180.0 ) / pi ), -1.253 ) );',
-		'	float sR = rayleighZenithLength * inverse;',
-		'	float sM = mieZenithLength * inverse;',
-
-		// combined extinction factor
-		'	vec3 Fex = exp( -( vBetaR * sR + vBetaM * sM ) );',
-
-		// in scattering
-		'	float cosTheta = dot( normalize( vWorldPosition - cameraPos ), vSunDirection );',
-
-		'	float rPhase = rayleighPhase( cosTheta * 0.5 + 0.5 );',
-		'	vec3 betaRTheta = vBetaR * rPhase;',
-
-		'	float mPhase = hgPhase( cosTheta, mieDirectionalG );',
-		'	vec3 betaMTheta = vBetaM * mPhase;',
-
-		'	vec3 Lin = pow( vSunE * ( ( betaRTheta + betaMTheta ) / ( vBetaR + vBetaM ) ) * ( 1.0 - Fex ), vec3( 1.5 ) );',
-		'	Lin *= mix( vec3( 1.0 ), pow( vSunE * ( ( betaRTheta + betaMTheta ) / ( vBetaR + vBetaM ) ) * Fex, vec3( 1.0 / 2.0 ) ), clamp( pow( 1.0 - dot( up, vSunDirection ), 5.0 ), 0.0, 1.0 ) );',
-
-		// nightsky
-		'	vec3 direction = normalize( vWorldPosition - cameraPos );',
-		'	float theta = acos( direction.y ); // elevation --> y-axis, [-pi/2, pi/2]',
-		'	float phi = atan( direction.z, direction.x ); // azimuth --> x-axis [-pi/2, pi/2]',
-		'	vec2 uv = vec2( phi, theta ) / vec2( 2.0 * pi, pi ) + vec2( 0.5, 0.0 );',
-		'	vec3 L0 = vec3( 0.1 ) * Fex;',
-
-		// composition + solar disc
-		'	float sundisk = smoothstep( sunAngularDiameterCos, sunAngularDiameterCos + 0.00002, cosTheta );',
-		'	L0 += ( vSunE * 19000.0 * Fex ) * sundisk;',
-
-		'	vec3 texColor = ( Lin + L0 ) * 0.04 + vec3( 0.0, 0.0003, 0.00075 );',
-
-		'	vec3 curr = Uncharted2Tonemap( ( log2( 2.0 / pow( luminance, 4.0 ) ) ) * texColor );',
-		'	vec3 color = curr * whiteScale;',
-
-		'	vec3 retColor = pow( color, vec3( 1.0 / ( 1.2 + ( 1.2 * vSunfade ) ) ) );',
-
-		'	gl_FragColor = vec4( retColor, 1.0 );',
-
-		'}'
-	].join( '\n' )
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @author alteredq / http://alteredqualia.com/
- * @author mr.doob / http://mrdoob.com/
- */
-
-var WEBGL = {
-
-	isWebGLAvailable: function () {
-
-		try {
-
-			var canvas = document.createElement( 'canvas' );
-			return !! ( window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ) );
-
-		} catch ( e ) {
-
-			return false;
-
-		}
-
-	},
-
-	isWebGL2Available: function () {
-
-		try {
-
-			var canvas = document.createElement( 'canvas' );
-			return !! ( window.WebGL2RenderingContext && canvas.getContext( 'webgl2' ) );
-
-		} catch ( e ) {
-
-			return false;
-
-		}
-
-	},
-
-	getWebGLErrorMessage: function () {
-
-		return this.getErrorMessage( 1 );
-
-	},
-
-	getWebGL2ErrorMessage: function () {
-
-		return this.getErrorMessage( 2 );
-
-	},
-
-	getErrorMessage: function ( version ) {
-
-		var names = {
-			1: 'WebGL',
-			2: 'WebGL 2'
-		};
-
-		var contexts = {
-			1: window.WebGLRenderingContext,
-			2: window.WebGL2RenderingContext
-		};
-
-		var message = 'Your $0 does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" style="color:#000">$1</a>';
-
-		var element = document.createElement( 'div' );
-		element.id = 'webglmessage';
-		element.style.fontFamily = 'monospace';
-		element.style.fontSize = '13px';
-		element.style.fontWeight = 'normal';
-		element.style.textAlign = 'center';
-		element.style.background = '#fff';
-		element.style.color = '#000';
-		element.style.padding = '1.5em';
-		element.style.width = '400px';
-		element.style.margin = '5em auto 0';
-
-		if ( contexts[ version ] ) {
-
-			message = message.replace( '$0', 'graphics card' );
-
-		} else {
-
-			message = message.replace( '$0', 'browser' );
-
-		}
-
-		message = message.replace( '$1', names[ version ] );
-
-		element.innerHTML = message;
-
-		return element;
-
-	}
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @author WestLangley / http://github.com/WestLangley
- */
-
-THREE.LightProbeGenerator = {
-
-	// https://www.ppsloan.org/publications/StupidSH36.pdf
-	fromCubeTexture: function ( cubeTexture ) {
-
-		var norm, lengthSq, weight, totalWeight = 0;
-
-		var coord = new THREE.Vector3();
-
-		var dir = new THREE.Vector3();
-
-		var color = new THREE.Color();
-
-		var shBasis = [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
-
-		var sh = new THREE.SphericalHarmonics3();
-		var shCoefficients = sh.coefficients;
-
-		for ( var faceIndex = 0; faceIndex < 6; faceIndex ++ ) {
-
-			var image = cubeTexture.image[ faceIndex ];
-
-			var width = image.width;
-			var height = image.height;
-
-			var canvas = document.createElement( 'canvas' );
-
-			canvas.width = width;
-			canvas.height = height;
-
-			var context = canvas.getContext( '2d' );
-
-			context.drawImage( image, 0, 0, width, height );
-
-			var imageData = context.getImageData( 0, 0, width, height );
-
-			var data = imageData.data;
-
-			var imageWidth = imageData.width; // assumed to be square
-
-			var pixelSize = 2 / imageWidth;
-
-			for ( var i = 0, il = data.length; i < il; i += 4 ) { // RGBA assumed
-
-				// pixel color
-				color.setRGB( data[ i ] / 255, data[ i + 1 ] / 255, data[ i + 2 ] / 255 );
-
-				// convert to linear color space
-				color.copySRGBToLinear( color );
-
-				// pixel coordinate on unit cube
-
-				var pixelIndex = i / 4;
-
-				var col = - 1 + ( pixelIndex % imageWidth + 0.5 ) * pixelSize;
-
-				var row = 1 - ( Math.floor( pixelIndex / imageWidth ) + 0.5 ) * pixelSize;
-
-				switch ( faceIndex ) {
-
-					case 0: coord.set( - 1, row, - col ); break;
-
-					case 1: coord.set( 1, row, col ); break;
-
-					case 2: coord.set( - col, 1, - row ); break;
-
-					case 3: coord.set( - col, - 1, row ); break;
-
-					case 4: coord.set( - col, row, 1 ); break;
-
-					case 5: coord.set( col, row, - 1 ); break;
-
-				}
-
-				// weight assigned to this pixel
-
-				lengthSq = coord.lengthSq();
-
-				weight = 4 / ( Math.sqrt( lengthSq ) * lengthSq );
-
-				totalWeight += weight;
-
-				// direction vector to this pixel
-				dir.copy( coord ).normalize();
-
-				// evaluate SH basis functions in direction dir
-				THREE.SphericalHarmonics3.getBasisAt( dir, shBasis );
-
-				// accummuulate
-				for ( var j = 0; j < 9; j ++ ) {
-
-					shCoefficients[ j ].x += shBasis[ j ] * color.r * weight;
-					shCoefficients[ j ].y += shBasis[ j ] * color.g * weight;
-					shCoefficients[ j ].z += shBasis[ j ] * color.b * weight;
-
-				}
-
-			}
-
-		}
-
-		// normalize
-		norm = ( 4 * Math.PI ) / totalWeight;
-
-		for ( var j = 0; j < 9; j ++ ) {
-
-			shCoefficients[ j ].x *= norm;
-			shCoefficients[ j ].y *= norm;
-			shCoefficients[ j ].z *= norm;
-
-		}
-
-		return new THREE.LightProbe( sh );
-
-	}
 
 };

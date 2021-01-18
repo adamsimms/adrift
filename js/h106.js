@@ -6457,7 +6457,7 @@ function IonVR ( options ) {
 					gust_mph: 9.8,
 					humidity: 55,
 					is_day: 1,
-					last_updated: "1999-01-09 7:40",
+					last_updated: "1999-01-09 10:40",
 					last_updated_epoch: null,
 					precip_in: 0,
 					precip_mm: 0,
@@ -6559,7 +6559,7 @@ function IonVR ( options ) {
 					gust_mph: 9.8,
 					humidity: 55,
 					is_day: 1,
-					last_updated: "1999-01-09 7:40",
+					last_updated: "1999-01-09 10:40",
 					last_updated_epoch: null,
 					precip_in: 0,
 					precip_mm: 0,
@@ -6661,40 +6661,34 @@ IonVR.prototype = {
             this.initCamera();
             this.initRenderer();
             this.initWater();
-			//this.updateSun();
-			//this.animateHouse();
-
-            if ( this.onReady ) {
-                this.onReady()
-            }
+			this.fetchWeather();
 			
-			if (ion.data.param.animation !== false) {
-				ion.animateHouse();
-			} else {}
+            if ( this.onReady ) {
+                this.onReady();
+				this.updateSun();
+            }
 			
 			if (ion.options.audio == true) {
 					ion.initAudio();
 				}
-
-            this.start();
-			// this.cMat();
 			
-			setTimeout(loadDef, 500);
-			setTimeout(loadEnd, 3000);
+            this.start();
+			// this.updateSun();
+			
+			setTimeout(loadDef, 2800);
+			setTimeout(loadEnd, 6000);
 			
 			function loadDef() {
-				ion.updateSun();
+				ion.preloader.stop();
+				ion.animateParamToSMP2('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2800, easeInOutSine);
 				ion.camera.getObjectByName("audioMain").gain.context.resume();
-				ion.animateParamToSMP5('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2400, easeInOutSine);
-				ion.fetchWeather();
-				
 			}			
 			function loadEnd() {
 				//ion.spinRound();
 				ion.sc.objects.cam_mask.visible=false;
-				//ion.updateWeather();
-				ion.updateSun();
-				//ion.camera.getObjectByName("audioMain").gain.context.resume();
+				if (ion.data.param.animation !== false) {
+				ion.animateHouse();
+				} else {}
 				
 			}
         } );
@@ -6730,7 +6724,7 @@ IonVR.prototype = {
         scene_loader.load( path, function ( sc, b, c ) {
             _this.log( 'load complete', sc, b, c );
 
-            _this.preloader.stop();
+            // _this.preloader.stop();
 
             _this.initScene( sc );
 			ion.options.ready = true;
@@ -7006,6 +7000,7 @@ IonVR.prototype = {
         if ( this.options.sky ) {
 		
 			var sunLight = new THREE.DirectionalLight( 0xfeeacc, this.data.param.sun.intensity );
+			sunLight.position.set(380, 4.3, 123);
 			sunLight.name = 'sunLight';
 			
             var sky = new THREE.Sky();
@@ -7174,7 +7169,7 @@ IonVR.prototype = {
 		// var inc = this.data.param.sun.inclination;
 		// var azi = this.data.param.sun.azimuth;
 		
-		console.log('inc:', inc, 'azi:', azi)
+		//console.log('inc:', inc, 'azi:', azi)
 	
 		var sunLightparam = this.data.param.sun;
 		var sunLight = this.scene.getObjectByName('sunLight');
@@ -7196,7 +7191,7 @@ IonVR.prototype = {
 		function stepOne() {
 			ion.scene.getObjectByName('sky').material.uniforms[ 'sunPosition' ].value = sP;
 			ion.scene.getObjectByName('cubeCamera').update( ion.renderer, ion.scene.getObjectByName('sky') );
-			ion.requestRender();
+			//ion.requestRender();
 			//console.log('sunLight.position:', ion.scene.getObjectByName('sunLight').position);
 		}
 		
@@ -8367,11 +8362,12 @@ IonVR.prototype = {
 		fetch('http://api.weatherapi.com/v1/current.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144').then(res => res.json()).then(data => ion.data.param.live_data = data);	
 		// fetch(todayAstro).then(res => res.json()).then(data => ion.data.param.live_astro = data);
 		
-		setTimeout(stepOne, 2000);
+		setTimeout(stepOne, 3000);
 		setTimeout(stepTwo, 300000);
 
 		function stepOne() {
 			ion.updateWeather();
+			ion.updateSun();
 			
 			// if ( ion.options.weather_info !== false && undefined ) {
 				// ion.showLiveWeather();
@@ -8472,7 +8468,8 @@ IonVR.prototype = {
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			// console.log('random:', valRandom)
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: 0.001*swivMult*valRandom1*/  }, stepDuration, easeInOutSine);
+			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom1, 10000)  }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom1, 10000));
 		}
 		
 		function stepTwo() {
@@ -8480,7 +8477,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: 0.003*swivMult*valRandom3*/ }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 		}
 		
 		function stepThree() {
@@ -8488,7 +8486,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: 0.001*swivMult*valRandom1*/  }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom2, 10000) }, stepDuration, easeInOutSine);
+			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom2, 10000));
 			
 		}
 		
@@ -8497,10 +8496,11 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: -0.003*swivMult*valRandom3*/ }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
 			
 			if (ion.data.param.animation !== false) {
 				setTimeout(ion.animateHouse, stepDuration);
+				console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 			} else {}
 		}
 		
