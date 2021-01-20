@@ -114,9 +114,9 @@ function IonVR ( options ) {
 				}
 			},
 			animation: true,
-			wind_factor: 0.1,
+			wind_factor: 2.4,
 			sway_factor: 0.3,
-			swiv_factor: 0.1,
+			swiv_factor: 1.0,
 			months : { 
 				01: "January",
 				02: "February", 
@@ -2010,7 +2010,8 @@ IonVR.prototype = {
 	
 	updateWeather : function() {
 		var wind = ( ion.data.param.live_data.current.wind_degree / 57.325 );
-		var windSpeed = ( (ion.data.param.live_data.current.wind_kph / 57.325)/4 );
+		var windSpeed = ( (ion.data.param.live_data.current.wind_kph / 57.325)/2 );
+		var swivMult = ion.data.param.swiv_factor;
 		if (ion.data.param.live_data.current.wind_degree < 45 || ion.data.param.live_data.current.wind_degree > 315 && ion.data.param.live_data.current.wind_kph <= 80 ) {
 			var speedFov = ( 35 + ion.data.param.live_data.current.wind_kph / 1.66 );
 			ion.setFov(speedFov);
@@ -2020,7 +2021,7 @@ IonVR.prototype = {
 			ion.setFov(45);
 		}
 		var stepDuration = 300000/((ion.data.param.live_data.current.wind_kph/100)+1);
-		var randomSeed = 1;
+		var randomSeed = 3;
 		
 		//ion.sc.objects.house.rotation.z = wind;
 		if (ion.data.param.live_data.current.wind_degree !== ion.data_stored.param.live_data.current.wind_degree) {
@@ -2033,15 +2034,17 @@ IonVR.prototype = {
 			setTimeout(stepTwo, stepDuration);
 			
 			function stepOne() {
-			var valRandom1 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+1;
-			console.log('step one rotation:', valRandom1, "angle: ", wind + windSpeed*valRandom1)
-			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: wind + windSpeed*valRandom1 }, stepDuration, easeInOutSine);
+			var valRandom1 = round ((((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1)+1*swivMult), 100);
+			var Z = round(wind + (windSpeed*valRandom1), 100);
+			console.log('step one: ', valRandom1, "angle: ", Z, round((Z * 57.325), 1), '°' );
+			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: Z }, stepDuration, easeInOutSine);
 			}
 			
 			function stepTwo() {
-			var valRandom1 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+1;
-			console.log('step two rotation:', valRandom1, "angle: ", wind - windSpeed*valRandom1)
-			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: wind - windSpeed*valRandom1 }, stepDuration, easeInOutSine);
+			var valRandom1 = round ((((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1)+1*swivMult), 100);
+			var Z = round(wind - (windSpeed*valRandom1), 100);
+			console.log('step two: ', valRandom1, "angle: ", Z, round((Z * 57.325), 1), '°' );
+			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: Z }, stepDuration, easeInOutSine);
 			}
 		}
 		
@@ -2095,8 +2098,8 @@ IonVR.prototype = {
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			// console.log('random:', valRandom)
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom1, 10000)  }, stepDuration, easeInOutSine);
-			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom1, 10000));
+			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: round(-0.004*swivMult*valRandom1, 10000)*/  }, stepDuration, easeInOutSine);
+			//console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom1, 10000));
 		}
 		
 		function stepTwo() {
@@ -2104,8 +2107,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
-			console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: round(0.005*swivMult*valRandom3, 10000)*/ }, stepDuration, easeInOutSine);
+			//console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 		}
 		
 		function stepThree() {
@@ -2113,8 +2116,8 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
-		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2, z: round(-0.004*swivMult*valRandom2, 10000) }, stepDuration, easeInOutSine);
-			console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom2, 10000));
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: round(-0.004*swivMult*valRandom2, 10000)*/ }, stepDuration, easeInOutSine);
+			//console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom2, 10000));
 			
 		}
 		
@@ -2123,11 +2126,11 @@ IonVR.prototype = {
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
-		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1, z: round(0.005*swivMult*valRandom3, 10000) }, stepDuration, easeInOutSine);
+		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: round(0.005*swivMult*valRandom3, 10000)*/ }, stepDuration, easeInOutSine);
 			
 			if (ion.data.param.animation !== false) {
 				setTimeout(ion.animateHouse, stepDuration);
-				console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
+				//console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 			} else {}
 		}
 		
