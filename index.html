@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link href="css/ion.css" rel="stylesheet"/>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -64,7 +67,7 @@
 <input id="clickMe3" type="button" value="0.9" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 9}, 800, easeInOutSine);"/>
 <input id="clickMe3" type="button" value="1.0" onclick="ion.animateParamToSMP('alpha', ion.sc.objects.main_group.getObjectByName('water').material.uniforms.size, {value: 10}, 800, easeInOutSine);"/>
 <br/>
-	
+
 <p>Rotate Scene</p>
 <input id="clickMe3" type="button" value="0" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: 0, z: 0 }, 900, easeInOutCubic);"/>
 <input id="clickMe3" type="button" value="90" onclick="ion.animateParamToSMP('rotate', ion.main_group.rotation, { x: 0, y: Math.PI/2, z: 0 }, 900, easeInOutCubic);"/>
