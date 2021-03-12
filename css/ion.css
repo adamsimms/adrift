@@ -309,7 +309,7 @@ button:hover {
 #weather-text {
 	position: absolute;
 	left: 48px;
-	bottom: 23px;
+	bottom: 21px;
 	font-family: Roboto;
 	font-style: normal;
 	font-weight: bold;
@@ -324,7 +324,7 @@ button:hover {
 
 .weather_icon {
   position: relative;
-  top: 5px;
+  top: 4px;
 }
 
 @keyframes dot {
@@ -353,8 +353,8 @@ button:hover {
 	display: block;
 	position: absolute;
 	right: 28px;
-	bottom: 16px;
-	height: 24px;
+	bottom: 22px;
+	height: 22px;
 	width: 24px;
 	font-family: Roboto;
 	font-style: normal;

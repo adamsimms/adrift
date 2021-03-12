@@ -1589,12 +1589,12 @@ THREE.SceneLoader.prototype = {
 							camera.lookAt(new THREE.Vector3().fromArray(objJSON.target));
 							camera.target = new THREE.Vector3().fromArray(objJSON.target);
 						}
-						
+
 						if (objJSON.section_view) {
 
 							camera.section_view = objJSON.section_view;
 						}
-						
+
 						if (objJSON.autoZoom) {
 
 							camera.autoZoom = objJSON.autoZoom;
@@ -2258,7 +2258,7 @@ result.objects[id] = node;
 			var mat = this.data.materials[key];
 			if (mat.parameters.materials) {
 				console.log('mat',mat.parameters.materials);
-				
+
 				for (var i = 0, j = mat.parameters.materials.length; i < j; i++) {
 					applyTexture(this.data.materials[mat.parameters.materials[i]], onLoad);
 
@@ -2284,13 +2284,13 @@ result.objects[id] = node;
 		}
 
 		function applyTexture(material, onLoad) {
-			
-			
+
+
 			console.log('applyTexture');
 			var array = getTexturesName(material);
 
 			if (array.length == 0)
-				
+
 				return;
 
 			total_textures += array.length;
@@ -2306,8 +2306,8 @@ result.objects[id] = node;
 				scope.addTexture(array[i], onLoad, generateTextureCallback);
 
 			}
-			
-			
+
+
 			console.log('total_textures',array);
 
 		}
@@ -2360,15 +2360,15 @@ result.objects[id] = node;
 				loadedTextures: total_textures - counter_textures,
 
 			};
-			
+
 			console.log('total_textures',total_textures),
 			console.log('counter_textures',counter_textures),
 
 			scope.callbackProgress(progress, scope.result);
 
 			if (counter_textures === 0) {
-			
-				
+
+
 			console.log('counter_textures_0');
 
 				if (onLoad) {
@@ -2397,11 +2397,11 @@ result.objects[id] = node;
 				matJSON.parameters[parID] = scope.result.textures[matJSON.parameters[parID]];
 
 			} else if ( parID === "flatShading" ) {
-			
+
 				if ( matJSON.parameters[ parID ] = "true" ) {
 
                 matJSON.parameters[ parID ] = THREE.FlatShading;
-				
+
 				}
 
 			} else if (parID === "side") {
@@ -2465,8 +2465,8 @@ result.objects[id] = node;
 			matJSON.parameters.transparent = true;
 
 		}
-		
-		// temporary global override	
+
+		// temporary global override
 		matJSON.parameters.side = THREE.DoubleSide;
 
 		//var loader = new MaterialLoader();
@@ -2629,7 +2629,7 @@ result.objects[id] = node;
 			//
 			// Also changing the encoding after already used by a Material will not automatically make the Material
 			// update.  You need to explicitly call Material.needsUpdate to trigger it to recompile.
-			
+
 			if (THREE[textureJSON.format] !== undefined)
 				texture.format = THREE[textureJSON.format];
 
@@ -2638,7 +2638,7 @@ result.objects[id] = node;
 
 			if (textureJSON.rotation)
 				texture.rotation = textureJSON.rotation;
-			
+
 			if (textureJSON.flipY !== undefined)
 				texture.flipY = textureJSON.flipY;
 
@@ -2666,7 +2666,7 @@ result.objects[id] = node;
 
 				// handle wrap after repeat so that default repeat can be overriden
 				// MirroredRepeatWrapping, ClampToEdgeWrapping, RepeatWrapping
-				
+
 				if (textureJSON.wrap) {
 
 					var wrapMap = {
@@ -2706,45 +2706,45 @@ result.objects[id] = node;
 
 	};
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var ION = ION || {};
 
@@ -2775,7 +2775,7 @@ ION.File.prototype.load = function(stream) {
 	this.header = new ION.FileHeader(stream);
 
 	this.body = new ION.FileBody(this.header);
-  
+
 	this.getReader().read(stream, this.body);
 };
 
@@ -2831,7 +2831,7 @@ ION.FileBody = function(header) {
 	if ( header.hasNormals() ) {
 		this.normals = new Float32Array(data, (i + v) * 4, n);
 	}
-  
+
 	if (header.uvMapCount) {
 		this.uvMaps = [];
 		for (j = 0; j < header.uvMapCount; ++ j) {
@@ -2839,7 +2839,7 @@ ION.FileBody = function(header) {
         (i + v + n + (j * u) ) * 4, u) };
 		}
 	}
-  
+
 	if (header.attrMapCount) {
 		this.attrMaps = [];
 		for (j = 0; j < header.attrMapCount; ++ j) {
@@ -2862,7 +2862,7 @@ ION.FileMG2Header = function(stream) {
 	this.divx = stream.readInt32();
 	this.divy = stream.readInt32();
 	this.divz = stream.readInt32();
-  
+
 	this.sizex = (this.higherBoundx - this.lowerBoundx) / this.divx;
 	this.sizey = (this.higherBoundy - this.lowerBoundy) / this.divy;
 	this.sizez = (this.higherBoundz - this.lowerBoundz) / this.divz;
@@ -2874,7 +2874,7 @@ ION.ReaderRAW = function() {
 ION.ReaderRAW.prototype.read = function(stream, body) {
 	this.readIndices(stream, body.indices);
 	this.readVertices(stream, body.vertices);
-  
+
 	if (body.normals) {
 		this.readNormals(stream, body.normals);
 	}
@@ -2928,7 +2928,7 @@ ION.ReaderMG1 = function() {
 ION.ReaderMG1.prototype.read = function(stream, body) {
 	this.readIndices(stream, body.indices);
 	this.readVertices(stream, body.vertices);
-  
+
 	if (body.normals) {
 		this.readNormals(stream, body.normals);
 	}
@@ -2943,7 +2943,7 @@ ION.ReaderMG1.prototype.read = function(stream, body) {
 ION.ReaderMG1.prototype.readIndices = function(stream, indices) {
 	stream.readInt32(); //magic "INDX"
 	stream.readInt32(); //packed size
-  
+
 	var interleaved = new ION.InterleavedStream(indices, 3);
 	LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
 
@@ -2953,7 +2953,7 @@ ION.ReaderMG1.prototype.readIndices = function(stream, indices) {
 ION.ReaderMG1.prototype.readVertices = function(stream, vertices) {
 	stream.readInt32(); //magic "VERT"
 	stream.readInt32(); //packed size
-  
+
 	var interleaved = new ION.InterleavedStream(vertices, 1);
 	LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
 };
@@ -2973,7 +2973,7 @@ ION.ReaderMG1.prototype.readUVMaps = function(stream, uvMaps) {
 
 		uvMaps[i].name = stream.readString();
 		uvMaps[i].filename = stream.readString();
-    
+
 		stream.readInt32(); //packed size
 
 		var interleaved = new ION.InterleavedStream(uvMaps[i].uv, 2);
@@ -2987,7 +2987,7 @@ ION.ReaderMG1.prototype.readAttrMaps = function(stream, attrMaps) {
 		stream.readInt32(); //magic "ATTR"
 
 		attrMaps[i].name = stream.readString();
-    
+
 		stream.readInt32(); //packed size
 
 		var interleaved = new ION.InterleavedStream(attrMaps[i].attr, 4);
@@ -3000,10 +3000,10 @@ ION.ReaderMG2 = function() {
 
 ION.ReaderMG2.prototype.read = function(stream, body) {
 	this.MG2Header = new ION.FileMG2Header(stream);
-  
+
 	this.readVertices(stream, body.vertices);
 	this.readIndices(stream, body.indices);
-  
+
 	if (body.normals) {
 		this.readNormals(stream, body);
 	}
@@ -3021,23 +3021,23 @@ ION.ReaderMG2.prototype.readVertices = function(stream, vertices) {
 
 	var interleaved = new ION.InterleavedStream(vertices, 3);
 	LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
-  
+
 	var gridIndices = this.readGridIndices(stream, vertices);
-  
+
 	ION.restoreVertices(vertices, this.MG2Header, gridIndices, this.MG2Header.vertexPrecision);
 };
 
 ION.ReaderMG2.prototype.readGridIndices = function(stream, vertices) {
 	var magic=stream.readInt32(); //magic "GIDX"
 	var sz=stream.readInt32(); //packed size
-  
+
 	var gridIndices = new Uint32Array(vertices.length / 3);
-  
+
 	var interleaved = new ION.InterleavedStream(gridIndices, 1);
 	LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
-  
+
 	ION.restoreGridIndices(gridIndices, gridIndices.length);
-  
+
 	return gridIndices;
 };
 
@@ -3070,14 +3070,14 @@ ION.ReaderMG2.prototype.readUVMaps = function(stream, uvMaps) {
 
 		uvMaps[i].name = stream.readString();
 		uvMaps[i].filename = stream.readString();
-    
+
 		var precision = stream.readFloat32();
-    
+
 		stream.readInt32(); //packed size
 
 		var interleaved = new ION.InterleavedStream(uvMaps[i].uv, 2);
 		LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
-    
+
 		ION.restoreMap(uvMaps[i].uv, 2, precision);
 	}
 };
@@ -3088,14 +3088,14 @@ ION.ReaderMG2.prototype.readAttrMaps = function(stream, attrMaps) {
 		stream.readInt32(); //magic "ATTR"
 
 		attrMaps[i].name = stream.readString();
-    
+
 		var precision = stream.readFloat32();
-    
+
 		stream.readInt32(); //packed size
 
 		var interleaved = new ION.InterleavedStream(attrMaps[i].attr, 4);
 		LZMA.decompress(stream, stream, interleaved, interleaved.data.length);
-    
+
 		ION.restoreMap(attrMaps[i].attr, 4, precision);
 	}
 };
@@ -3108,7 +3108,7 @@ ION.restoreIndices = function(indices, len) {
 	}
 	for (; i < len; i += 3) {
 		indices[i] += indices[i - 3];
-    
+
 		if (indices[i] === indices[i - 3]) {
 			indices[i + 1] += indices[i - 2];
 		}else {
@@ -3135,7 +3135,7 @@ ION.restoreVertices = function(vertices, grid, gridIndices, precision) {
 
 	for (; i < len; j += 3) {
 		x = gridIdx = gridIndices[i ++];
-    
+
 		z = ~~(x / zdiv);
 		x -= ~~(z * zdiv);
 		y = ~~(x / ydiv);
@@ -3174,13 +3174,13 @@ ION.restoreNormals = function(normals, smooth, precision) {
 			normals[i + 1] = smooth[i + 1] * ro;
 			normals[i + 2] = smooth[i + 2] * ro;
 		}else {
-      
+
 			if (phi <= 4) {
 				theta = (intNormals[i + 2] - 2) * PI_DIV_2;
 			}else {
 				theta = ( (intNormals[i + 2] * 4 / phi) - 2) * PI_DIV_2;
 			}
-      
+
 			phi *= precision * PI_DIV_2;
 			sinPhi = ro * Math.sin(phi);
 
@@ -3217,9 +3217,9 @@ ION.restoreMap = function(map, count, precision) {
 
 		for (j = i; j < len; j += count) {
 			value = intMap[j];
-      
+
 			delta += value & 1 ? -( (value + 1) >> 1) : value >> 1;
-      
+
 			map[j] = delta * precision;
 		}
 	}
@@ -3242,18 +3242,18 @@ ION.calcSmoothNormals = function(indices, vertices) {
 		v2y = vertices[indz + 1] - vertices[indx + 1];
 		v1z = vertices[indy + 2] - vertices[indx + 2];
 		v2z = vertices[indz + 2] - vertices[indx + 2];
-    
+
 		nx = v1y * v2z - v1z * v2y;
 		ny = v1z * v2x - v1x * v2z;
 		nz = v1x * v2y - v1y * v2x;
-    
+
 		len = Math.sqrt(nx * nx + ny * ny + nz * nz);
 		if (len > 1e-10) {
 			nx /= len;
 			ny /= len;
 			nz /= len;
 		}
-    
+
 		smooth[indx]     += nx;
 		smooth[indx + 1] += ny;
 		smooth[indx + 2] += nz;
@@ -3298,13 +3298,13 @@ ION.InterleavedStream = function(data, count) {
 
 ION.InterleavedStream.prototype.writeByte = function(value) {
 	this.data[this.offset] = value;
-  
+
 	this.offset += this.count;
 	if (this.offset >= this.len) {
-  
+
 		this.offset -= this.len - 4;
 		if (this.offset >= this.count) {
-    
+
 			this.offset -= this.count + (ION.isLittleEndian ? 1 : -1);
 		}
 	}
@@ -3337,7 +3337,7 @@ ION.Stream.prototype.readFloat32 = function() {
 	var b1 = this.readByte();
 	var b2 = this.readByte();
 
-	m += (b1 & 0x7f) << 16; 
+	m += (b1 & 0x7f) << 16;
 	var e = ( (b2 & 0x7f) << 1) | ( (b1 & 0x80) >>> 7);
 	var s = b2 & 0x80 ? -1 : 1;
 
@@ -3363,7 +3363,7 @@ ION.Stream.prototype.readString = function() {
 
 ION.Stream.prototype.readArrayInt32 = function(array) {
 	var i = 0, len = array.length;
-  
+
 	while (i < len) {
 		array[i ++] = this.readInt32();
 	}
@@ -3392,7 +3392,7 @@ THREE.IONLoader = function () {
 	THREE.Loader.call( this );
 
 	// Deprecated
-	
+
 	Object.defineProperties( this, {
 		statusDomElement: {
 			get: function () {
@@ -3673,7 +3673,7 @@ THREE.IONLoader.prototype.createModel = function ( file, callback ) {
             if(g.m=="mat_ID23")mtlId=22;else
             if(g.m=="mat_ID24")mtlId=23;else
             if(g.m=="mat_ID25")mtlId=24;
-                
+
                 this.addGroup(g.a*3,(g.b-g.a)*3,mtlId);
 
                 }
@@ -4000,7 +4000,7 @@ HuftBuild:function(b,	// code lengths in bits (all assumed <= BMAX)
 
 
 function zip(src,offset) {
-	this.WSIZE = 32768;		// Sliding Window size	
+	this.WSIZE = 32768;		// Sliding Window size
 	this.LBITS = 9; 		// bits in base literal/length lookup table
 	this.DBITS = 6; 		// bits in base distance lookup table
 
@@ -4070,7 +4070,7 @@ zip.prototype.inflateCodes=function(buff, off, size) {
       return 0;
 
     // inflate the coded data
-    
+
     for(;;) {			// do until end of block
 
      t = this.tl.list[this.ngb(this.zip_bl)];
@@ -4118,7 +4118,7 @@ zip.prototype.inflateCodes=function(buff, off, size) {
 	    e = t.e;
 	}
 	this.dumpBits(t.b);
-	
+
 	this.zip_copy_dist = this.wp - t.n - this.ngb(e);
 	this.dumpBits(e);
 
@@ -4242,13 +4242,13 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
 	ll[i] = 0;
 
     // read in table lengths
-    
+
     nl = 257 + this.ngb(5);	// number of literal/length codes
     this.dumpBits(5);
-    
+
     nd = 1 + this.ngb(5);	// number of distance codes
     this.dumpBits(5);
-    
+
     nb = 4 + this.ngb(4);	// number of bit length codes
     this.dumpBits(4);
     if(nl > 286 || nd > 30)
@@ -4257,7 +4257,7 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
     // read in bit-length-code lengths
     for(j = 0; j < nb; j++)
     {
-	
+
 	ll[ZIP.b[j]] = this.ngb(3);
 	this.dumpBits(3);
     }
@@ -4277,7 +4277,7 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
     n = nl + nd;
     i = l = 0;
     while(i < n) {
-	
+
 	t = this.tl.list[this.ngb(this.zip_bl)];
 	j = t.b;
 	this.dumpBits(j);
@@ -4285,7 +4285,7 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
 	if(j < 16)		// length of code in bits (0..15)
 	    ll[i++] = l = j;	// save last length in l
 	else if(j == 16) {	// repeat last length 3 to 6 times
-	    
+
 	    j = 3 + this.ngb(2);
 	    this.dumpBits(2);
 	    if(i + j > n)
@@ -4293,7 +4293,7 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
 	    while(j-- > 0)
 		ll[i++] = l;
 	} else if(j == 17) {	// 3 to 10 zero length codes
-	    
+
 	    j = 3 + this.ngb(3);
 	    this.dumpBits(3);
 	    if(i + j > n)
@@ -4302,7 +4302,7 @@ zip.prototype.inflateDynamic=function(buff, off, size) {
 		ll[i++] = 0;
 	    l = 0;
 	} else {		// j == 18: 11 to 138 zero length codes
-	    
+
 	    j = 11 + this.ngb(7);
 	    this.dumpBits(7);
 	    if(i + j > n)
@@ -4372,7 +4372,7 @@ zip.prototype.inflateInternal=function(buff,off,size) {
 				while(this.copyLen>0&&n<size) {
 					this.copyLen--;
 					this.wp&=32767/*this.WSIZE-1*/;
-					
+
 					buff[off+n++]=this.slide[this.wp++]=this.ngb(8);
 					this.dumpBits(8);
 				}
@@ -4388,13 +4388,13 @@ zip.prototype.inflateInternal=function(buff,off,size) {
 				break;
 
 			// read in last block bit
-			
+
 			if(this.ngb(1)!=0)
 				this.eof=true;
 			this.dumpBits(1);
 
 			// read in block type
-			
+
 			this.method=this.ngb(2);
 			this.dumpBits(2);
 			this.tl=null;
@@ -4447,8 +4447,8 @@ zip.prototype.inflateBin=function(size){
 }
 
 var LZMA = LZMA || {};
-LZMA.decompress = function(properties, inStream, outStream, outSize) 
-{ 
+LZMA.decompress = function(properties, inStream, outStream, outSize)
+{
   var z=new zip(inStream.data,inStream.offset);
   var buffer=z.inflateBin(outSize);
   inStream.offset+=(z.pos+4);
@@ -4733,7 +4733,7 @@ THREE.OrbitControls.prototype.focus = function ( object, callback, callbackEnd )
     var positionStart = scope.object.position.clone();
     var startFov = scope.object.fov;
     var startQuaternion = scope.object.quaternion;
-    
+
 
     var arguments = {};
 
@@ -5623,14 +5623,14 @@ THREE.AnimationsHelper = function ( viewer, callback ) {
         viewer.setMaterial( key, object );
 
     }
-	
+
 	/// a bit shit
     function applyHideChange ( object, uuid ) {
 
         var key = object.userData.click[ uuid ];
 		object.visible = false;
     }
-	
+
     function applyShowChange ( object, uuid ) {
 
         var key = object.userData.click[ uuid ];
@@ -6158,7 +6158,7 @@ THREE.CameraAnimationHelper = function ( viewer ) {
             if ( position ) {
                 arguments.position = { x : position[ 0 ] * scale, y : position[ 1 ] * scale, z : position[ 2 ] * scale };
             }
-            
+
             if ( t_position ) {
                 arguments.t_position = { x : t_position[ 0 ] * scale, y : t_position[ 1 ] * scale, z : t_position[ 2 ] * scale };
             }
@@ -6220,7 +6220,7 @@ THREE.CameraAnimationHelper = function ( viewer ) {
         if ( position ) {
             arguments.position = { x : position[ 0 ] * scale, y : position[ 1 ] * scale, z : position[ 2 ] * scale };
         }
-        
+
         if ( t_position ) {
             arguments.t_position = { x : t_position[ 0 ] * scale, y : t_position[ 1 ] * scale, z : t_position[ 2 ] * scale };
         }
@@ -6308,7 +6308,7 @@ THREE.CameraAnimationDataLoad = function ( viewer ) {
 
                             track.position = object.anim.pos[ i ].v;
                             track.t = object.anim.pos[ i ].t;
-                        }                       
+                        }
                         if ( object.anim.t_pos && object.anim.t_pos[ i ] ) {
 
                             track.t_position = object.anim.t_pos[ i ].v;
@@ -6422,7 +6422,7 @@ function IonVR ( options ) {
 		audio : false,
 		audio_track: null
     };
-	
+
 	// data values
     this.data = {
         param: {
@@ -6490,22 +6490,22 @@ function IonVR ( options ) {
 			wind_factor: 2.4,
 			sway_factor: 0.3,
 			swiv_factor: 1.0,
-			months : { 
+			months : {
 				01: "January",
-				02: "February", 
-				03: "March", 
-				04: "April", 
-				05: "May", 
-				06: "June", 
-				07: "July", 
-				08: "August", 
-				09: "September", 
-				10: "October", 
-				11: "Novermber", 
+				02: "February",
+				03: "March",
+				04: "April",
+				05: "May",
+				06: "June",
+				07: "July",
+				08: "August",
+				09: "September",
+				10: "October",
+				11: "Novermber",
 				12: "December"
 			},
 			mMat: 0,
-			cMat: 
+			cMat:
 				{
 				0:0,
 				1:0,
@@ -6523,8 +6523,8 @@ function IonVR ( options ) {
 				13:0
 			}
 		}
-	};	
-	
+	};
+
 	// data values
     this.data_stored = {
         param: {
@@ -6592,22 +6592,22 @@ function IonVR ( options ) {
 			wind_factor: 0.4,
 			sway_factor: 0.4,
 			swiv_factor: 0.4,
-			months : { 
+			months : {
 				01: "January",
-				02: "February", 
-				03: "March", 
-				04: "April", 
-				05: "May", 
-				06: "June", 
-				07: "July", 
-				08: "August", 
-				09: "September", 
-				10: "October", 
-				11: "Novermber", 
+				02: "February",
+				03: "March",
+				04: "April",
+				05: "May",
+				06: "June",
+				07: "July",
+				08: "August",
+				09: "September",
+				10: "October",
+				11: "Novermber",
 				12: "December"
 			},
 			mMat: 0,
-			cMat: 
+			cMat:
 				{
 				0:0,
 				1:0,
@@ -6625,9 +6625,9 @@ function IonVR ( options ) {
 				13:0
 			}
 		}
-	};	
+	};
 
-		
+
     this.options = extend( {}, defaults, options );
 
     this.animations = {};
@@ -6637,9 +6637,9 @@ function IonVR ( options ) {
     this.loader = new THREE.SceneLoader();
     this.loader.byRequest = true;
     this.cameraAnimations = {};
-	
+
     this.preloader = this.options.preloader;
-	
+
     // Initialization start
     if ( Detector.webgl ) {
 
@@ -6662,34 +6662,34 @@ IonVR.prototype = {
             this.initRenderer();
             this.initWater();
 			this.fetchWeather();
-			
+
             if ( this.onReady ) {
                 this.onReady();
 				this.updateSun();
             }
-			
+
 			if (ion.options.audio == true) {
 					ion.initAudio();
 				}
-			
+
             this.start();
 			// this.updateSun();
-			
+
 			setTimeout(loadDef, 2800);
 			setTimeout(loadEnd, 6000);
-			
+
 			function loadDef() {
 				ion.preloader.stop();
 				ion.animateParamToSMP2('color', ion.sc.materials.m_cam, { opacity: -0.1 }, 2800, easeInOutSine);
 				ion.camera.getObjectByName("audioMain").gain.context.resume();
-			}			
+			}
 			function loadEnd() {
 				//ion.spinRound();
 				ion.sc.objects.cam_mask.visible=false;
 				if (ion.data.param.animation !== false) {
 				ion.animateHouse();
 				} else {}
-				
+
 			}
         } );
     },
@@ -6801,7 +6801,7 @@ IonVR.prototype = {
 			scope.preloader.stop();
             scope.hideStatus();
 			scope.requestRender();
-			
+
         } )
     },
 
@@ -6836,93 +6836,93 @@ IonVR.prototype = {
             this.weather_info.id = 'weather-info';
 			// this.weather_info.style.z-index = 105;
             this.container.appendChild( this.weather_info );
-			
+
 			this.weather_in = $c( 'div' );
             this.weather_in.id = 'weather-in';
 			this.weather_in.onclick = ion.showUI;
 			// this.weather_in.style.z-index = 100;
             this.container.appendChild( this.weather_in );
-			
+
 			this.weather_sound = $c( 'div' );
             this.weather_sound.id = 'weather-sound';
 			this.weather_sound.onclick = ion.soundSwitch;
 			// this.weather_sound.style.z-index = 110;
             this.weather_info.appendChild( this.weather_sound );
-			
+
 			this.weather_bt = $c( 'div' );
             this.weather_bt.id = 'weather-bt';
 			this.weather_bt.onclick = ion.hideUI;
 			// this.weather_bt.style.z-index = 110;
             this.weather_info.appendChild( this.weather_bt );
-			
+
             this.weather_dot = $c( 'div' );
             this.weather_dot.id = 'weather-dot';
 			// this.weather_dot.style.z-index = 110;
             this.weather_info.appendChild( this.weather_dot );
-			
+
             this.weather_text = $c( 'div' );
             this.weather_text.id = 'weather-text';
 			// this.weather_text.style.z-index = 110;
-            this.weather_info.appendChild( this.weather_text );			
+            this.weather_info.appendChild( this.weather_text );
         };
-		
+
 		var currentDate = this.data.param.live_data.current.last_updated;
 		var cTime = new Date(currentDate).toLocaleTimeString();
 		var cDay = currentDate.substring(8, 10);
 		var cM = currentDate.substring(5, 7);
 		var month = ion.data.param.months[01].toString();
-		
+
 		// console.log(cM, MMMM);
-		
-		var iconW = new DOMParser().parseFromString('<svg height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.50001 6.75H18.125C18.8419 6.75201 19.5407 6.52573 20.1203 6.10395C20.7 5.68217 21.1302 5.0868 21.3488 4.40409C21.5674 3.72139 21.5629 2.98683 21.336 2.30684C21.1092 1.62685 20.6717 1.03676 20.0869 0.62207C19.5022 0.207381 18.8007 -0.0103669 18.0839 0.000379477C17.3672 0.0111259 16.6724 0.249808 16.1004 0.681841C15.5284 1.11387 15.1088 1.71681 14.9024 2.4033C14.696 3.08978 14.7136 3.82415 14.9525 4.49999H3.50001C3.20164 4.49999 2.91549 4.61852 2.70451 4.8295C2.49353 5.04048 2.37501 5.32663 2.37501 5.62499C2.37501 5.92336 2.49353 6.20951 2.70451 6.42049C2.91549 6.63147 3.20164 6.75 3.50001 6.75ZM17 3.37499C17 3.15249 17.066 2.93498 17.1896 2.74997C17.3132 2.56497 17.4889 2.42077 17.6945 2.33563C17.9001 2.25048 18.1263 2.2282 18.3445 2.27161C18.5627 2.31502 18.7632 2.42216 18.9205 2.5795C19.0779 2.73683 19.185 2.93729 19.2284 3.15551C19.2718 3.37374 19.2495 3.59994 19.1644 3.80551C19.0792 4.01108 18.9351 4.18678 18.75 4.3104C18.565 4.43401 18.3475 4.49999 18.125 4.49999C17.8267 4.49999 17.5405 4.38147 17.3295 4.17049C17.1186 3.95951 17 3.67336 17 3.37499ZM25.875 4.37499C25.3359 4.37651 24.805 4.50716 24.3267 4.75601C23.8484 5.00485 23.4367 5.36466 23.1261 5.8053C22.8154 6.24594 22.6149 6.75459 22.5412 7.28866C22.4675 7.82274 22.5228 8.3667 22.7025 8.875H1.125C0.826633 8.875 0.540484 8.99353 0.329505 9.2045C0.118527 9.41548 0 9.70163 0 10C0 10.2984 0.118527 10.5845 0.329505 10.7955C0.540484 11.0065 0.826633 11.125 1.125 11.125H25.875C26.7701 11.125 27.6286 10.7694 28.2615 10.1365C28.8945 9.50355 29.25 8.6451 29.25 7.75C29.25 6.85489 28.8945 5.99644 28.2615 5.36351C27.6286 4.73057 26.7701 4.37499 25.875 4.37499ZM25.875 8.875C25.6525 8.875 25.435 8.80902 25.25 8.6854C25.065 8.56178 24.9208 8.38608 24.8357 8.18052C24.7505 7.97495 24.7282 7.74875 24.7717 7.53052C24.8151 7.31229 24.9222 7.11184 25.0795 6.9545C25.2369 6.79717 25.4373 6.69002 25.6556 6.64661C25.8738 6.6032 26.1 6.62548 26.3056 6.71063C26.5111 6.79578 26.6868 6.93997 26.8104 7.12498C26.9341 7.30998 27 7.52749 27 7.75C27 8.04837 26.8815 8.33451 26.6705 8.54549C26.4596 8.75647 26.1734 8.875 25.875 8.875ZM21.375 13.25H2.25C1.95163 13.25 1.66549 13.3685 1.45451 13.5795C1.24353 13.7905 1.125 14.0766 1.125 14.375C1.125 14.6734 1.24353 14.9595 1.45451 15.1705C1.66549 15.3815 1.95163 15.5 2.25 15.5H18.2025C17.9636 16.1758 17.946 16.9102 18.1524 17.5967C18.3588 18.2832 18.7784 18.8861 19.3504 19.3182C19.9224 19.7502 20.6172 19.9889 21.3339 19.9996C22.0507 20.0104 22.7522 19.7926 23.337 19.3779C23.9217 18.9632 24.3592 18.3731 24.586 17.6932C24.8129 17.0132 24.8174 16.2786 24.5988 15.5959C24.3802 14.9132 23.95 14.3178 23.3703 13.896C22.7907 13.4743 22.0919 13.248 21.375 13.25ZM21.375 17.75C21.1525 17.75 20.935 17.684 20.75 17.5604C20.565 17.4368 20.4208 17.2611 20.3357 17.0555C20.2505 16.85 20.2282 16.6238 20.2716 16.4055C20.3151 16.1873 20.4222 15.9868 20.5795 15.8295C20.7369 15.6722 20.9373 15.565 21.1556 15.5216C21.3738 15.4782 21.6 15.5005 21.8055 15.5856C22.0111 15.6708 22.1868 15.815 22.3104 16C22.4341 16.185 22.5 16.4025 22.5 16.625C22.5 16.9234 22.3815 17.2095 22.1705 17.4205C21.9595 17.6315 21.6734 17.75 21.375 17.75Z" fill="black" fill-opacity="0.74"/></svg>' , 'application/xml');
-		
-		var iconD = new DOMParser().parseFromString('<svg height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 0C4.93263 0 0 4.93263 0 11C0 17.0674 4.93263 22 11 22C17.0674 22 22 17.0674 22 11C22 4.93263 17.0674 0 11 0ZM11 19.8695C6.11368 19.8695 2.13053 15.8863 2.13053 11C2.13053 6.11368 6.11368 2.13053 11 2.13053C15.8863 2.13053 19.8695 6.11368 19.8695 11C19.8695 15.8863 15.8863 19.8695 11 19.8695Z" fill="black" fill-opacity="0.74"/><path d="M14.7286 5.9053L9.24013 8.29056C8.80013 8.47582 8.45276 8.82319 8.2675 9.26319L5.90539 14.7285C5.53487 15.5853 6.41487 16.4653 7.27171 16.0948L12.7601 13.7095C13.2001 13.5242 13.5475 13.1769 13.7328 12.7369L16.0949 7.27161C16.4886 6.39161 15.6086 5.51161 14.7286 5.9053ZM11.9728 11.9727C11.4401 12.5053 10.5833 12.5053 10.0507 11.9727C9.51803 11.44 9.51803 10.5832 10.0507 10.0506C10.5833 9.51793 11.4401 9.51793 11.9728 10.0506C12.5054 10.56 12.5054 11.44 11.9728 11.9727Z" fill="black" fill-opacity="0.74"/></svg>' , 'application/xml');
-		
-		var iconB = new DOMParser().parseFromString('<svg width="20" height="20" viewBox="0 0 20 20" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M11.1785 10L13.831 12.6525C14.156 12.9775 14.1579 13.5025 13.8302 13.8302C13.5047 14.1556 12.9772 14.1557 12.6525 13.831L10 11.1785L7.34747 13.831C7.02252 14.156 6.49754 14.1579 6.16984 13.8302C5.8444 13.5047 5.84427 12.9772 6.16896 12.6525L8.82149 10L6.16896 7.34747C5.84401 7.02252 5.84213 6.49754 6.16984 6.16984C6.49528 5.8444 7.02278 5.84427 7.34747 6.16896L10 8.82149L12.6525 6.16896C12.9775 5.84401 13.5025 5.84213 13.8302 6.16984C14.1556 6.49528 14.1557 7.02278 13.831 7.34747L11.1785 10ZM10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20ZM10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z"  fill-opacity="0.5"/></svg>' , 'application/xml');
-		
-		var iconI = new DOMParser().parseFromString('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.3728 0 0 5.3728 0 12C0 18.6272 5.3728 24 12 24C18.6272 24 24 18.6272 24 12C24 5.3728 18.6272 0 12 0ZM10.6133 17.1797V11.6864C10.6133 11.3186 10.7594 10.9659 11.0195 10.7059C11.2795 10.4458 11.6322 10.2997 12 10.2997C12.3678 10.2997 12.7205 10.4458 12.9805 10.7059C13.2406 10.9659 13.3867 11.3186 13.3867 11.6864V17.1797C13.3867 17.5475 13.2406 17.9002 12.9805 18.1603C12.7205 18.4203 12.3678 18.5664 12 18.5664C11.6322 18.5664 11.2795 18.4203 11.0195 18.1603C10.7594 17.9002 10.6133 17.5475 10.6133 17.1797ZM12 8.78667C11.6704 8.78667 11.3481 8.68892 11.074 8.50578C10.8 8.32265 10.5863 8.06235 10.4602 7.75781C10.3341 7.45326 10.301 7.11815 10.3654 6.79485C10.4297 6.47155 10.5884 6.17458 10.8215 5.94149C11.0546 5.7084 11.3515 5.54967 11.6748 5.48536C11.9982 5.42105 12.3333 5.45405 12.6378 5.5802C12.9423 5.70635 13.2026 5.91997 13.3858 6.19405C13.5689 6.46813 13.6667 6.79036 13.6667 7.12C13.6667 7.56203 13.4911 7.98595 13.1785 8.29851C12.866 8.61107 12.442 8.78667 12 8.78667Z" fill="white"/></svg>' , 'application/xml');
-		
+
+		var iconW = new DOMParser().parseFromString('<svg class="weather_icon" height="20" viewBox="0 0 30 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.50001 6.75H18.125C18.8419 6.75201 19.5407 6.52573 20.1203 6.10395C20.7 5.68217 21.1302 5.0868 21.3488 4.40409C21.5674 3.72139 21.5629 2.98683 21.336 2.30684C21.1092 1.62685 20.6717 1.03676 20.0869 0.62207C19.5022 0.207381 18.8007 -0.0103669 18.0839 0.000379477C17.3672 0.0111259 16.6724 0.249808 16.1004 0.681841C15.5284 1.11387 15.1088 1.71681 14.9024 2.4033C14.696 3.08978 14.7136 3.82415 14.9525 4.49999H3.50001C3.20164 4.49999 2.91549 4.61852 2.70451 4.8295C2.49353 5.04048 2.37501 5.32663 2.37501 5.62499C2.37501 5.92336 2.49353 6.20951 2.70451 6.42049C2.91549 6.63147 3.20164 6.75 3.50001 6.75ZM17 3.37499C17 3.15249 17.066 2.93498 17.1896 2.74997C17.3132 2.56497 17.4889 2.42077 17.6945 2.33563C17.9001 2.25048 18.1263 2.2282 18.3445 2.27161C18.5627 2.31502 18.7632 2.42216 18.9205 2.5795C19.0779 2.73683 19.185 2.93729 19.2284 3.15551C19.2718 3.37374 19.2495 3.59994 19.1644 3.80551C19.0792 4.01108 18.9351 4.18678 18.75 4.3104C18.565 4.43401 18.3475 4.49999 18.125 4.49999C17.8267 4.49999 17.5405 4.38147 17.3295 4.17049C17.1186 3.95951 17 3.67336 17 3.37499ZM25.875 4.37499C25.3359 4.37651 24.805 4.50716 24.3267 4.75601C23.8484 5.00485 23.4367 5.36466 23.1261 5.8053C22.8154 6.24594 22.6149 6.75459 22.5412 7.28866C22.4675 7.82274 22.5228 8.3667 22.7025 8.875H1.125C0.826633 8.875 0.540484 8.99353 0.329505 9.2045C0.118527 9.41548 0 9.70163 0 10C0 10.2984 0.118527 10.5845 0.329505 10.7955C0.540484 11.0065 0.826633 11.125 1.125 11.125H25.875C26.7701 11.125 27.6286 10.7694 28.2615 10.1365C28.8945 9.50355 29.25 8.6451 29.25 7.75C29.25 6.85489 28.8945 5.99644 28.2615 5.36351C27.6286 4.73057 26.7701 4.37499 25.875 4.37499ZM25.875 8.875C25.6525 8.875 25.435 8.80902 25.25 8.6854C25.065 8.56178 24.9208 8.38608 24.8357 8.18052C24.7505 7.97495 24.7282 7.74875 24.7717 7.53052C24.8151 7.31229 24.9222 7.11184 25.0795 6.9545C25.2369 6.79717 25.4373 6.69002 25.6556 6.64661C25.8738 6.6032 26.1 6.62548 26.3056 6.71063C26.5111 6.79578 26.6868 6.93997 26.8104 7.12498C26.9341 7.30998 27 7.52749 27 7.75C27 8.04837 26.8815 8.33451 26.6705 8.54549C26.4596 8.75647 26.1734 8.875 25.875 8.875ZM21.375 13.25H2.25C1.95163 13.25 1.66549 13.3685 1.45451 13.5795C1.24353 13.7905 1.125 14.0766 1.125 14.375C1.125 14.6734 1.24353 14.9595 1.45451 15.1705C1.66549 15.3815 1.95163 15.5 2.25 15.5H18.2025C17.9636 16.1758 17.946 16.9102 18.1524 17.5967C18.3588 18.2832 18.7784 18.8861 19.3504 19.3182C19.9224 19.7502 20.6172 19.9889 21.3339 19.9996C22.0507 20.0104 22.7522 19.7926 23.337 19.3779C23.9217 18.9632 24.3592 18.3731 24.586 17.6932C24.8129 17.0132 24.8174 16.2786 24.5988 15.5959C24.3802 14.9132 23.95 14.3178 23.3703 13.896C22.7907 13.4743 22.0919 13.248 21.375 13.25ZM21.375 17.75C21.1525 17.75 20.935 17.684 20.75 17.5604C20.565 17.4368 20.4208 17.2611 20.3357 17.0555C20.2505 16.85 20.2282 16.6238 20.2716 16.4055C20.3151 16.1873 20.4222 15.9868 20.5795 15.8295C20.7369 15.6722 20.9373 15.565 21.1556 15.5216C21.3738 15.4782 21.6 15.5005 21.8055 15.5856C22.0111 15.6708 22.1868 15.815 22.3104 16C22.4341 16.185 22.5 16.4025 22.5 16.625C22.5 16.9234 22.3815 17.2095 22.1705 17.4205C21.9595 17.6315 21.6734 17.75 21.375 17.75Z" fill="black" fill-opacity="0.74"/></svg>' , 'application/xml');
+
+		var iconD = new DOMParser().parseFromString('<svg class="weather_icon" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 0C4.93263 0 0 4.93263 0 11C0 17.0674 4.93263 22 11 22C17.0674 22 22 17.0674 22 11C22 4.93263 17.0674 0 11 0ZM11 19.8695C6.11368 19.8695 2.13053 15.8863 2.13053 11C2.13053 6.11368 6.11368 2.13053 11 2.13053C15.8863 2.13053 19.8695 6.11368 19.8695 11C19.8695 15.8863 15.8863 19.8695 11 19.8695Z" fill="black" fill-opacity="0.74"/><path d="M14.7286 5.9053L9.24013 8.29056C8.80013 8.47582 8.45276 8.82319 8.2675 9.26319L5.90539 14.7285C5.53487 15.5853 6.41487 16.4653 7.27171 16.0948L12.7601 13.7095C13.2001 13.5242 13.5475 13.1769 13.7328 12.7369L16.0949 7.27161C16.4886 6.39161 15.6086 5.51161 14.7286 5.9053ZM11.9728 11.9727C11.4401 12.5053 10.5833 12.5053 10.0507 11.9727C9.51803 11.44 9.51803 10.5832 10.0507 10.0506C10.5833 9.51793 11.4401 9.51793 11.9728 10.0506C12.5054 10.56 12.5054 11.44 11.9728 11.9727Z" fill="black" fill-opacity="0.74"/></svg>' , 'application/xml');
+
+		var iconB = new DOMParser().parseFromString('<svg class="weather_icon" width="20" height="20" viewBox="0 0 20 20" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M11.1785 10L13.831 12.6525C14.156 12.9775 14.1579 13.5025 13.8302 13.8302C13.5047 14.1556 12.9772 14.1557 12.6525 13.831L10 11.1785L7.34747 13.831C7.02252 14.156 6.49754 14.1579 6.16984 13.8302C5.8444 13.5047 5.84427 12.9772 6.16896 12.6525L8.82149 10L6.16896 7.34747C5.84401 7.02252 5.84213 6.49754 6.16984 6.16984C6.49528 5.8444 7.02278 5.84427 7.34747 6.16896L10 8.82149L12.6525 6.16896C12.9775 5.84401 13.5025 5.84213 13.8302 6.16984C14.1556 6.49528 14.1557 7.02278 13.831 7.34747L11.1785 10ZM10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20ZM10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z"  fill-opacity="0.5"/></svg>' , 'application/xml');
+
+		var iconI = new DOMParser().parseFromString('<svg class="weather_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.3728 0 0 5.3728 0 12C0 18.6272 5.3728 24 12 24C18.6272 24 24 18.6272 24 12C24 5.3728 18.6272 0 12 0ZM10.6133 17.1797V11.6864C10.6133 11.3186 10.7594 10.9659 11.0195 10.7059C11.2795 10.4458 11.6322 10.2997 12 10.2997C12.3678 10.2997 12.7205 10.4458 12.9805 10.7059C13.2406 10.9659 13.3867 11.3186 13.3867 11.6864V17.1797C13.3867 17.5475 13.2406 17.9002 12.9805 18.1603C12.7205 18.4203 12.3678 18.5664 12 18.5664C11.6322 18.5664 11.2795 18.4203 11.0195 18.1603C10.7594 17.9002 10.6133 17.5475 10.6133 17.1797ZM12 8.78667C11.6704 8.78667 11.3481 8.68892 11.074 8.50578C10.8 8.32265 10.5863 8.06235 10.4602 7.75781C10.3341 7.45326 10.301 7.11815 10.3654 6.79485C10.4297 6.47155 10.5884 6.17458 10.8215 5.94149C11.0546 5.7084 11.3515 5.54967 11.6748 5.48536C11.9982 5.42105 12.3333 5.45405 12.6378 5.5802C12.9423 5.70635 13.2026 5.91997 13.3858 6.19405C13.5689 6.46813 13.6667 6.79036 13.6667 7.12C13.6667 7.56203 13.4911 7.98595 13.1785 8.29851C12.866 8.61107 12.442 8.78667 12 8.78667Z" fill="white"/></svg>' , 'application/xml');
+
         this.weather_dot.innerHTML =
 		'●';
         this.weather_text.innerHTML =
-		'&nbsp&nbsp' + 'Atlantic Ocean, ' + month + ' ' + cDay + ' at ' + cTime + 
+		'&nbsp&nbsp' + 'Atlantic Ocean, ' + month + ' ' + cDay + ' at ' + cTime +
 		'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
-	
+
 		this.weather_text.appendChild(iconW.documentElement);
-		
+
 		this.weather_text.innerHTML +=
 		'&nbsp&nbsp' + round( this.data.param.live_data.current.wind_kph, 100 ) + ' km/h' +
 		'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
-		
+
 		this.weather_text.appendChild(iconD.documentElement);
-		
+
 		this.weather_text.innerHTML +=
 		'&nbsp&nbsp' + round( this.data.param.live_data.current.wind_degree, 100 ) + 'º' + ' ' + ion.data.param.live_data.current.wind_dir;
-		
+
 		this.weather_sound.innerHTML =
 		'';
-		
+
         this.weather_bt.innerHTML =
 		'';
 		// this.weather_bt.appendChild(iconB.documentElement);
-		
+
         this.weather_in.innerHTML =
 		'';
 		// this.weather_in.appendChild(iconI.documentElement);
 
-	
+
     },
-	
+
 	showUI : function() {
 		document.getElementById('weather-info').style.bottom="0%"
 	},
-	
+
 	hideUI : function() {
 		document.getElementById('weather-info').style.bottom="-10%"
 	},
-	
+
 	soundSwitch: function() {
-		
+
 		if (ion.options.audio == true ) {
 			document.getElementById('weather-sound').style.backgroundColor= "#ff532f";
 			document.getElementById('weather-sound').style.opacity=0.8;
@@ -6933,7 +6933,7 @@ IonVR.prototype = {
 			ion.camera.getObjectByName('audioMain').gain.context.suspend();
 			ion.options.audio=true;
 		}
-		
+
 	},
 
     initScene : function ( sc ) {
@@ -7017,14 +7017,14 @@ IonVR.prototype = {
             //this.scene.add( skybox );
 			this.scene.background = this.sc.textures[this.options.skybox_tx];
         }
-		
+
         // sky
         if ( this.options.sky ) {
-		
+
 			var sunLight = new THREE.DirectionalLight( 0xfeeacc, this.data.param.sun.intensity );
 			sunLight.position.set(380, 4.3, 123);
 			sunLight.name = 'sunLight';
-			
+
             var sky = new THREE.Sky();
 			sky.name = 'sky';
 			var uniforms = sky.material.uniforms;
@@ -7044,13 +7044,13 @@ IonVR.prototype = {
 			this.scene.add( sunLight );
 			this.scene.add( cubeCamera );
 			this.scene.add( sky );
-			ion.sc.objects.house.material[0].envMap = 
-			ion.sc.objects.house.material[1].envMap = 
+			ion.sc.objects.house.material[0].envMap =
+			ion.sc.objects.house.material[1].envMap =
 			ion.sc.objects.house.material[2].envMap = cubeCamera.renderTarget.texture;
         }
-		
+
 		if ( this.options.lightprobe ) {
-			
+
 			var lightProbe = new THREE.LightProbe();
 			lightProbe.name = 'lightProbe';
 			this.scene.add( lightProbe );
@@ -7058,125 +7058,125 @@ IonVR.prototype = {
 				lightProbe.copy( THREE.LightProbeGenerator.fromCubeTexture( this.sc.textures[ this.options.lightprobe_tx ] ) );
 			} else {};
 			lightProbe.intensity =  this.options.lightprobeInt;
-			
+
 			if (this.options.lightprobe_set == "env_cube1") {
 			// city bg sh
 			lightProbe.sh.fromArray([
-				0.21988952323971958, 
-				0.353873883080967, 
-				0.5979957196333927, 
-				0.06558677467388137, 
-				0.168535799494315, 
-				0.3727295821407715, 
-				-2.838907723444506e-14, 
-				-3.954370089901607e-14, 
-				-4.022441719324286e-14, 
-				2.838929245680154e-14, 
-				3.954331642208093e-14, 
-				4.0224862808547535e-14, 
-				-1.0201367426154214e-15, 
-				5.862222392184944e-15, 
-				-6.706257573915519e-15, 
-				1.0201908564157353e-15, 
-				-5.861917556646891e-15, 
-				6.7057196117202916e-15, 
-				0.09217011442613726, 
-				0.10671077188574228, 
-				0.11792560917973822, 
-				-4.880465721524953e-19, 
-				9.756262751934876e-19, 
-				-4.760480508502691e-18, 
-				0.15964303814943762, 
-				0.18482815100295383, 
+				0.21988952323971958,
+				0.353873883080967,
+				0.5979957196333927,
+				0.06558677467388137,
+				0.168535799494315,
+				0.3727295821407715,
+				-2.838907723444506e-14,
+				-3.954370089901607e-14,
+				-4.022441719324286e-14,
+				2.838929245680154e-14,
+				3.954331642208093e-14,
+				4.0224862808547535e-14,
+				-1.0201367426154214e-15,
+				5.862222392184944e-15,
+				-6.706257573915519e-15,
+				1.0201908564157353e-15,
+				-5.861917556646891e-15,
+				6.7057196117202916e-15,
+				0.09217011442613726,
+				0.10671077188574228,
+				0.11792560917973822,
+				-4.880465721524953e-19,
+				9.756262751934876e-19,
+				-4.760480508502691e-18,
+				0.15964303814943762,
+				0.18482815100295383,
 				0.20425278456377272]);
 			} else if (this.options.lightprobe_set == "studio1") {
 			//studio sh
 			lightProbe.sh.fromArray([
-				0.029401531146369564, 
-				0.030393056150284967, 
-				0.03882441978503216, 
-				-0.006532247813053846, 
-				-0.006830553369357048, 
-				-0.00876550792363131, 
-				0.0054872013622510795, 
-				0.005761665763592089, 
-				0.007102911675978676, 
-				0.001051650901536813, 
-				0.0008596636445337802, 
-				0.0006091165567122502, 
-				-0.0036529445742401667, 
-				-0.003961831226970255, 
-				-0.005260862974352544, 
-				-0.004670203370822745, 
-				-0.005086150563277629, 
-				-0.0060334392731383295, 
-				-0.0005266474551182757, 
-				-0.0005770949473494129, 
-				-0.0006364091203026864, 
-				0.0027920785910252243, 
-				0.00304628013386876, 
-				0.004018038061411669, 
-				0.0005419559484224849, 
-				0.0005783680671260237, 
+				0.029401531146369564,
+				0.030393056150284967,
+				0.03882441978503216,
+				-0.006532247813053846,
+				-0.006830553369357048,
+				-0.00876550792363131,
+				0.0054872013622510795,
+				0.005761665763592089,
+				0.007102911675978676,
+				0.001051650901536813,
+				0.0008596636445337802,
+				0.0006091165567122502,
+				-0.0036529445742401667,
+				-0.003961831226970255,
+				-0.005260862974352544,
+				-0.004670203370822745,
+				-0.005086150563277629,
+				-0.0060334392731383295,
+				-0.0005266474551182757,
+				-0.0005770949473494129,
+				-0.0006364091203026864,
+				0.0027920785910252243,
+				0.00304628013386876,
+				0.004018038061411669,
+				0.0005419559484224849,
+				0.0005783680671260237,
 				0.0008420237221743866
 				]);
 			} else if (this.options.lightprobe_set == "ext1") {
 			//ext1
 			lightProbe.sh.fromArray([
-				1.0406571709113295, 
-				1.161886628443305, 
-				1.3063027226917772, 
-				-0.6490791656527983, 
-				-0.49548467256667383, 
-				-0.31325949844248935, 
-				0.04381565686615428, 
-				0.06532099855040499, 
-				0.07807386785800434, 
-				0.08630908113628857, 
-				-0.10730147835215309, 
-				-0.10939680130133521, 
-				-0.22306053341686657, 
-				-0.2557966190958097, 
-				-0.2506786037181489, 
-				0.020464629184951535, 
-				0.028274316528776787, 
-				0.0298683696140515, 
-				-0.09474396955458116, 
-				-0.10071400468444641, 
-				-0.11257025430936203, 
-				-0.040398956433938614, 
-				-0.044402750362525285, 
-				-0.04342718627203005, 
-				0.14164765158865514, 
-				0.15794017769014346, 
+				1.0406571709113295,
+				1.161886628443305,
+				1.3063027226917772,
+				-0.6490791656527983,
+				-0.49548467256667383,
+				-0.31325949844248935,
+				0.04381565686615428,
+				0.06532099855040499,
+				0.07807386785800434,
+				0.08630908113628857,
+				-0.10730147835215309,
+				-0.10939680130133521,
+				-0.22306053341686657,
+				-0.2557966190958097,
+				-0.2506786037181489,
+				0.020464629184951535,
+				0.028274316528776787,
+				0.0298683696140515,
+				-0.09474396955458116,
+				-0.10071400468444641,
+				-0.11257025430936203,
+				-0.040398956433938614,
+				-0.044402750362525285,
+				-0.04342718627203005,
+				0.14164765158865514,
+				0.15794017769014346,
 				0.12746705307744025
 				]);
 			} else {}
 		}
-		
+
 		this.o = this.sc.objects;
 		this.m = this.sc.materials;
 		this.t = this.sc.textures;
 		this.c = this.sc.cameras;
 		this.pc = this.data.param;
     },
-	
+
 	updateSun : function() {
-	
+
 		var cTime = new Date(ion.data.param.live_data.current.last_updated).getHours();
 		var cMin = new Date(ion.data.param.live_data.current.last_updated).getMinutes();
-		
+
 		var cHour = cTime + (cMin * 0.016666);
 		var aziF = 0.5 + (cHour-7)/22;
-		
+
 		if ( aziF < 0.55 ) {
 			var azi = 0.55;
 		} else if ( aziF >= 0.55 && aziF <= 0.95) {
 			var azi = aziF;
 		} else if ( aziF > 0.95 ) {
 			var azi = 0.95;
-		} 
-		
+		}
+
 		if (cHour < 12 ) {
 			var inc = cHour/15;
 		} else if (cHour >= 12 ) {
@@ -7184,20 +7184,20 @@ IonVR.prototype = {
 		} else {
 			//var inc = 0.3
 		}
-		
+
 		this.data.param.sun.inclination = inc;
 		this.data.param.sun.azimuth = azi;
-		
+
 		// var inc = this.data.param.sun.inclination;
 		// var azi = this.data.param.sun.azimuth;
-		
+
 		//console.log('inc:', inc, 'azi:', azi)
-	
+
 		var sunLightparam = this.data.param.sun;
 		var sunLight = this.scene.getObjectByName('sunLight');
 		var cubeCamera = this.scene.getObjectByName('cubeCamera');
 		var sky = this.scene.getObjectByName('sky');
-		
+
 		var theta = Math.PI * ( inc - 0.5 );
 		var phi = 2 * Math.PI * ( azi - 0.5 );
 
@@ -7206,7 +7206,7 @@ IonVR.prototype = {
 		var sZ = sunLightparam.distance * Math.sin( phi ) * Math.cos( theta );
 		var sP = { r: sX, g: sY, b: sZ };
 		//console.log('sP:', sP);
-		
+
 		ion.animateParamToSMP6('position', sunLight.position, { x: sX, y: sY, z: sZ }, 800, easeInOutSine);
 		setTimeout(stepOne, 900);
 
@@ -7216,14 +7216,14 @@ IonVR.prototype = {
 			//ion.requestRender();
 			//console.log('sunLight.position:', ion.scene.getObjectByName('sunLight').position);
 		}
-		
+
 		if (inc > 0.5 && inc < 1.01  ) {
 				var ambInt = 0.1 + (inc - 0.2)
 			} else {
 				var ambInt = 0.1;
 			}
 		ion.animateParamToSMP('intensity', ion.scene.getObjectByName('light_ambient'), {intensity: ambInt}, 800, easeInOutSine);
-		
+
 		if (inc > 0.46 && inc < 0.8  ) {
 			var rgbF = (-0.75+(inc)) * -2.2;
 			var lMult = 0.85;
@@ -7231,29 +7231,29 @@ IonVR.prototype = {
 			var sGv = (0.88 * lMult) - rgbF;
 			var sBv = (0.72 * lMult) - rgbF;
 			var envMult = 1.5+(rgbF *5.5);
-			
-			
+
+
 			if (sRv >= 0 && sRv < 1) {
 				var sR = sRv;
 			} else {
 				var sR = 0;
-			}			
+			}
 			if (sGv >= 0 && sGv < 1) {
 				var sG = sGv;
 			} else {
 				var sG = 0;
-			}			
+			}
 			if (sBv >= 0 && sBv < 1) {
 				var sB = sBv;
 			} else {
 				var sB = 0;
 			}
-			
+
 			ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: sR, g: sG, b: sB }, 800, easeInOutSine);
 			// console.log('case1:', rgbF)
 			// console.log('envMult:', envMult);
 			ion.sc.materials.m_04.envMapIntensity = ion.sc.materials.m_01.envMapIntensity = envMult;
-			
+
 			setTimeout(stepOne, 1600);
 
 			function stepOne() {
@@ -7263,18 +7263,18 @@ IonVR.prototype = {
 			ion.animateParamToSMP('color', ion.scene.getObjectByName('sunLight').color, { r: 0.01, g: 0.01, b: 0.02 }, 1600, easeInOutSine);
 			ion.sc.materials.m_04.envMapIntensity = ion.sc.materials.m_01.envMapIntensity = 7;
 			//console.log('case3')
-		
+
 			setTimeout(stepOne, 1600);
 
 			function stepOne() {
 				ion.animateParamToSMP('color', ion.scene.getObjectByName('light_cam').color, { r: 0.004, g: 0.004, b: 0.02 }, 800, easeInOutSine);
 			}
 		}
-		
+
 	},
-	
+
 	initAudio : function() {
-	
+
 		const listener = new THREE.AudioListener();
 		listener.name = 'audioMain';
 		this.camera.add( listener );
@@ -7321,7 +7321,7 @@ IonVR.prototype = {
 		water.rotation.x = -Math.PI / 2;
 		water.position.y = -24;
 		water.name = 'water';
-		
+
 		//water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
 
 		ion.scene.getObjectByName('main_group').add( water );
@@ -7466,7 +7466,7 @@ IonVR.prototype = {
 			} else {
 				this.orbit_controls.enablePan = false;
 			}
-			
+
 			if (this.camera.userData.parameters.screenSpacePanning !== undefined) {
 				this.orbit_controls.screenSpacePanning = this.camera.userData.parameters.screenSpacePanning;
 			} else {
@@ -7612,7 +7612,7 @@ IonVR.prototype = {
         this.animationHelper = new THREE.AnimationsHelper(
             this,
             function (name, arguments, duration, delay, easing, callback, endCallback) {
-			
+
                 scope.animateParamTo(name, arguments, duration, delay, easing, callback, endCallback);
 				//scope.animateParamToSMP(name, obj, end, duration, easing, callback); // very strange
 
@@ -7630,7 +7630,7 @@ IonVR.prototype = {
     		this.animateParamToSMP('rotate', this.main_group.rotation, { x: 0, y: this.options.rotate_left +(Math.PI * 2), z: 0 }, 900, easeInOutCubic);
     		this.log('spin');
             setTimeout(resetY, 1000);
-			
+
 			function resetY() {
 			ion.sc.objects.main_group.rotation.y = ion.options.rotate_left;
 				}
@@ -8198,11 +8198,11 @@ IonVR.prototype = {
     animate_simple: function(t) {
         var _this = this;
         requestAnimationFrame(function(t){ _this.animate_simple(t) }, this.renderer.domElement);
-							  
+
         this.processAnimations();
 
     },
-	
+
     animate: function (t) {
 
         if (this.renderer == null) {
@@ -8346,13 +8346,13 @@ IonVR.prototype = {
 
 
     render : function ( t ) {
-		
+
 		ion.scene.getObjectByName('sky').material.uniforms[ 'sunPosition' ].value = ion.scene.getObjectByName('sunLight').position;
 		ion.scene.getObjectByName('cubeCamera').update( ion.renderer, ion.scene.getObjectByName('sky') );
 
         this.renderer.clear();
         this.renderer.render( this.scene, this.camera );
-		
+
 		var time = performance.now() * 0.001;
 		if (ion.data.param.live_data.current.wind_kph >= 10) {
 			var speed = ion.data.param.live_data.current.wind_kph/8;
@@ -8365,13 +8365,13 @@ IonVR.prototype = {
             this.interfaces[ i ].renderer.clear();
             this.interfaces[ i ].renderer.render( this.interfaces[ i ].scene, this.interfaces[ i ].camera );
         }
-		
+
         if ( this.options.camera_info ) this.showCamInfo();
         if ( this.options.weather_info ) this.showLiveWeather();
     },
-	
+
 	fetchWeather : function () {
-	
+
 		var today = new Date();
 		var dd = String(today.getDate()).padStart(2, '0');
 		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -8379,30 +8379,30 @@ IonVR.prototype = {
 
 		var todayAstro = 'http://api.weatherapi.com/v1/astronomy.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144&dt=' + yyyy + '-' + mm + '-' + dd;
 		console.log(todayAstro);
-	
-	
-		fetch('http://api.weatherapi.com/v1/current.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144').then(res => res.json()).then(data => ion.data.param.live_data = data);	
+
+
+		fetch('http://api.weatherapi.com/v1/current.json?key=86e2cee98e40449a969174824200812&q=47.7086, -52.7144').then(res => res.json()).then(data => ion.data.param.live_data = data);
 		// fetch(todayAstro).then(res => res.json()).then(data => ion.data.param.live_astro = data);
-		
+
 		setTimeout(stepOne, 3000);
 		setTimeout(stepTwo, 300000);
 
 		function stepOne() {
 			ion.updateWeather();
 			ion.updateSun();
-			
+
 			// if ( ion.options.weather_info !== false && undefined ) {
 				// ion.showLiveWeather();
 			// }
-			
+
 		}
-		
+
 		function stepTwo() {
 			ion.fetchWeather();
 		}
-		
+
 	},
-	
+
 	updateWeather : function() {
 		var wind = ( ion.data.param.live_data.current.wind_degree / 57.325 );
 		var windSpeed = ( (ion.data.param.live_data.current.wind_kph / 57.325)/2 );
@@ -8417,24 +8417,24 @@ IonVR.prototype = {
 		}
 		var stepDuration = 300000/((ion.data.param.live_data.current.wind_kph/100)+1);
 		var randomSeed = 3;
-		
+
 		//ion.sc.objects.house.rotation.z = wind;
 		if (ion.data.param.live_data.current.wind_degree !== ion.data_stored.param.live_data.current.wind_degree) {
 			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: wind }, 300000, easeInOutCubic);
 			ion.data_stored.param.live_data.current.wind_degree = ion.data.param.live_data.current.wind_degree;
 			console.log('rotate house to win direction');
 		} else {
-		
+
 			setTimeout(stepOne, 0);
 			setTimeout(stepTwo, stepDuration);
-			
+
 			function stepOne() {
 			var valRandom1 = round ((((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1)+1*swivMult), 100);
 			var Z = round(wind + (windSpeed*valRandom1), 100);
 			console.log('step one: ', valRandom1, "angle: ", Z, round((Z * 57.325), 1), '°' );
 			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: Z }, stepDuration, easeInOutSine);
 			}
-			
+
 			function stepTwo() {
 			var valRandom1 = round ((((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1)+1*swivMult), 100);
 			var Z = round(wind - (windSpeed*valRandom1), 100);
@@ -8442,14 +8442,14 @@ IonVR.prototype = {
 			ion.animateParamToSMP3('rotate_house', ion.sc.objects.h1_group.rotation, { x: 0, y: 0, z: Z }, stepDuration, easeInOutSine);
 			}
 		}
-		
-		
+
+
 	},
-	
+
 	animateHouse : function() {
-	
+
 		var wind = ion.data.param.live_data.current.wind_kph;
-		
+
 		if (wind <= 9) {
 			var stepDuration = 5000;
 			//this.log('wind 0');
@@ -8473,15 +8473,15 @@ IonVR.prototype = {
 			//this.log('wind 80');
 		} else {
 			//this.log('wind 90');
-		
+
 		}
-		
+
 		var randomSeed = 3;
-		
+
 		var posMult = ion.data.param.wind_factor +(wind/20);
 		var rotMult = ion.data.param.wind_factor +ion.data.param.sway_factor +(wind/20);
 		var swivMult = ion.data.param.swiv_factor +(wind/20);
-		
+
 		setTimeout(stepOne, 0);
 		setTimeout(stepTwo, stepDuration);
 		setTimeout(stepThree, stepDuration*2);
@@ -8496,7 +8496,7 @@ IonVR.prototype = {
 			ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: round(-0.004*swivMult*valRandom1, 10000)*/  }, stepDuration, easeInOutSine);
 			//console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom1, 10000));
 		}
-		
+
 		function stepTwo() {
 			var valRandom1 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
@@ -8505,7 +8505,7 @@ IonVR.prototype = {
 		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: round(0.005*swivMult*valRandom3, 10000)*/ }, stepDuration, easeInOutSine);
 			//console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 		}
-		
+
 		function stepThree() {
 			var valRandom1 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
@@ -8513,33 +8513,33 @@ IonVR.prototype = {
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: 0.0,*/ y: 0.1*posMult*valRandom1, z: 0.1*posMult*valRandom2 }, stepDuration, easeInOutSine);
 		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: 0.0005*rotMult*valRandom3, y: 0.002*rotMult*valRandom2/*, z: round(-0.004*swivMult*valRandom2, 10000)*/ }, stepDuration, easeInOutSine);
 			//console.log('new sequence', swivMult, round(-0.004*swivMult*valRandom2, 10000));
-			
+
 		}
-		
+
 		function stepFour() {
 			var valRandom1 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom2 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			var valRandom3 = round (((Math.random() * (randomSeed - (-randomSeed)) + randomSeed)*0.1), 100)+0.5;
 			ion.animateParamToSMP4('rocking_position', ion.sc.objects.h2_group.position, { /*x: -0.0*posMult, */ y: 0, z: -0.2*posMult*valRandom1 }, stepDuration, easeInOutSine);
 		ion.animateParamToSMP2('rocking_rotation', ion.sc.objects.h3_group.rotation, { x: -0.0005*rotMult*valRandom2, y: -0.002*rotMult*valRandom1/*, z: round(0.005*swivMult*valRandom3, 10000)*/ }, stepDuration, easeInOutSine);
-			
+
 			if (ion.data.param.animation !== false) {
 				setTimeout(ion.animateHouse, stepDuration);
 				//console.log('new sequence', swivMult, round(0.005*swivMult*valRandom3, 10000));
 			} else {}
 		}
-		
+
 		/*
-		
+
 		{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.01, "z": 0.02}},
 		{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": 0.0, "z": -0.03}},
 		{"position" : {"x": 0, "y": 1, "z": 0.5}, "rotation" : {"x": 0, "y": 0.02, "z": 0.01}},
 		{"position" : {"x": 1, "y": 0, "z": -1}, "rotation" : {"x": 0.01, "y": -0.01, "z": -0.02}}
-		
+
 		*/
-		
+
 	},
-	
+
 	updateMaterial : function() {
 		var opt = this.options;
 		var url = "";
@@ -8552,9 +8552,9 @@ IonVR.prototype = {
 		var st = ion.data_stored.param;
 		var stm = ion.data_stored.param.materials;
 
-		
+
 		if (matNoo = 'mat_01', pcm[matNoo] != undefined || null)   {
-			
+
 			let matNo = matNoo;
 			let matAr = matNo.substring(4,6);
 			let pcMat = pcm[matNo];
@@ -8563,7 +8563,7 @@ IonVR.prototype = {
 			let albedoTex = pcMat.map;
 			let roughnessTex = pcMat.roughnessMap;
 			let bumpTex = pcMat.bumpMap;
-			
+
 			if (albedoTex != undefined || null) {
 				if (pcm[matNo].map != stm[matNo].map) {
 					tex_loader.load(albedoTex,
@@ -8670,7 +8670,7 @@ IonVR.prototype = {
 				console.log('roughnessMap_' + matNo + '//null');
 			}
 
-			
+
 			if (pcMat.color != undefined || null ) {
 				var h = pcMat.color.h;
 				var s = pcMat.color.s;
@@ -8679,44 +8679,44 @@ IonVR.prototype = {
 			} else {
 				arMat.color.setHSL(0,0,0.5) ;
 			}
-			
+
 			if ( bumpTex != null && pcMat.bumpScale != undefined || null) {
 				arMat.bumpScale = pcMat.bumpScale;
 			} else {
 				arMat.bumpScale = 0;
 			}
-			
+
 			if (pcMat.envMapIntensity != undefined || null ) {
 				arMat.envMapIntensity = pcMat.envMapIntensity;
 			} else {
 				arMat.envMapIntensity = 1;
 			}
-			
+
 			if (pcMat.metalness != undefined || null ) {
 				arMat.metalness = pcMat.metalness;
 			} else {
 				arMat.metalness = 0;
 			}
-			
+
 			if (pcMat.roughness != undefined || null ) {
 				arMat.roughness = pcMat.roughness;
 			} else {
 				arMat.roughness = 0.5;
 			}
-			
+
 			if (arMat.type == "MeshPhysicalMaterial" ) {
 				if (pcMat.clearCoat != undefined || null ) {
 					arMat.clearCoat = pcMat.clearCoat;
 				} else {
 					arMat.clearCoat = 0;
 				}
-				
+
 				if (pcMat.clearCoatRoughness != undefined || null ) {
 					arMat.clearCoatRoughness = pcMat.clearCoatRoughness;
 				} else {
 					arMat.clearCoatRoughness = 0;
 				}
-				
+
 				if (pcMat.reflectivity != undefined || null ) {
 					arMat.reflectivity = pcMat.reflectivity;
 				} else {
@@ -8724,16 +8724,16 @@ IonVR.prototype = {
 				}
 			} else {
 			}
-			
+
 			this.applyMaterials();
 			this.requestRender();
-			
-		} else {
-		}	
 
-		
+		} else {
+		}
+
+
 		if (matNoo = 'mat_02', pcm[matNoo] != undefined || null)   {
-			
+
 			let matNo = matNoo;
 			let matAr = matNo.substring(4,6);
 			let pcMat = pcm[matNo];
@@ -8742,7 +8742,7 @@ IonVR.prototype = {
 			let albedoTex = pcMat.map;
 			let roughnessTex = pcMat.roughnessMap;
 			let bumpTex = pcMat.bumpMap;
-			
+
 			if (albedoTex != undefined || null) {
 				if (pcm[matNo].map != stm[matNo].map) {
 					tex_loader.load(albedoTex,
@@ -8849,7 +8849,7 @@ IonVR.prototype = {
 				console.log('roughnessMap_' + matNo + '//null');
 			}
 
-			
+
 			if (pcMat.color != undefined || null ) {
 				var h = pcMat.color.h;
 				var s = pcMat.color.s;
@@ -8858,44 +8858,44 @@ IonVR.prototype = {
 			} else {
 				arMat.color.setHSL(0,0,0.5) ;
 			}
-			
+
 			if ( bumpTex != null && pcMat.bumpScale != undefined || null) {
 				arMat.bumpScale = pcMat.bumpScale;
 			} else {
 				arMat.bumpScale = 0;
 			}
-			
+
 			if (pcMat.envMapIntensity != undefined || null ) {
 				arMat.envMapIntensity = pcMat.envMapIntensity;
 			} else {
 				arMat.envMapIntensity = 1;
 			}
-			
+
 			if (pcMat.metalness != undefined || null ) {
 				arMat.metalness = pcMat.metalness;
 			} else {
 				arMat.metalness = 0;
 			}
-			
+
 			if (pcMat.roughness != undefined || null ) {
 				arMat.roughness = pcMat.roughness;
 			} else {
 				arMat.roughness = 0.5;
 			}
-			
+
 			if (arMat.type == "MeshPhysicalMaterial" ) {
 				if (pcMat.clearCoat != undefined || null ) {
 					arMat.clearCoat = pcMat.clearCoat;
 				} else {
 					arMat.clearCoat = 0;
 				}
-				
+
 				if (pcMat.clearCoatRoughness != undefined || null ) {
 					arMat.clearCoatRoughness = pcMat.clearCoatRoughness;
 				} else {
 					arMat.clearCoatRoughness = 0;
 				}
-				
+
 				if (pcMat.reflectivity != undefined || null ) {
 					arMat.reflectivity = pcMat.reflectivity;
 				} else {
@@ -8903,16 +8903,16 @@ IonVR.prototype = {
 				}
 			} else {
 			}
-			
+
 			this.applyMaterials();
 			this.requestRender();
-			
-		} else {
-		}	
 
-		
+		} else {
+		}
+
+
 		if (matNoo = 'mat_03', pcm[matNoo] != undefined || null)   {
-			
+
 			let matNo = matNoo;
 			let matAr = matNo.substring(4,6);
 			let pcMat = pcm[matNo];
@@ -8921,7 +8921,7 @@ IonVR.prototype = {
 			let albedoTex = pcMat.map;
 			let roughnessTex = pcMat.roughnessMap;
 			let bumpTex = pcMat.bumpMap;
-			
+
 			if (albedoTex != undefined || null) {
 				if (pcm[matNo].map != stm[matNo].map) {
 					tex_loader.load(albedoTex,
@@ -9028,7 +9028,7 @@ IonVR.prototype = {
 				console.log('roughnessMap_' + matNo + '//null');
 			}
 
-			
+
 			if (pcMat.color != undefined || null ) {
 				var h = pcMat.color.h;
 				var s = pcMat.color.s;
@@ -9037,44 +9037,44 @@ IonVR.prototype = {
 			} else {
 				arMat.color.setHSL(0,0,0.5) ;
 			}
-			
+
 			if ( bumpTex != null && pcMat.bumpScale != undefined || null) {
 				arMat.bumpScale = pcMat.bumpScale;
 			} else {
 				arMat.bumpScale = 0;
 			}
-			
+
 			if (pcMat.envMapIntensity != undefined || null ) {
 				arMat.envMapIntensity = pcMat.envMapIntensity;
 			} else {
 				arMat.envMapIntensity = 1;
 			}
-			
+
 			if (pcMat.metalness != undefined || null ) {
 				arMat.metalness = pcMat.metalness;
 			} else {
 				arMat.metalness = 0;
 			}
-			
+
 			if (pcMat.roughness != undefined || null ) {
 				arMat.roughness = pcMat.roughness;
 			} else {
 				arMat.roughness = 0.5;
 			}
-			
+
 			if (arMat.type == "MeshPhysicalMaterial" ) {
 				if (pcMat.clearCoat != undefined || null ) {
 					arMat.clearCoat = pcMat.clearCoat;
 				} else {
 					arMat.clearCoat = 0;
 				}
-				
+
 				if (pcMat.clearCoatRoughness != undefined || null ) {
 					arMat.clearCoatRoughness = pcMat.clearCoatRoughness;
 				} else {
 					arMat.clearCoatRoughness = 0;
 				}
-				
+
 				if (pcMat.reflectivity != undefined || null ) {
 					arMat.reflectivity = pcMat.reflectivity;
 				} else {
@@ -9082,23 +9082,23 @@ IonVR.prototype = {
 				}
 			} else {
 			}
-			
+
 			this.applyMaterials();
 			this.requestRender();
-			
+
 		} else {
-		}	
-		
+		}
+
 	},
-	
+
 	applyMaterials : function() {
-	
+
         var o = this.sc.objects;
 		// applies materials if replacement is needed
 
 	},
 
-	
+
 	collectData: function() {
         var serials = this.ion.skus2,
             serialsByTypes = this.serialsByTypes = {};
@@ -9113,7 +9113,7 @@ IonVR.prototype = {
 			// console.log("mat_name : " + mat_name);
 			// console.log( "printout:" + JSON.stringify( this.viewer.mat_lib ) );
         }
-		
+
 
 };
 
@@ -10182,7 +10182,7 @@ THREE.LightProbeGenerator = {
 
 
 THREE.Preloader = function ( webglContainer, options ) {
-	
+
 	var camera, scene, renderer, request, container;
 
 	this.start = function () {
