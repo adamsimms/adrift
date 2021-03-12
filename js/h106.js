@@ -6843,6 +6843,12 @@ IonVR.prototype = {
 			// this.weather_in.style.z-index = 100;
             this.container.appendChild( this.weather_in );
 			
+			this.weather_sound = $c( 'div' );
+            this.weather_sound.id = 'weather-sound';
+			this.weather_sound.onclick = ion.soundSwitch;
+			// this.weather_sound.style.z-index = 110;
+            this.weather_info.appendChild( this.weather_sound );
+			
 			this.weather_bt = $c( 'div' );
             this.weather_bt.id = 'weather-bt';
 			this.weather_bt.onclick = ion.hideUI;
@@ -6857,9 +6863,7 @@ IonVR.prototype = {
             this.weather_text = $c( 'div' );
             this.weather_text.id = 'weather-text';
 			// this.weather_text.style.z-index = 110;
-            this.weather_info.appendChild( this.weather_text );
-			
-			
+            this.weather_info.appendChild( this.weather_text );			
         };
 		
 		var currentDate = this.data.param.live_data.current.last_updated;
@@ -6895,6 +6899,9 @@ IonVR.prototype = {
 		this.weather_text.innerHTML +=
 		'&nbsp&nbsp' + round( this.data.param.live_data.current.wind_degree, 100 ) + 'º' + ' ' + ion.data.param.live_data.current.wind_dir;
 		
+		this.weather_sound.innerHTML =
+		'';
+		
         this.weather_bt.innerHTML =
 		'';
 		// this.weather_bt.appendChild(iconB.documentElement);
@@ -6912,6 +6919,21 @@ IonVR.prototype = {
 	
 	hideUI : function() {
 		document.getElementById('weather-info').style.bottom="-10%"
+	},
+	
+	soundSwitch: function() {
+		
+		if (ion.options.audio == true ) {
+			document.getElementById('weather-sound').style.backgroundColor= "#ff532f";
+			document.getElementById('weather-sound').style.opacity=0.8;
+			ion.camera.getObjectByName('audioMain').gain.context.resume();
+			ion.options.audio=false;
+		} else {
+			document.getElementById('weather-sound').style.backgroundColor= "#818181";
+			ion.camera.getObjectByName('audioMain').gain.context.suspend();
+			ion.options.audio=true;
+		}
+		
 	},
 
     initScene : function ( sc ) {
