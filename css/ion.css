@@ -304,21 +304,11 @@ button:hover {
 	z-index: 104;
 	/* identical to box height */
 	color: rgba(0, 0, 0, 0.73);
-	-webkit-transition: 2s ease-in-out;
-    -moz-transition: 2s ease-in-out;
-    -o-transition: 2s ease-in-out;
-    transition: 2s ease-in-out;
+	-webkit-transition: 1s ease-in-out;
+    -moz-transition: 1s ease-in-out;
+    -o-transition: 1s ease-in-out;
+    transition: 1s ease-in-out;
 }
-
-#weather-bt:hover + #weather-info{
-	z-index: 1000;
-	background: rgba(255, 255, 255, 0.73);
-    -webkit-transform: translate(540px,-200px);
-    -moz-transform: translate(540px,-200px);
-    -o-transform: translate(540px,-200px);
-    -ms-transform: translate(540px,-200px);
-    transform: translate(540px,-200px);
-  }
   
 #weather-text {
 	position: absolute;
@@ -386,7 +376,6 @@ button:hover {
     transition: 0.25s ease-in-out
 }
 
-
 #weather-bt  {
 	display: block;
 	opacity: 0.7;
@@ -414,6 +403,37 @@ button:hover {
     -moz-transition: 0.25s ease-in-out;
     -o-transition: 0.25s ease-in-out;
     transition: 0.25s ease-in-out;
+}
+
+
+#weather-sound  {
+	display: block;
+	opacity: 0.66;
+	position: absolute;
+	right: 110px;
+	bottom: 12px;
+	height: 32px;
+	width: 32px;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	color: rgba(0, 255, 0, 0.73);
+	background: #818181;
+	z-index: 1000;
+	-webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+	background-image:url('sound_t.png'); background-repeat:no-repeat; -webkit-background-size:cover; -moz-background-size:cover; -o-background-size:cover; background-size:cover;   background-position:center;
+}
+
+#weather-sound:hover {
+	opacity: 1.0;
+	-webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
 }
 
 #status-info {
