@@ -7198,7 +7198,7 @@ IonVR.prototype = {
 		var cubeCamera = this.scene.getObjectByName('cubeCamera');
 		var sky = this.scene.getObjectByName('sky');
 
-		var theta = Math.PI * ( inc - 0.5 );
+		var theta = Math.PI * ( inc - 0.4 ); // 0.4 sunrise 6am
 		var phi = 2 * Math.PI * ( azi - 0.5 );
 
 		var sX = sunLightparam.distance * Math.cos( phi );
