@@ -1,0 +1,101 @@
+# Push to main → rsync to pinchards.is/adrift/ on DreamHost (SSH).
+#
+# Secrets: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY
+# (same DreamHost deploy key as pinchards.is; FTP_SERVER_DIR is the site root)
+name: Deploy SFTP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: rsync dry-run (no files changed on server)
+        type: boolean
+        default: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH deploy key
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SSH_DEPLOY_KEY}" ]; then
+            echo "Missing secret: SSH_DEPLOY_KEY"
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/.ssh/deploy_key
+          printf '%s\n' "${SSH_DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null 2>&1; then
+            echo "SSH_DEPLOY_KEY is not a valid OpenSSH private key; trying base64 decode..."
+            printf '%s' "${SSH_DEPLOY_KEY}" | tr -d ' \t\r\n' | base64 -d > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+          fi
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null 2>&1; then
+            echo "::error::SSH_DEPLOY_KEY is invalid in GitHub Secrets."
+            exit 1
+          fi
+          host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Validate deploy secrets
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          set -euo pipefail
+          trim() { printf '%s' "$1" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'; }
+          FTP_SERVER="$(trim "${FTP_SERVER}")"
+          FTP_USERNAME="$(trim "${FTP_USERNAME}")"
+          FTP_SERVER_DIR="$(trim "${FTP_SERVER_DIR}")"
+          for name in FTP_SERVER FTP_USERNAME FTP_SERVER_DIR; do
+            if [ -z "${!name}" ]; then
+              echo "Missing secret: ${name}"
+              exit 1
+            fi
+          done
+
+      - name: Test SSH connection
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        run: |
+          set -euo pipefail
+          host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
+            "${user}@${host}" "echo SSH OK from GitHub Actions"
+
+      - name: SFTP deploy (rsync over SSH)
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          set -euo pipefail
+          host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          server_dir="$(printf '%s' "${FTP_SERVER_DIR}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+          server_dir="${server_dir%/}/adrift/"
+          dry_run=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            dry_run="--dry-run"
+          fi
+          dest="${host}:${server_dir}"
+          echo "rsync target: ${dest}"
+          rsync -avzr --delete ${dry_run} \
+            --exclude '.git/' \
+            --exclude '.git*/' \
+            --exclude '.github/' \
+            -e "ssh -i ${HOME}/.ssh/deploy_key -o BatchMode=yes -p 22 -l ${user}" \
+            ./ "${dest}"
