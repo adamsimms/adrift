@@ -1,2 +1,20 @@
-
 .DS_Store
+Thumbs.db
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*~
+
+# PHP / local config
+secrets.local.php
+.env
+.env.*
+
+# Logs and temp
+*.log
+.phpunit.result.cache
+
+# Node (viewer bundle build)
+node_modules/

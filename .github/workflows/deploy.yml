@@ -22,6 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Verify JS bundle
+        run: |
+          npm ci
+          npm run build:js
+          git diff --exit-code jsm/h106.js
+
       - name: Setup SSH deploy key
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
