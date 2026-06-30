@@ -15,14 +15,6 @@
 <script src="jsm/three.js"></script>
 <script src="jsm/h106.js"></script>
 
-<!-- <script src="js/r106/Water.js"></script> -->
-<!-- <script src="js/r106/Sky.js"></script> -->
-<!-- <script src="js/r106/WebGL.js"></script> -->
-<!-- <script src="js/r106/LightProbeGenerator.js"></script> -->
-
-<!-- <script src="js/viewer_hq.js"></script> -->
-<!-- <script src="js/preloader.js"></script> -->
-
 <input type="checkbox" name="toggle" id="toggle" accesskey="h"/>
 <label for="toggle" ></label>
 
@@ -179,8 +171,7 @@
     var progressOptions = {
         wrapper: $g('progress'),
         bar: $g('bar'),
-        background: 'css/berry.svg',
-		url: '/_yhouse_01'
+        background: 'css/berry.svg'
     };
 
     var preloader = new THREE.Preloader( $g('my_webgl'), progressOptions );
@@ -192,7 +183,7 @@
                 scene: '_yh1/_yh1.js',
                 secondary_scene: null,
                 container: $g('my_webgl'),
-                camera_animations: 'animations.json',
+                camera_animations: '_yh1/animations.json',
                 g_in: false,
                 g_out: false,
 				g_f: 2.2,
