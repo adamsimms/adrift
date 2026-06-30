@@ -15,3 +15,6 @@ secrets.local.php
 # Logs and temp
 *.log
 .phpunit.result.cache
+
+# Node (viewer bundle build)
+node_modules/

@@ -479,13 +479,6 @@
 
 	"textures": {
 
-		"env_cube2": {
-			"url": "_tex/env/sea1.jpg",
-			"magFilter": "LinearFilter",
-			"minFilter": "LinearMipMapLinearFilter",
-			"mapping": "EquirectangularReflectionMapping"
-		},
-
 		"env_cube1": {
 			"url": [
 				"_tex/env/q01_sides.jpg",
@@ -495,15 +488,6 @@
 				"_tex/env/q01_sides.jpg",
 				"_tex/env/q01_sides.jpg"
 			]
-		},
-
-		"bg_dome1": {
-			"url": "_tex/env/sea1.jpg",
-			"anisotropy": 8,
-			"repeat": [1, 1],
-			"magFilter": "LinearFilter",
-			"minFilter": "LinearMipMapLinearFilter",
-			"encoding": "LinearEncoding"
 		},
 
 		"tex_yh1": {

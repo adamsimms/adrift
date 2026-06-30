@@ -22,10 +22,10 @@ Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (par
 
 | Area | Purpose |
 |------|---------|
-| **`index.html`** | Scene entry point. Loads `jsm/three.js` and `jsm/h106.js`, initializes the IonVR viewer, and includes a hidden dev panel (toggle with **H**) for tuning lighting, wind, and time of day. |
-| **`_yh1/`** | Scene assets — `/_yh1.js` scene definition, textures (`_tex/`), 3D data (`_3d/`), `animations.json`, and audio references. |
-| **`jsm/`** | Production JavaScript — minified viewer bundle (`h106.js`) and Three.js r106 (`three.js`). |
-| **`js/`** | Readable viewer source (`h106.js`). Edit here, then update the `jsm/` bundle before deploying. |
+| **`index.html`** | Scene entry point. Loads `jsm/three.min.js` and `jsm/h106.js`, initializes the IonVR viewer. Dev panel is available at `?debug=1` (toggle with **H**). |
+| **`_yh1/`** | Scene assets — `_yh1.js` scene definition, textures (`_tex/`), 3D data (`_3d/yh1_2.ion`), `animations.json`, and audio references. |
+| **`jsm/`** | Production JavaScript — minified viewer bundle (`h106.js`) and Three.js r106 (`three.min.js`). |
+| **`js/`** | Readable viewer source (`h106.js`). Edit here, then run `npm run build:js` before deploying. |
 | **`lib/`** | PHP helpers for the weather proxy — `geomet.php` (GeoMet client), `helpers.php` (rate limiting), `env.php`. |
 | **`weather.php`** | JSON weather endpoint for the scene HUD. |
 | **`weather-console.html`** | Fetches `weather.php` and logs the response in browser devtools. |
@@ -43,7 +43,7 @@ Default coordinates target Pinchard's Island, Newfoundland (`49.2006, -53.4869`)
 
 ## Local development
 
-**Requirements:** PHP 8.1+ with the `curl` extension.
+**Requirements:** PHP 8.1+ with the `curl` extension. Node.js 20+ only if you edit the viewer JavaScript.
 
 ```bash
 git clone https://github.com/adamsimms/adrift.git
@@ -53,15 +53,23 @@ php -S localhost:8080
 
 Open [http://localhost:8080](http://localhost:8080). The scene loads without secrets; weather needs PHP for `weather.php`.
 
+Add `?debug=1` to the URL to show the dev tuning panel (lighting, wind, time of day).
+
 ### JavaScript workflow
 
 The live site loads the minified bundle in `jsm/`. When editing viewer behaviour:
 
 1. Edit `js/h106.js` (readable source).
-2. Update `jsm/h106.js` to match (minify or copy the changed sections).
+2. Regenerate the production bundle:
+
+   ```bash
+   npm install
+   npm run build:js
+   ```
+
 3. Test locally before opening a PR.
 
-`jsm/three.js` is Three.js r106 — upgrade only with care; the viewer targets that revision.
+`jsm/three.min.js` is Three.js r106 — upgrade only with care; the viewer targets that revision.
 
 ## Deploy
 
