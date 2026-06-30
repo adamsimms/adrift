@@ -22,7 +22,8 @@ Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (par
 
 | Area | Purpose |
 |------|---------|
-| **`index.html`** | Scene entry point. Loads `jsm/three.min.js` and `jsm/h106.js`, initializes the IonVR viewer. Dev panel is available at `?debug=1` (toggle with **H**). |
+| **`index.html`** | Production scene entry point — loads the viewer with no dev UI. |
+| **`dev.html`** | Dev/tuning page with lighting, wind, time-of-day, and camera controls (toggle panel with **H**). |
 | **`_yh1/`** | Scene assets — `_yh1.js` scene definition, textures (`_tex/`), 3D data (`_3d/yh1_2.ion`), `animations.json`, and audio references. |
 | **`jsm/`** | Production JavaScript — minified viewer bundle (`h106.js`) and Three.js r106 (`three.min.js`). |
 | **`js/`** | Readable viewer source (`h106.js`). Edit here, then run `npm run build:js` before deploying. |
@@ -53,7 +54,7 @@ php -S localhost:8080
 
 Open [http://localhost:8080](http://localhost:8080). The scene loads without secrets; weather needs PHP for `weather.php`.
 
-Add `?debug=1` to the URL to show the dev tuning panel (lighting, wind, time of day).
+Use [http://localhost:8080/dev.html](http://localhost:8080/dev.html) for the tuning panel.
 
 ### JavaScript workflow
 
@@ -67,7 +68,7 @@ The live site loads the minified bundle in `jsm/`. When editing viewer behaviour
    npm run build:js
    ```
 
-3. Test locally before opening a PR.
+3. Test locally (`index.html` and `dev.html` if you changed viewer behaviour) before opening a PR.
 
 `jsm/three.min.js` is Three.js r106 — upgrade only with care; the viewer targets that revision.
 

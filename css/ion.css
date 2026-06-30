@@ -110,7 +110,7 @@ button:hover {
     margin-bottom: 4px;
 }
 
-#clickMe3 {
+.dev-btn {
     font-family: 'Segoe UI' !important;
     border: 1px;
     width: 72px;
@@ -129,7 +129,7 @@ button:hover {
 }
 
 #clickMe2:hover,
-#clickMe3:hover,
+.dev-btn:hover,
 #mat-switch1:hover,
 #mat-switch2:hover,
 #mat-switch3:hover {
@@ -612,13 +612,6 @@ transition: margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
 
 #toggle:checked + label:after {
   content:"Hide UI"
-}
-
-/* Dev panel: only visible with ?debug=1 */
-html:not(.debug-mode) #toggle,
-html:not(.debug-mode) #toggle + label,
-html:not(.debug-mode) .menu {
-	display: none !important;
 }
 
 #progress {

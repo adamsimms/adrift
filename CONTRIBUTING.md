@@ -36,7 +36,7 @@ Match the existing style in the files you touch:
 
 - **PHP:** 8.1+, `declare(strict_types=1);` in new files, tabs for indentation. Weather helpers live in `lib/`. Functions use the `pinchard_*` prefix (shared lineage with [pinchards.is](https://github.com/adamsimms/pinchards.is)).
 - **JavaScript:** The readable viewer source is `js/h106.js`; the minified production bundle is `jsm/h106.js`. Edit the source, then run `npm run build:js` before shipping. `jsm/three.min.js` is Three.js r106.
-- **Scene assets:** Scene definition and textures live under `_yh1/`. Paths in `index.html` are relative to the repo root. Dev UI is gated behind `?debug=1`.
+- **Scene assets:** Scene definition and textures live under `_yh1/`. Paths in `index.html` are relative to the repo root. Dev tuning UI is in `dev.html`.
 - **Secrets:** This project needs no API keys or credentials. Never commit deploy keys or server passwords.
 
 ## Pull requests

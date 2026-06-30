@@ -542,24 +542,6 @@
 			"magFilter": "LinearFilter",
 			"minFilter": "LinearMipMapLinearFilter",
 			"encoding": "LinearEncoding"
-		},
-
-		"tex_water": {
-			"url": "_tex/waternormals.jpg",
-			"anisotropy": 8,
-			"repeat": [2, 2],
-			"magFilter": "LinearFilter",
-			"minFilter": "LinearMipMapLinearFilter",
-			"wrap": "repeat"
-		},
-
-		"tex_uv": {
-			"url": "tex/uv.jpg",
-			"anisotropy": 8,
-			"repeat": [2, 2],
-			"magFilter": "LinearFilter",
-			"minFilter": "LinearMipMapLinearFilter",
-			"wrap": "repeat"
 		}
 
 	},

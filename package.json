@@ -2,7 +2,7 @@
   "name": "adrift",
   "private": true,
   "scripts": {
-    "build:js": "terser js/h106.js -o jsm/h106.js -c -m"
+    "build:js": "terser js/h106.js -o jsm/h106.js -c drop_console=true -m"
   },
   "devDependencies": {
     "terser": "^5.43.1"
