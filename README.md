@@ -14,9 +14,6 @@ Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (par
 - [Weather](#weather)
 - [Local development](#local-development)
 - [Deploy](#deploy)
-- [Contributing](#contributing)
-- [Security](#security)
-- [License](#license)
 
 ## Project layout
 
@@ -89,17 +86,3 @@ Reuse the DreamHost deploy secrets from pinchards.is:
 | `SSH_DEPLOY_KEY` | ed25519 private key (base64-encoded single line) |
 
 Use **Actions → Deploy → Run workflow** with `dry_run: true` to preview changes.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Small, focused PRs are welcome — documentation, accessibility, weather hardening, and bug fixes are good starting points.
-
-## Security
-
-See [SECURITY.md](SECURITY.md). Report vulnerabilities privately to **adam@adamsimms.xyz** — do not open public issues for security problems.
-
-## License
-
-[MIT](LICENSE) — Copyright (c) 2017–2026 Adam Simms and Angela Gabereaux.
-
-Scene assets in `_yh1/` and third-party weather data (MSC GeoMet) have separate terms — see [LICENSE](LICENSE) for details. Three.js is used under its [MIT license](https://github.com/mrdoob/three.js/blob/dev/LICENSE).

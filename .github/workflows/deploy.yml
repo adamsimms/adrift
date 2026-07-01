@@ -85,8 +85,11 @@ jobs:
           set -euo pipefail
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
-            "${user}@${host}" "echo SSH OK from GitHub Actions"
+          if ! ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
+            "${user}@${host}" "echo SSH OK from GitHub Actions" 2>&1; then
+            echo "::error::SSH to ${user}@${host} failed. Re-copy FTP_SERVER, FTP_USERNAME, and SSH_DEPLOY_KEY from pinchards.is repo secrets (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
 
       - name: SFTP deploy (rsync over SSH)
         env:
