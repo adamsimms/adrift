@@ -73,16 +73,3 @@ The live site loads the minified bundle in `jsm/`. When editing viewer behaviour
 ## Deploy
 
 On **push to `main`**, `.github/workflows/deploy.yml` rsyncs this repo to `adrift/` on DreamHost (same server as [pinchards.is](https://github.com/adamsimms/pinchards.is)).
-
-### Repository secrets
-
-Reuse the DreamHost deploy secrets from pinchards.is:
-
-| Secret | Notes |
-|--------|--------|
-| `FTP_SERVER` | SSH hostname |
-| `FTP_USERNAME` | Shell user |
-| `FTP_SERVER_DIR` | Site root, e.g. `/home/USER/pinchards.is` (workflow appends `/adrift`) |
-| `SSH_DEPLOY_KEY` | ed25519 private key (base64-encoded single line) |
-
-Use **Actions → Deploy → Run workflow** with `dry_run: true` to preview changes.
