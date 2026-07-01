@@ -2,7 +2,7 @@
 #
 # Secrets: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY
 # (same DreamHost deploy key as pinchards.is; FTP_SERVER_DIR is the site root)
-name: Deploy SFTP
+name: Deploy
 
 on:
   push:

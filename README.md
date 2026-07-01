@@ -1,6 +1,6 @@
 # Adrift
 
-[![Deploy SFTP](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml/badge.svg)](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml/badge.svg)](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml)
 
 A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.js scene animated by live weather from [MSC GeoMet](https://api.weather.gc.ca/).
 
@@ -33,6 +33,7 @@ Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (par
 | **`css/`** | Scene styles (`ion.css`). |
 | **`mp3/`** | Ambient audio (`wind.mp3`). |
 | **`.github/workflows/`** | Deploy workflow (rsync to DreamHost on push to `main`). |
+| **`.github/dependabot.yml`** | Dependabot — monthly updates for GitHub Actions and npm. |
 
 ## Weather
 
@@ -87,7 +88,7 @@ Reuse the DreamHost deploy secrets from pinchards.is:
 | `FTP_SERVER_DIR` | Site root, e.g. `/home/USER/pinchards.is` (workflow appends `/adrift`) |
 | `SSH_DEPLOY_KEY` | ed25519 private key (base64-encoded single line) |
 
-Use **Actions → Deploy SFTP → Run workflow** with `dry_run: true` to preview changes.
+Use **Actions → Deploy → Run workflow** with `dry_run: true` to preview changes.
 
 ## Contributing
 
