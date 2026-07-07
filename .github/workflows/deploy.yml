@@ -51,7 +51,12 @@ jobs:
           fi
           mkdir -p ~/.ssh
           install -m 600 /dev/null ~/.ssh/deploy_key
-          printf '%s\n' "${SSH_DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
+          if [[ "${SSH_DEPLOY_KEY}" == *"BEGIN"* ]]; then
+            printf '%s\n' "${SSH_DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
+          else
+            printf '%s' "${SSH_DEPLOY_KEY}" | tr -d ' \t\r\n' | base64 -d > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+          fi
           if ! ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null 2>&1; then
             echo "SSH_DEPLOY_KEY is not a valid OpenSSH private key; trying base64 decode..."
             printf '%s' "${SSH_DEPLOY_KEY}" | tr -d ' \t\r\n' | base64 -d > ~/.ssh/deploy_key
@@ -115,15 +120,9 @@ jobs:
           set -euo pipefail
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          ssh_opts=(-i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -o IdentitiesOnly=yes -p 22)
-          if ! ssh "${ssh_opts[@]}" "${user}@${host}" "echo SSH OK from GitHub Actions" 2>&1; then
-            echo "::error::SSH to ${user}@${host} failed."
-            echo "Re-copy all four deploy secrets from adamsimms/pinchards.is → Settings → Secrets and variables → Actions."
-            echo "Values must match exactly: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY."
-            echo "pinchards.is deploy is working; this repo's secrets are missing or out of date."
-            ssh -vv "${ssh_opts[@]}" "${user}@${host}" "true" 2>&1 | tail -n 20 || true
-            exit 1
-          fi
+          echo "FTP_USERNAME length: ${#user}"
+          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
+            "${user}@${host}" "echo SSH OK from GitHub Actions"
 
       - name: SFTP deploy (rsync over SSH)
         env:

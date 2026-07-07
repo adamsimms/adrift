@@ -50,7 +50,7 @@ echo "Setting secrets on ${REPO}..."
 gh secret set FTP_SERVER --repo "$REPO" --body "$FTP_SERVER"
 gh secret set FTP_USERNAME --repo "$REPO" --body "$FTP_USERNAME"
 gh secret set FTP_SERVER_DIR --repo "$REPO" --body "$FTP_SERVER_DIR"
-gh secret set SSH_DEPLOY_KEY --repo "$REPO" --body "$(base64 < "$KEY_FILE" | tr -d '\n')"
+gh secret set SSH_DEPLOY_KEY --repo "$REPO" < "$KEY_FILE"
 
 echo "Done. Run a dry-run deploy:"
 echo "  gh workflow run deploy.yml --repo ${REPO} -f dry_run=true"
