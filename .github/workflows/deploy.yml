@@ -65,10 +65,15 @@ jobs:
           fi
           echo "Deploy key fingerprint: $(ssh-keygen -lf ~/.ssh/deploy_key | awk '{print $2}')"
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          if ! ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null; then
-            echo "::error::Could not fetch SSH host key for ${host}. Check FTP_SERVER (hostname only, no path or user@)."
+          if [[ "${host}" == *"@"* ]]; then
+            echo "::error::FTP_SERVER must be hostname only. Use iad1-shared-b8-36.dreamhost.com — put pinchard in FTP_USERNAME, not FTP_SERVER."
             exit 1
           fi
+          if [[ "${host}" == *"/"* ]] || [[ "${host}" == *"://"* ]] || [[ "${host}" == *":"* ]]; then
+            echo "::error::FTP_SERVER must be hostname only (no port, path, or sftp://)."
+            exit 1
+          fi
+          ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Validate deploy secrets
         env:
