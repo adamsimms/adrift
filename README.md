@@ -6,6 +6,14 @@ A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.j
 
 Live at [pinchards.is/adrift/](https://www.pinchards.is/adrift/).
 
+Artist statement: [adamsim.ms/adrift](https://adamsim.ms/adrift)
+
+Adrift elides physical and virtual space while challenging ephemeral notions of home. The digital structure floats perpetually on the ocean in response to real-time atmospheric data from a weather station in the Atlantic Ocean. As the viewer experiences the piece, the house drifts and turns as it would if it were floating in physical space.
+
+Adrift functions as a historical representation of my grandmother's experience, and by extension, all resettled homes. The house also acts as another form of resettlement to a third, imaginary dimension still influenced by its geographical context: whereby the image prevails over the thing it is an image of. The virtual space, linked to an actual place via data, becomes a third space of hybridity accessed by the window of technology.
+
+While technology allows us to access this hybrid space, it also challenges the real and actual, the near and far. It reminds us that neither a resettled resident nor their home can ever return to their origins.
+
 Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (parent site), [Dory](https://github.com/adamsimms/dory), [Waves](https://github.com/adamsimms/waves).
 
 ## Contents
@@ -34,7 +42,7 @@ Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (par
 
 ## Weather
 
-`weather.php` proxies [MSC GeoMet](https://api.weather.gc.ca/) (no API key required) and returns WeatherAPI-shaped JSON for the scene HUD. `lib/geomet.php` holds the GeoMet client and normalizes bilingual responses to English.
+`weather.php` proxies [MSC GeoMet](https://api.weather.gc.ca/) (no API key required) and returns WeatherAPI-shaped JSON for the scene HUD. `lib/geomet.php` holds the GeoMet client and normalizes buffers/units/strings.
 
 Default coordinates target Pinchard's Island, Newfoundland (`49.2006, -53.4869`). Override with `?lat=…&lon=…` query parameters.
 
