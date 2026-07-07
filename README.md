@@ -92,6 +92,13 @@ This repo needs its own copy of the four DreamHost deploy secrets (they are not 
 | `FTP_SERVER_DIR` | Site root, e.g. `/home/USER/pinchards.is` (workflow appends `/adrift/`) |
 | `SSH_DEPLOY_KEY` | ed25519 private key — paste PEM or a base64 single line |
 
-Copy the values from [pinchards.is → Settings → Secrets and variables → Actions](https://github.com/adamsimms/pinchards.is/settings/secrets/actions). If deploy fails at **Test SSH connection**, the secrets in this repo are missing or do not match pinchards.is.
+Copy the values from [pinchards.is → Settings → Secrets and variables → Actions](https://github.com/adamsimms/pinchards.is/settings/secrets/actions). GitHub does not show stored secret values — use the same DreamHost hostname/user/path and `~/.ssh/pinchards_deploy` you used when setting up pinchards.is.
 
-Use **Actions → Deploy → Run workflow** with `dry_run: true` to preview rsync without changing files on the server.
+On your Mac (as repo owner):
+
+```bash
+gh auth login
+./.github/scripts/setup-deploy-secrets.sh
+```
+
+Then run **Actions → Deploy → Run workflow** with `dry_run: true` to verify SSH and preview rsync.
