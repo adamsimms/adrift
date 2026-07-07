@@ -6,7 +6,7 @@ A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.j
 
 Live at [pinchards.is/adrift/](https://www.pinchards.is/adrift/).
 
-Artist statement: [adamsim.ms/adrift](https://adamsim.ms/adrift)
+## Artist statement
 
 Adrift elides physical and virtual space while challenging ephemeral notions of home. The digital structure floats perpetually on the ocean in response to real-time atmospheric data from a weather station in the Atlantic Ocean. As the viewer experiences the piece, the house drifts and turns as it would if it were floating in physical space.
 
