@@ -14,7 +14,6 @@ Adrift functions as a historical representation of my grandmother's experience, 
 
 While technology allows us to access this hybrid space, it also challenges the real and actual, the near and far. It reminds us that neither a resettled resident nor their home can ever return to their origins.
 
-Related projects: [pinchards.is](https://github.com/adamsimms/pinchards.is) (parent site), [Dory](https://github.com/adamsimms/dory), [Waves](https://github.com/adamsimms/waves).
 
 ## Contents
 
