@@ -1,7 +1,12 @@
 # Push to main → rsync to pinchards.is/adrift/ on DreamHost (SSH).
 #
-# Secrets: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY
-# (same DreamHost deploy key as pinchards.is; FTP_SERVER_DIR is the site root)
+# Repository secrets (Settings → Secrets and variables → Actions):
+# FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY
+#
+# Copy the same four values from adamsimms/pinchards.is (they must match exactly).
+# FTP_SERVER: SSH hostname only (e.g. psNNNN.dreamhost.com) — no user@, port, or path.
+# FTP_SERVER_DIR: absolute site root (e.g. /home/USER/pinchards.is); workflow appends /adrift/
+# SSH_DEPLOY_KEY: ed25519 private key; paste PEM or base64-encode: base64 < key | pbcopy
 name: Deploy
 
 on:
@@ -54,10 +59,16 @@ jobs:
           fi
           if ! ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null 2>&1; then
             echo "::error::SSH_DEPLOY_KEY is invalid in GitHub Secrets."
+            echo "On your Mac run: base64 < ~/.ssh/pinchards_deploy | pbcopy"
+            echo "Paste that single line as SSH_DEPLOY_KEY (replace the existing secret)."
             exit 1
           fi
+          echo "Deploy key fingerprint: $(ssh-keygen -lf ~/.ssh/deploy_key | awk '{print $2}')"
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          if ! ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null; then
+            echo "::error::Could not fetch SSH host key for ${host}. Check FTP_SERVER (hostname only, no path or user@)."
+            exit 1
+          fi
 
       - name: Validate deploy secrets
         env:
@@ -76,6 +87,20 @@ jobs:
               exit 1
             fi
           done
+          if [[ "${FTP_SERVER}" == *"@"* ]] || [[ "${FTP_SERVER}" == *"://"* ]] || [[ "${FTP_SERVER}" == *"/"* ]] || [[ "${FTP_SERVER}" == *":"* ]]; then
+            echo "::error::FTP_SERVER must be hostname only (e.g. psNNNN.dreamhost.com)."
+            echo "Do not include user@, port :22, sftp://, or a path."
+            exit 1
+          fi
+          if [[ "${FTP_SERVER_DIR}" != /* ]]; then
+            echo "::error::FTP_SERVER_DIR must be an absolute path (e.g. /home/USER/pinchards.is), not a relative folder name."
+            exit 1
+          fi
+          if [[ "${FTP_SERVER_DIR}" == *"@"* ]] || [[ "${FTP_SERVER_DIR}" == *"://"* ]]; then
+            echo "::error::FTP_SERVER_DIR must be a path only. Put the hostname in FTP_SERVER and username in FTP_USERNAME."
+            exit 1
+          fi
+          echo "FTP_SERVER resolves next; FTP_SERVER_DIR length: ${#FTP_SERVER_DIR}"
 
       - name: Test SSH connection
         env:
@@ -85,9 +110,13 @@ jobs:
           set -euo pipefail
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          if ! ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
-            "${user}@${host}" "echo SSH OK from GitHub Actions" 2>&1; then
-            echo "::error::SSH to ${user}@${host} failed. Re-copy FTP_SERVER, FTP_USERNAME, and SSH_DEPLOY_KEY from pinchards.is repo secrets (Settings → Secrets and variables → Actions)."
+          ssh_opts=(-i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -o IdentitiesOnly=yes -p 22)
+          if ! ssh "${ssh_opts[@]}" "${user}@${host}" "echo SSH OK from GitHub Actions" 2>&1; then
+            echo "::error::SSH to ${user}@${host} failed."
+            echo "Re-copy all four deploy secrets from adamsimms/pinchards.is → Settings → Secrets and variables → Actions."
+            echo "Values must match exactly: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY."
+            echo "pinchards.is deploy is working; this repo's secrets are missing or out of date."
+            ssh -vv "${ssh_opts[@]}" "${user}@${host}" "true" 2>&1 | tail -n 20 || true
             exit 1
           fi
 
@@ -112,5 +141,5 @@ jobs:
             --exclude '.git/' \
             --exclude '.git*/' \
             --exclude '.github/' \
-            -e "ssh -i ${HOME}/.ssh/deploy_key -o BatchMode=yes -p 22 -l ${user}" \
+            -e "ssh -i ${HOME}/.ssh/deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -p 22 -l ${user}" \
             ./ "${dest}"
