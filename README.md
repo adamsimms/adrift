@@ -1,10 +1,9 @@
 # Adrift
 
-[![Deploy](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml/badge.svg)](https://github.com/adamsimms/adrift/actions/workflows/deploy.yml)
-
 A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.js scene animated by live weather from [MSC GeoMet](https://api.weather.gc.ca/).
 
-Live at [pinchards.is/adrift/](https://www.pinchards.is/adrift/).
+**Canonical:** [art.adamsimms.xyz/adrift/experience/](https://art.adamsimms.xyz/adrift/experience/)  
+Portfolio: [art.adamsimms.xyz/adrift](https://art.adamsimms.xyz/adrift)
 
 ## Artist statement
 
@@ -14,91 +13,40 @@ Adrift functions as a historical representation of my grandmother's experience, 
 
 While technology allows us to access this hybrid space, it also challenges the real and actual, the near and far. It reminds us that neither a resettled resident nor their home can ever return to their origins.
 
-
-## Contents
-
-- [Project layout](#project-layout)
-- [Weather](#weather)
-- [Local development](#local-development)
-- [Deploy](#deploy)
-
 ## Project layout
 
 | Area | Purpose |
 |------|---------|
-| **`index.html`** | Production scene entry point — loads the viewer with no dev UI. |
-| **`dev.html`** | Dev/tuning page with lighting, wind, time-of-day, and camera controls (toggle panel with **H**). |
-| **`_yh1/`** | Scene assets — `_yh1.js` scene definition, textures (`_tex/`), 3D data (`_3d/yh1_2.ion`), `animations.json`, and audio references. |
-| **`jsm/`** | Production JavaScript — minified viewer bundle (`h106.js`) and Three.js r106 (`three.min.js`). |
-| **`js/`** | Readable viewer source (`h106.js`). Edit here, then run `npm run build:js` before deploying. |
-| **`lib/`** | PHP helpers for the weather proxy — `geomet.php` (GeoMet client), `helpers.php` (rate limiting), `env.php`. |
-| **`weather.php`** | JSON weather endpoint for the scene HUD. |
-| **`weather-console.html`** | Fetches `weather.php` and logs the response in browser devtools. |
-| **`css/`** | Scene styles (`ion.css`). |
-| **`mp3/`** | Ambient audio (`wind.mp3`). |
-| **`.github/workflows/`** | Deploy workflow (rsync to DreamHost on push to `main`). |
-| **`.github/dependabot.yml`** | Dependabot — monthly updates for GitHub Actions and npm. |
+| **`index.html`** | Production scene entry point. |
+| **`dev.html`** | Dev/tuning page (toggle panel with **H**). |
+| **`_yh1/`** | Scene assets, textures, animations, audio refs. |
+| **`jsm/`** | Production JS — minified viewer (`h106.js`) + Three.js r106. |
+| **`js/`** | Readable viewer source. Edit here, then `npm run build:js`. |
+| **`lib/`** | Reference GeoMet client helpers (production weather is an art Pages Function). |
+| **`css/`**, **`mp3/`** | Styles and ambient audio. |
 
 ## Weather
 
-`weather.php` proxies [MSC GeoMet](https://api.weather.gc.ca/) (no API key required) and returns WeatherAPI-shaped JSON for the scene HUD. `lib/geomet.php` holds the GeoMet client and normalizes buffers/units/strings.
-
-Default coordinates target Pinchard's Island, Newfoundland (`49.2006, -53.4869`). Override with `?lat=…&lon=…` query parameters.
-
-`weather-console.html` logs the JSON response in the browser devtools console.
+On art, the scene calls **`/adrift/api/weather`** (Pages Function → MSC GeoMet). No API key. Default coordinates: Pinchard's Island (`49.2006, -53.4869`); override with `?lat=` / `?lon=`.
 
 ## Local development
 
-**Requirements:** PHP 8.1+ with the `curl` extension. Node.js 20+ only if you edit the viewer JavaScript.
+Node.js 20+ if you edit viewer JavaScript. Static scene:
 
 ```bash
 git clone https://github.com/adamsimms/adrift.git
 cd adrift
-php -S localhost:8080
+python3 -m http.server 8080
 ```
 
-Open [http://localhost:8080](http://localhost:8080). The scene loads without secrets; weather needs PHP for `weather.php`.
-
-Use [http://localhost:8080/dev.html](http://localhost:8080/dev.html) for the tuning panel.
+Open [http://localhost:8080](http://localhost:8080/). Weather HUD needs the art Function (or point the fetch at a reachable GeoMet proxy while developing).
 
 ### JavaScript workflow
 
-The live site loads the minified bundle in `jsm/`. When editing viewer behaviour:
+1. Edit `js/h106.js`.
+2. `npm install && npm run build:js`
+3. Test `index.html` / `dev.html` before opening a PR.
 
-1. Edit `js/h106.js` (readable source).
-2. Regenerate the production bundle:
+## Ship
 
-   ```bash
-   npm install
-   npm run build:js
-   ```
-
-3. Test locally (`index.html` and `dev.html` if you changed viewer behaviour) before opening a PR.
-
-`jsm/three.min.js` is Three.js r106 — upgrade only with care; the viewer targets that revision.
-
-## Deploy
-
-On **push to `main`**, `.github/workflows/deploy.yml` rsyncs this repo to `adrift/` on DreamHost (same server as [pinchards.is](https://github.com/adamsimms/pinchards.is)).
-
-### Repository secrets
-
-This repo needs its own copy of the four DreamHost deploy secrets (they are not shared automatically between repositories):
-
-| Secret | Notes |
-|--------|--------|
-| `FTP_SERVER` | SSH hostname only, e.g. `psNNNN.dreamhost.com` |
-| `FTP_USERNAME` | DreamHost shell user |
-| `FTP_SERVER_DIR` | Site root, e.g. `/home/USER/pinchards.is` (workflow appends `/adrift/`) |
-| `SSH_DEPLOY_KEY` | ed25519 private key — paste PEM or a base64 single line |
-
-Copy the values from [pinchards.is → Settings → Secrets and variables → Actions](https://github.com/adamsimms/pinchards.is/settings/secrets/actions). GitHub does not show stored secret values — use the same DreamHost hostname/user/path and `~/.ssh/pinchards_deploy` you used when setting up pinchards.is.
-
-On your Mac (as repo owner):
-
-```bash
-gh auth login
-./.github/scripts/setup-deploy-secrets.sh
-```
-
-Then run **Actions → Deploy → Run workflow** with `dry_run: true` to verify SSH and preview rsync.
+Canonical experience is assembled into **art.adamsimms.xyz** `/adrift/experience/`. See art [PHASE4-SIBLINGS.md](https://github.com/adamsimms/art.adamsimms.xyz/blob/main/docs/PHASE4-SIBLINGS.md).

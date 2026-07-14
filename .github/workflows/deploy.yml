@@ -1,13 +1,5 @@
-# Phase 5 retired — DreamHost rsync disabled (canonical: art.adamsimms.xyz/adrift/experience/).
-# workflow_dispatch kept for emergency rollback only; push no longer deploys.
-#
-# Repository secrets (Settings → Secrets and variables → Actions):
-# FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY
-#
-# Copy the same four values from adamsimms/pinchards.is (they must match exactly).
-# FTP_SERVER: SSH hostname only (e.g. psNNNN.dreamhost.com) — no user@, port, or path.
-# FTP_SERVER_DIR: absolute site root (e.g. /home/USER/pinchards.is); workflow appends /adrift/
-# SSH_DEPLOY_KEY: ed25519 private key; paste PEM or base64-encode: base64 < key | pbcopy
+# Emergency publish only — production is art.adamsimms.xyz/adrift/experience/ via assemble.
+# Do not re-enable automatic push publish.
 name: Deploy
 
 on:
@@ -49,12 +41,7 @@ jobs:
           fi
           mkdir -p ~/.ssh
           install -m 600 /dev/null ~/.ssh/deploy_key
-          if [[ "${SSH_DEPLOY_KEY}" == *"BEGIN"* ]]; then
-            printf '%s\n' "${SSH_DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
-          else
-            printf '%s' "${SSH_DEPLOY_KEY}" | tr -d ' \t\r\n' | base64 -d > ~/.ssh/deploy_key
-            chmod 600 ~/.ssh/deploy_key
-          fi
+          printf '%s\n' "${SSH_DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/deploy_key
           if ! ssh-keygen -y -f ~/.ssh/deploy_key >/dev/null 2>&1; then
             echo "SSH_DEPLOY_KEY is not a valid OpenSSH private key; trying base64 decode..."
             printf '%s' "${SSH_DEPLOY_KEY}" | tr -d ' \t\r\n' | base64 -d > ~/.ssh/deploy_key
@@ -68,15 +55,10 @@ jobs:
           fi
           echo "Deploy key fingerprint: $(ssh-keygen -lf ~/.ssh/deploy_key | awk '{print $2}')"
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          if [[ "${host}" == *"@"* ]]; then
-            echo "::error::FTP_SERVER must be hostname only. Use iad1-shared-b8-36.dreamhost.com — put pinchard in FTP_USERNAME, not FTP_SERVER."
+          if ! ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null; then
+            echo "::error::Could not fetch SSH host key for ${host}. Check FTP_SERVER (hostname only, no path or user@)."
             exit 1
           fi
-          if [[ "${host}" == *"/"* ]] || [[ "${host}" == *"://"* ]] || [[ "${host}" == *":"* ]]; then
-            echo "::error::FTP_SERVER must be hostname only (no port, path, or sftp://)."
-            exit 1
-          fi
-          ssh-keyscan -H "${host}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Validate deploy secrets
         env:
@@ -118,9 +100,15 @@ jobs:
           set -euo pipefail
           host="$(printf '%s' "${FTP_SERVER}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
           user="$(printf '%s' "${FTP_USERNAME}" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
-          echo "FTP_USERNAME length: ${#user}"
-          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -p 22 \
-            "${user}@${host}" "echo SSH OK from GitHub Actions"
+          ssh_opts=(-i ~/.ssh/deploy_key -o BatchMode=yes -o ConnectTimeout=20 -o IdentitiesOnly=yes -p 22)
+          if ! ssh "${ssh_opts[@]}" "${user}@${host}" "echo SSH OK from GitHub Actions" 2>&1; then
+            echo "::error::SSH to ${user}@${host} failed."
+            echo "Re-copy all four deploy secrets from adamsimms/pinchards.is → Settings → Secrets and variables → Actions."
+            echo "Values must match exactly: FTP_SERVER, FTP_USERNAME, FTP_SERVER_DIR, SSH_DEPLOY_KEY."
+            echo "pinchards.is deploy is working; this repo's secrets are missing or out of date."
+            ssh -vv "${ssh_opts[@]}" "${user}@${host}" "true" 2>&1 | tail -n 20 || true
+            exit 1
+          fi
 
       - name: SFTP deploy (rsync over SSH)
         env:
