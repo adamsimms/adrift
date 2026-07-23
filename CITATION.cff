@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: Adrift
+authors:
+  - family-names: Simms
+    given-names: Adam
+    email: adamsimms@gmail.com
+  - family-names: Gabereaux
+    given-names: Angela
+date-released: "2017-01-01"
+license: MIT
+repository-code: "https://github.com/adamsimms/adrift"
+url: "https://art.adamsimms.xyz/adrift/experience/"
+abstract: >-
+  A Newfoundland saltbox house adrift on the open Atlantic —
+  a real-time Three.js scene animated by live weather from MSC GeoMet.
