@@ -42,7 +42,7 @@ function pinchard_geomet_fetch_json(string $url): ?array
 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_HTTPHEADER => [
 			'Accept: application/json',
-			'User-Agent: adrift (MSC GeoMet; pinchards.is/adrift)',
+			'User-Agent: adrift (MSC GeoMet; art.adamsimms.xyz/adrift)',
 		],
 	]);
 

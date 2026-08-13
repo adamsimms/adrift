@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Adrift</title>
+    <title>Adrift · Newfoundland saltbox on the Atlantic</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.js scene animated by live weather from MSC GeoMet.">
-    <meta property="og:title" content="Adrift">
+    <meta property="og:title" content="Adrift · Newfoundland saltbox on the Atlantic">
     <meta property="og:description" content="A Newfoundland saltbox house adrift on the open Atlantic, animated by real-time weather.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.pinchards.is/adrift/">
+    <meta property="og:url" content="https://art.adamsimms.xyz/adrift/experience/">
+    <link rel="canonical" href="https://art.adamsimms.xyz/adrift/experience/">
     <link rel="icon" href="css/berry.svg" type="image/svg+xml">
     <link href="css/ion.css" rel="stylesheet"/>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <style>
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 
 <body>
+
+<!-- Crawlable copy stays visually hidden so the WebGL experience is undisturbed. -->
+<header class="visually-hidden">
+    <h1>Adrift</h1>
+    <p>A Newfoundland saltbox house adrift on the open Atlantic, animated by live weather from MSC GeoMet.</p>
+    <nav aria-label="Related pages">
+        <a href="/adrift">Adrift project</a>
+        <a href="/">Adam Simms</a>
+        <a href="/works">Works</a>
+    </nav>
+</header>
 
 <script src="jsm/three.min.js"></script>
 <script src="jsm/h106.js"></script>

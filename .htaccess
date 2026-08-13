@@ -1,4 +1,4 @@
-# Security headers and static asset caching (DreamHost / Apache).
+# Security headers and static asset caching (Apache local / legacy).
 
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options "nosniff"
