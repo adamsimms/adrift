@@ -4,7 +4,7 @@
     <title>Adrift · Newfoundland saltbox on the Atlantic</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="A Newfoundland saltbox house adrift on the open Atlantic — a real-time Three.js scene animated by live weather from MSC GeoMet.">
+    <meta name="description" content="A Newfoundland saltbox house adrift on the open Atlantic, a real-time Three.js scene animated by live weather from MSC GeoMet.">
     <meta property="og:title" content="Adrift · Newfoundland saltbox on the Atlantic">
     <meta property="og:description" content="A Newfoundland saltbox house adrift on the open Atlantic, animated by real-time weather.">
     <meta property="og:type" content="website">
@@ -16,32 +16,56 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
     <style>
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+        .experience-fallback {
+            box-sizing: border-box;
+            max-width: 40rem;
+            margin: 0;
+            padding: 1.5rem 1.25rem 4rem;
+            color: #f3efe6;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .experience-fallback h1 {
+            margin: 0 0 0.75rem;
+            font-size: 1.75rem;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        .experience-fallback p {
+            margin: 0 0 0.9rem;
+        }
+        .experience-fallback a {
+            color: inherit;
+        }
+        #my_webgl {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background: #29415E;
         }
     </style>
+    <noscript>
+        <style>
+            #my_webgl { display: none; }
+        </style>
+    </noscript>
 </head>
 
 <body>
 
-<!-- Crawlable copy stays visually hidden so the WebGL experience is undisturbed. -->
-<header class="visually-hidden">
+<article class="experience-fallback">
     <h1>Adrift</h1>
-    <p>A Newfoundland saltbox house adrift on the open Atlantic, animated by live weather from MSC GeoMet.</p>
+    <p>Adrift is my grandmother’s childhood house, rebuilt from her recollections, then set floating on a digital ocean. Live data from a weather station in the Atlantic Ocean drives the house’s rotation, the intensity of the waves, and the rocking of the barge.</p>
+    <p>When outports were emptied, some families took their houses with them: lifted from their foundations, floated, and towed toward unfamiliar shores. Adrift restages that image as a perpetual crossing, a house lost at sea. A dwelling can be moved, but it cannot carry intact the life that belonged to its original shore.</p>
+    <p>Adrift resettles the house a third time, into a virtual space linked by data to the Atlantic Ocean it answers to. You meet it through a screen: a house still crossing, never arrived. Neither a <a href="/resettlement">resettled</a> resident nor their home can return to the life left behind.</p>
     <nav aria-label="Related pages">
         <a href="/adrift">Adrift project</a>
         <a href="/">Adam Simms</a>
         <a href="/works">Works</a>
     </nav>
-</header>
+</article>
 
 <script src="jsm/three.min.js"></script>
 <script src="jsm/h106.js"></script>
