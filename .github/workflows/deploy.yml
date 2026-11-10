@@ -131,5 +131,10 @@ jobs:
             --exclude '.git/' \
             --exclude '.git*/' \
             --exclude '.github/' \
+            --exclude '.cursor/' \
+            --exclude 'AGENTS.md' \
+            --exclude 'CLAUDE.md' \
+            --exclude 'GEMINI.md' \
+            --exclude '.env*' \
             -e "ssh -i ${HOME}/.ssh/deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -p 22 -l ${user}" \
             ./ "${dest}"
